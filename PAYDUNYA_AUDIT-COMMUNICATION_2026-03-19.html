@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Audit Communication PayDunya - LOLLY Communication</title>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -795,24 +796,30 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        .icon { width: 18px; height: 18px; display: inline-block; vertical-align: middle; stroke-width: 1.8; }
+        .icon-lg { width: 24px; height: 24px; display: inline-block; vertical-align: middle; stroke-width: 1.8; }
+        .icon-sm { width: 14px; height: 14px; display: inline-block; vertical-align: middle; stroke-width: 2; }
+        .card-icon-wrap { width: 48px; height: 48px; border-radius: 12px; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+        .card-icon-wrap svg { width: 22px; height: 22px; stroke: #FED700; stroke-width: 1.8; }
     </style>
 </head>
 <body>
     <div id="progress-bar"></div>
 
     <div class="nav-sidebar" id="sidebar">
-        <div class="nav-dot active" data-slide="0" data-tooltip="Couverture">1</div>
-        <div class="nav-dot" data-slide="1" data-tooltip="Sommaire">2</div>
-        <div class="nav-dot" data-slide="2" data-tooltip="Score Global">3</div>
-        <div class="nav-dot" data-slide="3" data-tooltip="Identité Visuelle">4</div>
-        <div class="nav-dot" data-slide="4" data-tooltip="Site Web">5</div>
-        <div class="nav-dot" data-slide="5" data-tooltip="Réseaux Sociaux">6</div>
-        <div class="nav-dot" data-slide="6" data-tooltip="Réputation">7</div>
-        <div class="nav-dot" data-slide="7" data-tooltip="Stratégie Éditoriale">8</div>
-        <div class="nav-dot" data-slide="8" data-tooltip="Maturité Digitale">9</div>
-        <div class="nav-dot" data-slide="9" data-tooltip="Benchmark">10</div>
-        <div class="nav-dot" data-slide="10" data-tooltip="Actions Prioritaires">11</div>
-        <div class="nav-dot" data-slide="11" data-tooltip="Offre LOLLY">12</div>
+        <div class="nav-dot active" data-slide="0" data-tooltip="Couverture"><i data-lucide="layout-dashboard" class="icon-sm"></i></div>
+        <div class="nav-dot" data-slide="1" data-tooltip="Sommaire"><i data-lucide="list" class="icon-sm"></i></div>
+        <div class="nav-dot" data-slide="2" data-tooltip="Score Global"><i data-lucide="bar-chart-2" class="icon-sm"></i></div>
+        <div class="nav-dot" data-slide="3" data-tooltip="Identité Visuelle"><i data-lucide="palette" class="icon-sm"></i></div>
+        <div class="nav-dot" data-slide="4" data-tooltip="Site Web"><i data-lucide="globe" class="icon-sm"></i></div>
+        <div class="nav-dot" data-slide="5" data-tooltip="Réseaux Sociaux"><i data-lucide="share-2" class="icon-sm"></i></div>
+        <div class="nav-dot" data-slide="6" data-tooltip="Réputation"><i data-lucide="star" class="icon-sm"></i></div>
+        <div class="nav-dot" data-slide="7" data-tooltip="Stratégie Éditoriale"><i data-lucide="pen-line" class="icon-sm"></i></div>
+        <div class="nav-dot" data-slide="8" data-tooltip="Maturité Digitale"><i data-lucide="cpu" class="icon-sm"></i></div>
+        <div class="nav-dot" data-slide="9" data-tooltip="Benchmark"><i data-lucide="bar-chart" class="icon-sm"></i></div>
+        <div class="nav-dot" data-slide="10" data-tooltip="Actions Prioritaires"><i data-lucide="target" class="icon-sm"></i></div>
+        <div class="nav-dot" data-slide="11" data-tooltip="Offre LOLLY"><i data-lucide="briefcase" class="icon-sm"></i></div>
     </div>
 
     <div class="container">
@@ -848,52 +855,52 @@
             <!-- SLIDE 1 - Sommaire -->
             <div class="slide slide-content" data-slide="1">
                 <div class="slide-header">
-                    <h2>📋 Sommaire</h2>
+                    <h2 style="display:flex; align-items:center; gap:10px;"><i data-lucide="clipboard-list" class="icon-lg"></i> Sommaire</h2>
                 </div>
 
                 <div class="cards-grid">
                     <div class="card" onclick="currentSlide(3)">
-                        <h3>🎨 Identité Visuelle</h3>
+                        <h3 style="display:flex; align-items:center; gap:8px;"><i data-lucide="palette" class="icon"></i> Identité Visuelle</h3>
                         <p>Logo, charte, présence multicanale</p>
                         <span class="score-tag orange">6,5/10</span>
                     </div>
                     <div class="card" onclick="currentSlide(4)">
-                        <h3>🌐 Site Web</h3>
+                        <h3 style="display:flex; align-items:center; gap:8px;"><i data-lucide="globe" class="icon"></i> Site Web</h3>
                         <p>SEO, UX, conversion, certificats</p>
                         <span class="score-tag green">7,5/10</span>
                     </div>
                     <div class="card" onclick="currentSlide(5)">
-                        <h3>📱 Réseaux Sociaux</h3>
+                        <h3 style="display:flex; align-items:center; gap:8px;"><i data-lucide="smartphone" class="icon"></i> Réseaux Sociaux</h3>
                         <p>Facebook, Instagram, LinkedIn, X, YouTube, TikTok, GitHub</p>
                         <span class="score-tag orange">5,0/10</span>
                     </div>
                     <div class="card" onclick="currentSlide(6)">
-                        <h3>⭐ Réputation</h3>
+                        <h3 style="display:flex; align-items:center; gap:8px;"><i data-lucide="star" class="icon"></i> Réputation</h3>
                         <p>RéclameICI, Trustpilot, GMB, Play Store, ScamAdviser</p>
                         <span class="score-tag orange">6,0/10</span>
                     </div>
                     <div class="card" onclick="currentSlide(7)">
-                        <h3>✍️ Stratégie Éditoriale</h3>
+                        <h3 style="display:flex; align-items:center; gap:8px;"><i data-lucide="pen-line" class="icon"></i> Stratégie Éditoriale</h3>
                         <p>Blog, newsletter, messaging, storytelling</p>
                         <span class="score-tag orange">6,0/10</span>
                     </div>
                     <div class="card" onclick="currentSlide(8)">
-                        <h3>⚙️ Maturité Digitale</h3>
+                        <h3 style="display:flex; align-items:center; gap:8px;"><i data-lucide="settings" class="icon"></i> Maturité Digitale</h3>
                         <p>API, GitHub, CRM, automatisations</p>
                         <span class="score-tag orange">6,5/10</span>
                     </div>
                     <div class="card" onclick="currentSlide(9)">
-                        <h3>⚔️ Benchmark vs Wave</h3>
+                        <h3 style="display:flex; align-items:center; gap:8px;"><i data-lucide="swords" class="icon"></i> Benchmark vs Wave</h3>
                         <p>Comparatif domaine par domaine</p>
                         <span class="score-tag orange" style="background: rgba(41,128,185,0.15); color: #3498db; border-color: rgba(41,128,185,0.25);">Analyse</span>
                     </div>
                     <div class="card" onclick="currentSlide(10)">
-                        <h3>🎯 Actions Prioritaires</h3>
+                        <h3 style="display:flex; align-items:center; gap:8px;"><i data-lucide="target" class="icon"></i> Actions Prioritaires</h3>
                         <p>Top 5 actions classées par urgence</p>
                         <span class="score-tag red">Plan</span>
                     </div>
                     <div class="card" onclick="currentSlide(11)">
-                        <h3>💼 Offre LOLLY</h3>
+                        <h3 style="display:flex; align-items:center; gap:8px;"><i data-lucide="briefcase" class="icon"></i> Offre LOLLY</h3>
                         <p>3 packages adaptés aux faiblesses détectées</p>
                         <span class="score-tag orange" style="background: rgba(255,107,53,0.15); color: #FF6B35; border-color: rgba(255,107,53,0.25);">Proposition</span>
                     </div>
@@ -903,14 +910,14 @@
             <!-- SLIDE 2 - Score Global -->
             <div class="slide slide-content" data-slide="2">
                 <div class="slide-header">
-                    <h2>📊 Score Global</h2>
+                    <h2 style="display:flex; align-items:center; gap:10px;"><i data-lucide="bar-chart-2" class="icon-lg"></i> Score Global</h2>
                 </div>
 
                 <div class="legend-bar">
                     <span><strong style="color: rgba(248,248,248,0.6);">Légende des scores :</strong></span>
-                    <span style="margin-left: auto; color: #27AE60;">🟢 7-10 Bon niveau</span>
-                    <span style="color: #F39C12;">🟠 5-6 À améliorer</span>
-                    <span style="color: #E74C3C;">🔴 0-4 Critique</span>
+                    <span style="margin-left: auto; color: #27AE60;"><i data-lucide="circle" class="icon-sm" style="color:#27AE60; fill:#27AE60;"></i> 7-10 Bon niveau</span>
+                    <span style="color: #F39C12;"><i data-lucide="circle" class="icon-sm" style="color:#F39C12; fill:#F39C12;"></i> 5-6 À améliorer</span>
+                    <span style="color: #E74C3C;"><i data-lucide="circle" class="icon-sm" style="color:#E74C3C; fill:#E74C3C;"></i> 0-4 Critique</span>
                 </div>
 
                 <div class="global-score-box">
@@ -923,27 +930,27 @@
 
                 <div class="score-items">
                     <div class="score-item">
-                        <div class="score-item-label"><span>🎨 Identité Visuelle</span> <span>6,5/10</span></div>
+                        <div class="score-item-label"><span style="display:flex; align-items:center; gap:6px;"><i data-lucide="palette" class="icon-sm"></i> Identité Visuelle</span> <span>6,5/10</span></div>
                         <div class="score-item-bar"><div class="score-item-bar-fill bar-orange" style="width: 0%;" data-target="65%"></div></div>
                     </div>
                     <div class="score-item">
-                        <div class="score-item-label"><span>🌐 Site Web</span> <span>7,5/10</span></div>
+                        <div class="score-item-label"><span style="display:flex; align-items:center; gap:6px;"><i data-lucide="globe" class="icon-sm"></i> Site Web</span> <span>7,5/10</span></div>
                         <div class="score-item-bar"><div class="score-item-bar-fill bar-green" style="width: 0%;" data-target="75%"></div></div>
                     </div>
                     <div class="score-item">
-                        <div class="score-item-label"><span>📱 Réseaux Sociaux</span> <span>5,0/10</span></div>
+                        <div class="score-item-label"><span style="display:flex; align-items:center; gap:6px;"><i data-lucide="smartphone" class="icon-sm"></i> Réseaux Sociaux</span> <span>5,0/10</span></div>
                         <div class="score-item-bar"><div class="score-item-bar-fill bar-orange" style="width: 0%;" data-target="50%"></div></div>
                     </div>
                     <div class="score-item">
-                        <div class="score-item-label"><span>⭐ Réputation</span> <span>6,0/10</span></div>
+                        <div class="score-item-label"><span style="display:flex; align-items:center; gap:6px;"><i data-lucide="star" class="icon-sm"></i> Réputation</span> <span>6,0/10</span></div>
                         <div class="score-item-bar"><div class="score-item-bar-fill bar-orange" style="width: 0%;" data-target="60%"></div></div>
                     </div>
                     <div class="score-item">
-                        <div class="score-item-label"><span>✍️ Stratégie Éditoriale</span> <span>6,0/10</span></div>
+                        <div class="score-item-label"><span style="display:flex; align-items:center; gap:6px;"><i data-lucide="pen-line" class="icon-sm"></i> Stratégie Éditoriale</span> <span>6,0/10</span></div>
                         <div class="score-item-bar"><div class="score-item-bar-fill bar-orange" style="width: 0%;" data-target="60%"></div></div>
                     </div>
                     <div class="score-item">
-                        <div class="score-item-label"><span>⚙️ Maturité Digitale</span> <span>6,5/10</span></div>
+                        <div class="score-item-label"><span style="display:flex; align-items:center; gap:6px;"><i data-lucide="settings" class="icon-sm"></i> Maturité Digitale</span> <span>6,5/10</span></div>
                         <div class="score-item-bar"><div class="score-item-bar-fill bar-orange" style="width: 0%;" data-target="65%"></div></div>
                     </div>
                 </div>
@@ -963,7 +970,7 @@
             <!-- SLIDE 3 - Identité Visuelle -->
             <div class="slide slide-content" data-slide="3">
                 <div class="slide-header">
-                    <h2>🎨 Identité Visuelle</h2>
+                    <h2 style="display:flex; align-items:center; gap:10px;"><i data-lucide="palette" class="icon-lg"></i> Identité Visuelle</h2>
                     <div class="score-badge orange">6,5/10</div>
                 </div>
 
@@ -971,7 +978,7 @@
 
                 <div class="three-columns">
                     <div class="column-box forces">
-                        <h3>✅ Forces</h3>
+                        <h3 style="display:flex; align-items:center; gap:8px;"><i data-lucide="check-circle-2" class="icon"></i> Forces</h3>
                         <ul>
                             <li>Logo bleu distinctif, cohérent, bien décliné</li>
                             <li>Positionnement clair : "Pionnier · Sécurisé · Performant"</li>
@@ -983,7 +990,7 @@
                     </div>
 
                     <div class="column-box faiblesses">
-                        <h3>❌ Faiblesses</h3>
+                        <h3 style="display:flex; align-items:center; gap:8px;"><i data-lucide="x-circle" class="icon"></i> Faiblesses</h3>
                         <ul>
                             <li>Aucune Brand Guidelines publique</li>
                             <li>Slogan "Digitaliser votre business" générique</li>
@@ -995,7 +1002,7 @@
                     </div>
 
                     <div class="column-box opportunites">
-                        <h3>💡 Opportunités</h3>
+                        <h3 style="display:flex; align-items:center; gap:8px;"><i data-lucide="lightbulb" class="icon"></i> Opportunités</h3>
                         <ul>
                             <li>Créer Brand Portal public</li>
                             <li>Développer signature sénégalaise unique</li>
@@ -1030,7 +1037,7 @@
             <!-- SLIDE 4 - Site Web -->
             <div class="slide slide-content" data-slide="4">
                 <div class="slide-header">
-                    <h2>🌐 Site Web</h2>
+                    <h2 style="display:flex; align-items:center; gap:10px;"><i data-lucide="globe" class="icon-lg"></i> Site Web</h2>
                     <div class="score-badge green">7,5/10</div>
                 </div>
 
@@ -1038,7 +1045,7 @@
 
                 <div class="three-columns">
                     <div class="column-box forces">
-                        <h3>✅ Forces</h3>
+                        <h3 style="display:flex; align-items:center; gap:8px;"><i data-lucide="check-circle-2" class="icon"></i> Forces</h3>
                         <ul>
                             <li>Title SEO percutant</li>
                             <li>Meta description PRÉSENTE</li>
@@ -1055,7 +1062,7 @@
                     </div>
 
                     <div class="column-box faiblesses">
-                        <h3>❌ Faiblesses</h3>
+                        <h3 style="display:flex; align-items:center; gap:8px;"><i data-lucide="x-circle" class="icon"></i> Faiblesses</h3>
                         <ul>
                             <li>OG Image ABSENTE — partage sans image</li>
                             <li>37/48 images sans alt (77%) — SEO critique</li>
@@ -1069,7 +1076,7 @@
                     </div>
 
                     <div class="column-box opportunites">
-                        <h3>💡 Opportunités</h3>
+                        <h3 style="display:flex; align-items:center; gap:8px;"><i data-lucide="lightbulb" class="icon"></i> Opportunités</h3>
                         <ul>
                             <li>Page Pricing transparente</li>
                             <li>SEO content strategy (50+ articles)</li>
@@ -1105,7 +1112,7 @@
             <!-- SLIDE 5 - Réseaux Sociaux -->
             <div class="slide slide-content" data-slide="5">
                 <div class="slide-header">
-                    <h2>📱 Réseaux Sociaux</h2>
+                    <h2 style="display:flex; align-items:center; gap:10px;"><i data-lucide="smartphone" class="icon-lg"></i> Réseaux Sociaux</h2>
                     <div class="score-badge orange">5,0/10</div>
                 </div>
 
@@ -1114,42 +1121,42 @@
                 <h4 style="margin: 20px 0; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: rgba(248,248,248,0.4);">Analyse par plateforme</h4>
                 <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 30px;">
                     <div style="background: #1A1A1A; padding: 16px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.07); border-top: 3px solid #F39C12;">
-                        <p style="font-size: 14px; font-weight: bold; margin-bottom: 5px; color: #F8F8F8;">📘 Facebook</p>
+                        <p style="font-size: 14px; font-weight: bold; margin-bottom: 5px; color: #F8F8F8; display:flex; align-items:center; gap:6px;"><i data-lucide="facebook" class="icon"></i> Facebook</p>
                         <p style="font-size: 13px; color: rgba(248,248,248,0.45); margin-bottom: 5px;">16,7K followers</p>
                         <p style="font-size: 13px; color: rgba(248,248,248,0.45); margin-bottom: 8px;">62% recommandation (35 avis)</p>
                         <span style="background: rgba(243,156,18,0.15); color: #F39C12; border: 1px solid rgba(243,156,18,0.25); padding: 4px 10px; border-radius: 100px; font-size: 11px; font-weight: bold;">5/10</span>
                     </div>
 
                     <div style="background: #1A1A1A; padding: 16px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.07); border-top: 3px solid #F39C12;">
-                        <p style="font-size: 14px; font-weight: bold; margin-bottom: 5px; color: #F8F8F8;">📸 Instagram</p>
+                        <p style="font-size: 14px; font-weight: bold; margin-bottom: 5px; color: #F8F8F8; display:flex; align-items:center; gap:6px;"><i data-lucide="instagram" class="icon"></i> Instagram</p>
                         <p style="font-size: 13px; color: rgba(248,248,248,0.45); margin-bottom: 5px;">2 353 followers</p>
                         <p style="font-size: 13px; color: rgba(248,248,248,0.45); margin-bottom: 8px;">290 posts · 1 Highlight</p>
                         <span style="background: rgba(243,156,18,0.15); color: #F39C12; border: 1px solid rgba(243,156,18,0.25); padding: 4px 10px; border-radius: 100px; font-size: 11px; font-weight: bold;">5/10</span>
                     </div>
 
                     <div style="background: #1A1A1A; padding: 16px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.07); border-top: 3px solid #27AE60;">
-                        <p style="font-size: 14px; font-weight: bold; margin-bottom: 5px; color: #F8F8F8;">💼 LinkedIn</p>
+                        <p style="font-size: 14px; font-weight: bold; margin-bottom: 5px; color: #F8F8F8; display:flex; align-items:center; gap:6px;"><i data-lucide="linkedin" class="icon"></i> LinkedIn</p>
                         <p style="font-size: 13px; color: rgba(248,248,248,0.45); margin-bottom: 5px;">17 317 followers — Vérifié</p>
                         <p style="font-size: 13px; color: rgba(248,248,248,0.45); margin-bottom: 8px;">Bannière "10 ans"</p>
                         <span style="background: rgba(39,174,96,0.15); color: #27AE60; border: 1px solid rgba(39,174,96,0.25); padding: 4px 10px; border-radius: 100px; font-size: 11px; font-weight: bold;">7,5/10</span>
                     </div>
 
                     <div style="background: #1A1A1A; padding: 16px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.07); border-top: 3px solid #E74C3C;">
-                        <p style="font-size: 14px; font-weight: bold; margin-bottom: 5px; color: #F8F8F8;">🐦 X/Twitter</p>
+                        <p style="font-size: 14px; font-weight: bold; margin-bottom: 5px; color: #F8F8F8; display:flex; align-items:center; gap:6px;"><i data-lucide="twitter" class="icon"></i> X/Twitter</p>
                         <p style="font-size: 13px; color: rgba(248,248,248,0.45); margin-bottom: 5px;">1 566 followers</p>
                         <p style="font-size: 13px; color: rgba(248,248,248,0.45); margin-bottom: 8px;">PAS DE PHOTO NI BANNIÈRE</p>
                         <span style="background: rgba(231,76,60,0.15); color: #E74C3C; border: 1px solid rgba(231,76,60,0.25); padding: 4px 10px; border-radius: 100px; font-size: 11px; font-weight: bold;">3/10</span>
                     </div>
 
                     <div style="background: #1A1A1A; padding: 16px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.07); border-top: 3px solid #E74C3C;">
-                        <p style="font-size: 14px; font-weight: bold; margin-bottom: 5px; color: #F8F8F8;">▶️ YouTube</p>
+                        <p style="font-size: 14px; font-weight: bold; margin-bottom: 5px; color: #F8F8F8; display:flex; align-items:center; gap:6px;"><i data-lucide="youtube" class="icon"></i> YouTube</p>
                         <p style="font-size: 13px; color: rgba(248,248,248,0.45); margin-bottom: 5px;">1 950 abonnés</p>
                         <p style="font-size: 13px; color: rgba(248,248,248,0.45); margin-bottom: 8px;">DORMANT 3+ ANS</p>
                         <span style="background: rgba(231,76,60,0.15); color: #E74C3C; border: 1px solid rgba(231,76,60,0.25); padding: 4px 10px; border-radius: 100px; font-size: 11px; font-weight: bold;">3/10</span>
                     </div>
 
                     <div style="background: #1A1A1A; padding: 16px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.07); border-top: 3px solid #E74C3C;">
-                        <p style="font-size: 14px; font-weight: bold; margin-bottom: 5px; color: #F8F8F8;">🎵 TikTok & 🐙 GitHub</p>
+                        <p style="font-size: 14px; font-weight: bold; margin-bottom: 5px; color: #F8F8F8; display:flex; align-items:center; gap:6px;"><i data-lucide="music" class="icon"></i> TikTok &amp; <i data-lucide="github" class="icon"></i> GitHub</p>
                         <p style="font-size: 13px; color: rgba(248,248,248,0.45); margin-bottom: 5px;">TikTok : Absent</p>
                         <p style="font-size: 13px; color: rgba(248,248,248,0.45); margin-bottom: 8px;">GitHub : 0 repos</p>
                         <span style="background: rgba(231,76,60,0.15); color: #E74C3C; border: 1px solid rgba(231,76,60,0.25); padding: 4px 10px; border-radius: 100px; font-size: 11px; font-weight: bold;">1/10</span>
@@ -1158,7 +1165,7 @@
 
                 <div class="three-columns">
                     <div class="column-box forces">
-                        <h3>✅ Forces</h3>
+                        <h3 style="display:flex; align-items:center; gap:8px;"><i data-lucide="check-circle-2" class="icon"></i> Forces</h3>
                         <ul>
                             <li>LinkedIn dominé : 17K+ B2B, contenu bilingue, vérifié</li>
                             <li>YouTube existe avec 1,950 abonnés à réactiver</li>
@@ -1168,7 +1175,7 @@
                     </div>
 
                     <div class="column-box faiblesses">
-                        <h3>❌ Faiblesses</h3>
+                        <h3 style="display:flex; align-items:center; gap:8px;"><i data-lucide="x-circle" class="icon"></i> Faiblesses</h3>
                         <ul>
                             <li>YouTube dormant depuis 3+ ans</li>
                             <li>X/Twitter SANS photo ni bannière</li>
@@ -1180,7 +1187,7 @@
                     </div>
 
                     <div class="column-box opportunites">
-                        <h3>💡 Opportunités</h3>
+                        <h3 style="display:flex; align-items:center; gap:8px;"><i data-lucide="lightbulb" class="icon"></i> Opportunités</h3>
                         <ul>
                             <li>Réactiver YouTube (tutos, webinaires)</li>
                             <li>Corriger X/Twitter (IMMÉDIAT : photo + bannière)</li>
@@ -1215,7 +1222,7 @@
             <!-- SLIDE 6 - Réputation -->
             <div class="slide slide-content" data-slide="6">
                 <div class="slide-header">
-                    <h2>⭐ Réputation</h2>
+                    <h2 style="display:flex; align-items:center; gap:10px;"><i data-lucide="star" class="icon-lg"></i> Réputation</h2>
                     <div class="score-badge orange">6,0/10</div>
                 </div>
 
@@ -1223,7 +1230,7 @@
 
                 <div class="three-columns">
                     <div class="column-box forces">
-                        <h3>✅ Forces</h3>
+                        <h3 style="display:flex; align-items:center; gap:8px;"><i data-lucide="check-circle-2" class="icon"></i> Forces</h3>
                         <ul>
                             <li>Acquisition Peach Payments (avril 2025) : crédibilité</li>
                             <li>PCI DSS Level 1 v4.0.1 confirmé</li>
@@ -1236,7 +1243,7 @@
                     </div>
 
                     <div class="column-box faiblesses">
-                        <h3>❌ Faiblesses</h3>
+                        <h3 style="display:flex; align-items:center; gap:8px;"><i data-lucide="x-circle" class="icon"></i> Faiblesses</h3>
                         <ul>
                             <li>RéclameICI : 9,9/100 CRITIQUE</li>
                             <li>10 plaintes, 2 résolues, 0% recommandation</li>
@@ -1249,7 +1256,7 @@
                     </div>
 
                     <div class="column-box opportunites">
-                        <h3>💡 Opportunités</h3>
+                        <h3 style="display:flex; align-items:center; gap:8px;"><i data-lucide="lightbulb" class="icon"></i> Opportunités</h3>
                         <ul>
                             <li>Créer compte Trustpilot</li>
                             <li>Créer fiche GMB</li>
@@ -1285,7 +1292,7 @@
             <!-- SLIDE 7 - Stratégie Éditoriale -->
             <div class="slide slide-content" data-slide="7">
                 <div class="slide-header">
-                    <h2>✍️ Stratégie Éditoriale</h2>
+                    <h2 style="display:flex; align-items:center; gap:10px;"><i data-lucide="pen-line" class="icon-lg"></i> Stratégie Éditoriale</h2>
                     <div class="score-badge orange">6,0/10</div>
                 </div>
 
@@ -1293,7 +1300,7 @@
 
                 <div class="three-columns">
                     <div class="column-box forces">
-                        <h3>✅ Forces</h3>
+                        <h3 style="display:flex; align-items:center; gap:8px;"><i data-lucide="check-circle-2" class="icon"></i> Forces</h3>
                         <ul>
                             <li>Piliers de marque définis</li>
                             <li>Blog existant (blog.paydunya.com)</li>
@@ -1305,7 +1312,7 @@
                     </div>
 
                     <div class="column-box faiblesses">
-                        <h3>❌ Faiblesses</h3>
+                        <h3 style="display:flex; align-items:center; gap:8px;"><i data-lucide="x-circle" class="icon"></i> Faiblesses</h3>
                         <ul>
                             <li>Blog : ~4 articles seulement</li>
                             <li>Tous "Hors séries" anniversaire (sept-oct 2025)</li>
@@ -1318,7 +1325,7 @@
                     </div>
 
                     <div class="column-box opportunites">
-                        <h3>💡 Opportunités</h3>
+                        <h3 style="display:flex; align-items:center; gap:8px;"><i data-lucide="lightbulb" class="icon"></i> Opportunités</h3>
                         <ul>
                             <li>Newsletter PayDunya Insights (hebdo)</li>
                             <li>Thought leadership fondateurs</li>
@@ -1354,7 +1361,7 @@
             <!-- SLIDE 8 - Maturité Digitale -->
             <div class="slide slide-content" data-slide="8">
                 <div class="slide-header">
-                    <h2>⚙️ Maturité Digitale</h2>
+                    <h2 style="display:flex; align-items:center; gap:10px;"><i data-lucide="settings" class="icon-lg"></i> Maturité Digitale</h2>
                     <div class="score-badge orange">6,5/10</div>
                 </div>
 
@@ -1362,7 +1369,7 @@
 
                 <div class="three-columns">
                     <div class="column-box forces">
-                        <h3>✅ Forces</h3>
+                        <h3 style="display:flex; align-items:center; gap:8px;"><i data-lucide="check-circle-2" class="icon"></i> Forces</h3>
                         <ul>
                             <li>API exceptionnelle (6+ SDKs)</li>
                             <li>Intégrations e-commerce (WooCommerce, PrestaShop, Magento)</li>
@@ -1377,7 +1384,7 @@
                     </div>
 
                     <div class="column-box faiblesses">
-                        <h3>❌ Faiblesses</h3>
+                        <h3 style="display:flex; align-items:center; gap:8px;"><i data-lucide="x-circle" class="icon"></i> Faiblesses</h3>
                         <ul>
                             <li>GitHub : 0 repos publics</li>
                             <li>Absence CRM identifiable</li>
@@ -1390,7 +1397,7 @@
                     </div>
 
                     <div class="column-box opportunites">
-                        <h3>💡 Opportunités</h3>
+                        <h3 style="display:flex; align-items:center; gap:8px;"><i data-lucide="lightbulb" class="icon"></i> Opportunités</h3>
                         <ul>
                             <li>HubSpot CRM intégration</li>
                             <li>Chatbot WhatsApp (Twilio)</li>
@@ -1411,7 +1418,7 @@
                         <div class="budget">800 000 – 1,5M XOF</div>
                     </div>
                     <div class="recommendation-item">
-                        <strong>2. Publier SDK & Documentation GitHub</strong>
+                        <strong>2. Publier SDK &amp; Documentation GitHub</strong>
                         <p>Créer repos publics (Python, JS, PHP, Java), contribution guidelines, exemples.</p>
                         <div class="budget">400 000 – 700 000 XOF</div>
                     </div>
@@ -1426,7 +1433,7 @@
             <!-- SLIDE 9 - Benchmark -->
             <div class="slide slide-content" data-slide="9">
                 <div class="slide-header">
-                    <h2>📊 Benchmark vs Wave</h2>
+                    <h2 style="display:flex; align-items:center; gap:10px;"><i data-lucide="bar-chart-2" class="icon-lg"></i> Benchmark vs Wave</h2>
                 </div>
 
                 <p class="analysis-note" style="margin-bottom: 20px;">Wave et PayDunya opèrent sur des segments partiellement complémentaires : Wave domine le marché grand public (B2C) avec 29 millions d'utilisateurs et un modèle zéro frais, tandis que PayDunya cible les entreprises (B2B) avec une API riche et des intégrations e-commerce. L'écart de notoriété est significatif : Wave compte 7 fois plus d'abonnés LinkedIn et 78 fois plus de followers Instagram au Sénégal. PayDunya doit capitaliser sur son avantage technique pour dominer son segment PME/développeurs.</p>
@@ -1509,14 +1516,14 @@
             <!-- SLIDE 10 - Actions Prioritaires -->
             <div class="slide slide-content" data-slide="10">
                 <div class="slide-header">
-                    <h2>🎯 Top 5 Actions Prioritaires</h2>
+                    <h2 style="display:flex; align-items:center; gap:10px;"><i data-lucide="target" class="icon-lg"></i> Top 5 Actions Prioritaires</h2>
                 </div>
 
                 <p class="analysis-note" style="margin-bottom: 20px;">Ces 5 actions sont classées par urgence et impact. Les deux premières (réputation et SEO technique) sont critiques et doivent être lancées immédiatement — elles représentent un risque direct sur la conversion client. Les actions court terme (réseaux sociaux et branding) consolident la présence publique. L'action moyen terme (stratégie éditoriale) construit le positionnement durable de PayDunya comme référence fintech B2B en Afrique de l'Ouest.</p>
 
                 <div class="actions-grid" style="margin-top: 30px;">
                     <div class="action-card immediate">
-                        <h3>🔴 IMMÉDIAT — Gestion de Crise Réputation</h3>
+                        <h3 style="display:flex; align-items:center; gap:8px;"><i data-lucide="alert-circle" style="color:#E74C3C" class="icon"></i> IMMÉDIAT — Gestion de Crise Réputation</h3>
                         <p><strong style="color: rgba(248,248,248,0.8);">Problème :</strong> RéclameICI 9,9/100, Trustpilot inexistant, GMB absent.</p>
                         <p><strong style="color: rgba(248,248,248,0.8);">Actions :</strong></p>
                         <ul>
@@ -1528,7 +1535,7 @@
                     </div>
 
                     <div class="action-card immediate">
-                        <h3>🔴 IMMÉDIAT — Audit SEO Technique</h3>
+                        <h3 style="display:flex; align-items:center; gap:8px;"><i data-lucide="alert-circle" style="color:#E74C3C" class="icon"></i> IMMÉDIAT — Audit SEO Technique</h3>
                         <p><strong style="color: rgba(248,248,248,0.8);">Problème :</strong> 37/48 images sans alt, OG image absente, zéro schema markup.</p>
                         <p><strong style="color: rgba(248,248,248,0.8);">Actions :</strong></p>
                         <ul>
@@ -1541,7 +1548,7 @@
                     </div>
 
                     <div class="action-card short">
-                        <h3>🟠 COURT TERME — X/Twitter + YouTube</h3>
+                        <h3 style="display:flex; align-items:center; gap:8px;"><i data-lucide="clock" style="color:#F39C12" class="icon"></i> COURT TERME — X/Twitter + YouTube</h3>
                         <p><strong style="color: rgba(248,248,248,0.8);">Problème :</strong> X/Twitter sans profil, YouTube dormant 3+ ans.</p>
                         <p><strong style="color: rgba(248,248,248,0.8);">Actions :</strong></p>
                         <ul>
@@ -1553,7 +1560,7 @@
                     </div>
 
                     <div class="action-card short">
-                        <h3>🟠 COURT TERME — Brand Guidelines + Campagne</h3>
+                        <h3 style="display:flex; align-items:center; gap:8px;"><i data-lucide="clock" style="color:#F39C12" class="icon"></i> COURT TERME — Brand Guidelines + Campagne</h3>
                         <p><strong style="color: rgba(248,248,248,0.8);">Problème :</strong> Aucune Guidelines, design générique.</p>
                         <p><strong style="color: rgba(248,248,248,0.8);">Actions :</strong></p>
                         <ul>
@@ -1565,7 +1572,7 @@
                     </div>
 
                     <div class="action-card medium">
-                        <h3>🔵 MOYEN TERME — Stratégie Éditoriale + GitHub</h3>
+                        <h3 style="display:flex; align-items:center; gap:8px;"><i data-lucide="calendar" style="color:#3498db" class="icon"></i> MOYEN TERME — Stratégie Éditoriale + GitHub</h3>
                         <p><strong style="color: rgba(248,248,248,0.8);">Problème :</strong> Blog 4 articles, pas newsletter, GitHub 0 repos.</p>
                         <p><strong style="color: rgba(248,248,248,0.8);">Actions :</strong></p>
                         <ul>
@@ -1591,7 +1598,7 @@
 
                     <div class="packages-grid" style="margin-top: 40px;">
                         <div class="package-card">
-                            <h3>🥉 Starter</h3>
+                            <h3 style="display:flex; align-items:center; justify-content:center; gap:8px;"><i data-lucide="award" class="icon"></i> Starter</h3>
                             <div class="price">550K – 900K</div>
                             <div class="duration">XOF / mois</div>
                             <ul>
@@ -1603,7 +1610,7 @@
                         </div>
 
                         <div class="package-card recommended">
-                            <h3>🥈 Performance ⭐<br>RECOMMANDÉ</h3>
+                            <h3 style="display:flex; align-items:center; justify-content:center; gap:8px;"><i data-lucide="award" class="icon"></i> Performance <i data-lucide="star" class="icon"></i><br>RECOMMANDÉ</h3>
                             <div class="price">1,5M – 2,5M</div>
                             <div class="duration">XOF / mois</div>
                             <ul>
@@ -1616,7 +1623,7 @@
                         </div>
 
                         <div class="package-card">
-                            <h3>🥇 Premium</h3>
+                            <h3 style="display:flex; align-items:center; justify-content:center; gap:8px;"><i data-lucide="award" class="icon"></i> Premium</h3>
                             <div class="price">3,5M – 6M</div>
                             <div class="duration">XOF / mois</div>
                             <ul>
@@ -1630,8 +1637,8 @@
                     </div>
 
                     <div class="contact-info" style="margin-top: 40px; text-align: center;">
-                        <p style="font-size: 18px; margin-bottom: 15px; color: rgba(248,248,248,0.7);">📞 Parlons de votre transformation</p>
-                        <p><a href="mailto:oudama@lolly.sn">📧 oudama@lolly.sn</a></p>
+                        <p style="font-size: 18px; margin-bottom: 15px; color: rgba(248,248,248,0.7); display:flex; align-items:center; justify-content:center; gap:8px;"><i data-lucide="phone" class="icon"></i> Parlons de votre transformation</p>
+                        <p style="display:flex; align-items:center; justify-content:center; gap:8px;"><i data-lucide="mail" class="icon"></i> <a href="mailto:oudama@lolly.sn">oudama@lolly.sn</a></p>
                     </div>
                 </div>
                 <div class="cover-tagline">Des mots qui touchent, des images qui marquent.</div>
@@ -1712,5 +1719,6 @@
 
         showSlide(currentSlideIndex);
     </script>
+    <script>lucide.createIcons();</script>
 </body>
 </html>
