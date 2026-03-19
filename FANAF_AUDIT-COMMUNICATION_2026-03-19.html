@@ -311,6 +311,12 @@
             /* Global score value */
             .global-score-value { font-size: clamp(48px, 15vw, 80px); }
 
+            /* Cover slide: allow scroll when content overflows */
+            .slide-cover { justify-content: flex-start; align-items: center; padding-top: 40px; }
+
+            /* Cover long subtitle text */
+            .cover-content div[style*="letter-spacing:3px"] { font-size: 11px !important; letter-spacing: 1px !important; }
+
             #access-gate > div { margin: 16px; padding: 36px 24px; }
         }
 
@@ -336,7 +342,7 @@
             <p style="font-size:14px;color:rgba(248,248,248,0.4);line-height:1.6;">Rapport confidentiel — Audit FANAF.<br>Entrez le code d'accès pour continuer.</p>
         </div>
         <div style="width:100%;display:flex;flex-direction:column;gap:12px;">
-            <input id="access-input" type="password" placeholder="Code d'accès" autocomplete="off"
+            <input id="access-input" type="password" placeholder="Code d'accès" autocomplete="off" autocapitalize="off"
                 style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:14px 18px;color:#F8F8F8;font-size:15px;font-family:inherit;letter-spacing:2px;outline:none;text-align:center;transition:border-color 0.2s;"
                 oninput="document.getElementById('access-error').style.opacity='0'"
                 onkeydown="if(event.key==='Enter') checkAccess()">
@@ -1180,12 +1186,18 @@
         if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') navigate(-1);
     });
 
-    // Touch swipe
-    let touchStartX = 0;
-    document.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].clientX; }, {passive: true});
+    // Touch swipe (horizontal only, ignore vertical scrolling)
+    let touchStartX = 0, touchStartY = 0;
+    document.addEventListener('touchstart', e => {
+        touchStartX = e.changedTouches[0].clientX;
+        touchStartY = e.changedTouches[0].clientY;
+    }, {passive: true});
     document.addEventListener('touchend', e => {
         const dx = e.changedTouches[0].clientX - touchStartX;
-        if (Math.abs(dx) > 50) { navigate(dx < 0 ? 1 : -1); }
+        const dy = e.changedTouches[0].clientY - touchStartY;
+        if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+            navigate(dx < 0 ? 1 : -1);
+        }
     }, {passive: true});
 
     // Init

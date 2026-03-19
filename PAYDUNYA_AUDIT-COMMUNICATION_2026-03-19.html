@@ -856,6 +856,12 @@
             .package-card { padding: 24px 20px; }
             .package-card .price { font-size: 28px; }
 
+            /* Cover slide: allow scroll when content overflows */
+            .slide-cover { justify-content: flex-start; align-items: center; padding-top: 40px; }
+
+            /* Inline-styled large titles on cover slides */
+            .slide-cover h1[style] { font-size: clamp(28px, 8vw, 56px) !important; }
+
             /* Global score value */
             .global-score-value { font-size: clamp(48px, 15vw, 80px); }
 
@@ -910,6 +916,7 @@
                     type="password"
                     placeholder="Code d'accès"
                     autocomplete="off"
+                    autocapitalize="off"
                     style="
                         width:100%;
                         background:rgba(255,255,255,0.05);
@@ -1864,12 +1871,18 @@
             if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') prevSlide();
         });
 
-        // Touch swipe
-        let touchStartX = 0;
-        document.addEventListener('touchstart', function(e) { touchStartX = e.changedTouches[0].clientX; }, {passive: true});
+        // Touch swipe (horizontal only, ignore vertical scrolling)
+        let touchStartX = 0, touchStartY = 0;
+        document.addEventListener('touchstart', function(e) {
+            touchStartX = e.changedTouches[0].clientX;
+            touchStartY = e.changedTouches[0].clientY;
+        }, {passive: true});
         document.addEventListener('touchend', function(e) {
             const dx = e.changedTouches[0].clientX - touchStartX;
-            if (Math.abs(dx) > 50) { if (dx < 0) nextSlide(); else prevSlide(); }
+            const dy = e.changedTouches[0].clientY - touchStartY;
+            if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+                if (dx < 0) nextSlide(); else prevSlide();
+            }
         }, {passive: true});
 
         showSlide(currentSlideIndex);

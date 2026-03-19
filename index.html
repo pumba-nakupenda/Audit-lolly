@@ -193,7 +193,7 @@
 
         .modal-close {
             background: rgba(255,255,255,0.07); border: none; color: rgba(248,248,248,0.5);
-            width: 32px; height: 32px; border-radius: 8px; cursor: pointer;
+            width: 36px; height: 36px; border-radius: 8px; cursor: pointer;
             font-size: 18px; display: flex; align-items: center; justify-content: center;
             transition: all 0.2s; flex-shrink: 0;
         }
@@ -236,7 +236,7 @@
         .checkbox-item { display: flex; align-items: center; gap: 10px; cursor: pointer; }
 
         .checkbox-item input[type="checkbox"] {
-            width: 16px; height: 16px; border-radius: 4px;
+            width: 20px; height: 20px; min-width: 20px; border-radius: 4px;
             accent-color: #FED700; cursor: pointer;
         }
 
@@ -300,6 +300,8 @@
             .modal form { padding: 16px 16px 24px; }
             .modal-header { padding: 20px 16px 0; }
             .modal-title { font-size: 18px; }
+            .modal-close { width: 44px; height: 44px; border-radius: 10px; font-size: 20px; }
+            .checkbox-item { min-height: 44px; }
             footer { padding-bottom: calc(32px + env(safe-area-inset-bottom, 0px)); }
             footer a {
                 min-height: 44px; display: inline-flex; align-items: center;
