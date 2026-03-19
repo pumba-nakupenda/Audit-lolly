@@ -13,8 +13,20 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: #F8F8F8;
+            background: #0A0A0A;
             overflow: hidden;
+            color: #F8F8F8;
+        }
+
+        /* Progress bar */
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 2px;
+            background: #FED700;
+            z-index: 200;
+            transition: width 0.4s ease;
         }
 
         /* Navigation latérale */
@@ -22,55 +34,54 @@
             position: fixed;
             left: 0;
             top: 0;
-            width: 60px;
+            width: 64px;
             height: 100vh;
-            background: #2C2C2C;
+            background: #0A0A0A;
+            border-right: 1px solid rgba(255, 255, 255, 0.06);
             display: flex;
             flex-direction: column;
             align-items: center;
             padding: 20px 0;
-            gap: 15px;
+            gap: 10px;
             z-index: 100;
             overflow-y: auto;
         }
 
         .nav-dot {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: #555;
-            border: 2px solid transparent;
+            width: 36px;
+            height: 36px;
+            border-radius: 100%;
+            background: #1E1E1E;
+            border: none;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: bold;
-            color: #FED700;
+            color: rgba(248, 248, 248, 0.4);
             transition: all 0.3s ease;
             position: relative;
         }
 
         .nav-dot:hover {
-            background: #666;
-            transform: scale(1.1);
+            background: #2a2a2a;
+            color: rgba(248, 248, 248, 0.8);
         }
 
         .nav-dot.active {
             background: #FED700;
-            color: #2C2C2C;
-            border-color: #FF6B35;
-            box-shadow: 0 0 15px rgba(255, 107, 53, 0.5);
+            color: #0A0A0A;
         }
 
         .nav-dot::after {
             content: attr(data-tooltip);
             position: absolute;
-            left: 55px;
+            left: 48px;
             background: #FF6B35;
             color: white;
             padding: 5px 10px;
-            border-radius: 4px;
+            border-radius: 6px;
             font-size: 11px;
             white-space: nowrap;
             opacity: 0;
@@ -85,8 +96,8 @@
 
         /* Container principal */
         .container {
-            margin-left: 60px;
-            width: calc(100% - 60px);
+            margin-left: 64px;
+            width: calc(100% - 64px);
             height: 100vh;
             position: relative;
             overflow: hidden;
@@ -117,7 +128,7 @@
 
         /* SLIDE 1 - Couverture */
         .slide-cover {
-            background: linear-gradient(135deg, #2C2C2C 0%, #1a1a1a 100%);
+            background: linear-gradient(135deg, #0A0A0A 0%, #111111 50%, #1a1400 100%);
             color: white;
             justify-content: center;
             align-items: center;
@@ -126,34 +137,35 @@
         }
 
         .cover-content h1 {
-            font-size: 64px;
+            font-size: 72px;
             color: #FED700;
             margin-bottom: 20px;
-            font-weight: 800;
+            font-weight: 900;
+            letter-spacing: -3px;
         }
 
         .cover-content h2 {
-            font-size: 36px;
-            color: white;
+            font-size: 32px;
+            color: rgba(248, 248, 248, 0.7);
             margin-bottom: 50px;
             font-weight: 300;
         }
 
         .cover-meta {
-            background: rgba(255, 107, 53, 0.1);
-            border-left: 4px solid #FF6B35;
-            padding: 20px;
+            background: rgba(255, 107, 53, 0.08);
+            border-left: 3px solid #FF6B35;
+            padding: 20px 24px;
             margin: 30px 0;
             text-align: left;
             display: inline-block;
-            border-radius: 4px;
+            border-radius: 12px;
             max-width: 500px;
         }
 
         .cover-meta p {
             margin: 8px 0;
             font-size: 14px;
-            color: #ddd;
+            color: rgba(248, 248, 248, 0.7);
         }
 
         .cover-meta strong {
@@ -161,140 +173,173 @@
         }
 
         .cover-score {
-            font-size: 48px;
+            font-size: 80px;
             color: #FF6B35;
-            font-weight: bold;
+            font-weight: 900;
+            letter-spacing: -3px;
             margin: 30px 0;
         }
 
         .cover-tagline {
             position: absolute;
             bottom: 30px;
-            font-size: 14px;
-            color: #FED700;
-            font-style: italic;
+            font-size: 11px;
+            color: rgba(254, 215, 0, 0.5);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-style: normal;
+        }
+
+        /* Keyboard hint on cover */
+        .keyboard-hint {
+            position: absolute;
+            bottom: 30px;
+            right: 40px;
+            font-size: 11px;
+            color: rgba(248, 248, 248, 0.25);
+            letter-spacing: 1px;
         }
 
         /* SLIDE 2+ - Content */
         .slide-content {
-            background: #F8F8F8;
-            padding: 40px 50px;
+            background: #111111;
+            padding: 40px 56px;
+            color: #F8F8F8;
         }
 
         .slide-header {
             display: flex;
             align-items: center;
             gap: 15px;
-            margin-bottom: 40px;
-            border-bottom: 3px solid #FED700;
-            padding-bottom: 20px;
+            margin-bottom: 36px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 24px;
         }
 
         .slide-header h2 {
-            font-size: 42px;
-            color: #2C2C2C;
+            font-size: 36px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            color: #F8F8F8;
         }
 
         .slide-header .score-badge {
             margin-left: auto;
-            background: #FF6B35;
-            color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: bold;
+            padding: 6px 16px;
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 700;
         }
 
         .score-badge.green {
-            background: #27AE60;
+            background: rgba(39, 174, 96, 0.15);
+            color: #27AE60;
+            border: 1px solid rgba(39, 174, 96, 0.3);
         }
 
         .score-badge.orange {
-            background: #F39C12;
+            background: rgba(243, 156, 18, 0.15);
+            color: #F39C12;
+            border: 1px solid rgba(243, 156, 18, 0.3);
+        }
+
+        .score-badge.red {
+            background: rgba(231, 76, 60, 0.15);
+            color: #E74C3C;
+            border: 1px solid rgba(231, 76, 60, 0.3);
         }
 
         .cards-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
+            gap: 16px;
         }
 
         .card {
-            background: white;
-            border-radius: 8px;
-            padding: 20px;
-            border-left: 4px solid #FED700;
+            background: #1A1A1A;
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 16px;
+            padding: 24px;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
         .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+            border-color: rgba(254, 215, 0, 0.25);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
         }
 
         .card h3 {
-            font-size: 16px;
-            color: #2C2C2C;
+            font-size: 15px;
+            font-weight: 700;
+            color: #F8F8F8;
             margin-bottom: 8px;
         }
 
         .card p {
             font-size: 13px;
-            color: #666;
+            color: rgba(248, 248, 248, 0.45);
             margin-bottom: 12px;
         }
 
         .card .score-tag {
             display: inline-block;
             padding: 4px 12px;
-            border-radius: 12px;
+            border-radius: 100px;
             font-size: 11px;
-            font-weight: bold;
-            color: white;
+            font-weight: 700;
         }
 
         .score-tag.red {
-            background: #E74C3C;
+            background: rgba(231, 76, 60, 0.15);
+            color: #E74C3C;
+            border: 1px solid rgba(231, 76, 60, 0.25);
         }
 
         .score-tag.orange {
-            background: #F39C12;
+            background: rgba(243, 156, 18, 0.15);
+            color: #F39C12;
+            border: 1px solid rgba(243, 156, 18, 0.25);
         }
 
         .score-tag.green {
-            background: #27AE60;
+            background: rgba(39, 174, 96, 0.15);
+            color: #2ecc71;
+            border: 1px solid rgba(46, 204, 113, 0.25);
         }
 
         /* Score Global */
         .global-score-box {
-            background: #2C2C2C;
-            color: white;
-            padding: 30px;
-            border-radius: 8px;
+            background: #1A1A1A;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 36px;
             text-align: center;
             margin-bottom: 30px;
         }
 
         .global-score-box h3 {
-            font-size: 14px;
             color: #FED700;
-            margin-bottom: 15px;
             text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 11px;
+            font-weight: 700;
+            margin-bottom: 15px;
         }
 
         .global-score-value {
-            font-size: 64px;
+            font-size: 80px;
             color: #FF6B35;
-            font-weight: bold;
+            font-weight: 900;
+            letter-spacing: -3px;
             margin-bottom: 20px;
         }
 
         .score-gauge {
             width: 100%;
-            height: 20px;
-            background: #555;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.08);
             border-radius: 10px;
             overflow: hidden;
             margin-top: 10px;
@@ -302,44 +347,44 @@
 
         .score-gauge-fill {
             height: 100%;
-            background: linear-gradient(90deg, #E74C3C, #F39C12, #27AE60);
-            transition: width 0.5s ease;
+            background: linear-gradient(90deg, #E74C3C, #FF6B35, #FED700, #27AE60);
+            transition: width 0.8s ease;
         }
 
         .score-items {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
+            gap: 16px;
             margin-bottom: 30px;
         }
 
         .score-item {
-            background: white;
-            padding: 15px;
-            border-radius: 6px;
-            border-left: 4px solid #FED700;
+            background: #1A1A1A;
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 12px;
+            padding: 16px;
         }
 
         .score-item-label {
             display: flex;
             justify-content: space-between;
             margin-bottom: 8px;
-            font-weight: 600;
-            color: #2C2C2C;
+            font-size: 13px;
+            color: rgba(248, 248, 248, 0.7);
         }
 
         .score-item-bar {
             width: 100%;
-            height: 12px;
-            background: #eee;
-            border-radius: 6px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 4px;
             overflow: hidden;
         }
 
         .score-item-bar-fill {
             height: 100%;
-            border-radius: 6px;
-            transition: width 0.5s ease;
+            border-radius: 4px;
+            transition: width 0.8s ease;
         }
 
         .bar-red {
@@ -355,16 +400,19 @@
         }
 
         .summary-box {
-            background: #F0F0F0;
-            padding: 20px;
-            border-radius: 6px;
+            background: #1A1A1A;
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 16px;
+            padding: 24px;
             margin-top: 20px;
         }
 
         .summary-box h4 {
-            color: #2C2C2C;
+            color: rgba(248, 248, 248, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 11px;
             margin-bottom: 10px;
-            font-size: 14px;
         }
 
         .keywords {
@@ -375,37 +423,40 @@
         }
 
         .keyword-tag {
-            background: #FED700;
-            color: #2C2C2C;
-            padding: 6px 12px;
-            border-radius: 20px;
+            background: rgba(254, 215, 0, 0.12);
+            color: #FED700;
+            border: 1px solid rgba(254, 215, 0, 0.2);
+            border-radius: 100px;
+            padding: 6px 14px;
             font-size: 12px;
-            font-weight: bold;
+            font-weight: 600;
         }
 
         .analysis-note {
-            font-size: 13px;
-            color: #555;
-            line-height: 1.5;
+            font-size: 14px;
+            color: rgba(248, 248, 248, 0.55);
+            line-height: 1.7;
         }
 
         /* 3 colonnes */
         .three-columns {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
+            gap: 16px;
             margin-bottom: 30px;
         }
 
         .column-box {
-            border-radius: 8px;
-            padding: 20px;
+            border-radius: 16px;
+            padding: 24px;
         }
 
         .column-box h3 {
-            font-size: 16px;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
             margin-bottom: 15px;
-            color: #2C2C2C;
         }
 
         .column-box ul {
@@ -413,47 +464,60 @@
         }
 
         .column-box li {
-            padding: 10px 0 10px 20px;
+            padding: 8px 0 8px 20px;
             font-size: 13px;
             line-height: 1.6;
-            color: #333;
-            border-bottom: 1px solid rgba(0,0,0,0.05);
+            color: rgba(248, 248, 248, 0.6);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
             position: relative;
         }
-
-        .forces li::before { content: '→'; position: absolute; left: 0; color: #27AE60; font-weight: bold; }
-        .faiblesses li::before { content: '→'; position: absolute; left: 0; color: #E74C3C; font-weight: bold; }
-        .opportunites li::before { content: '→'; position: absolute; left: 0; color: #2980B9; font-weight: bold; }
 
         .column-box li:last-child {
             border-bottom: none;
         }
 
+        .forces li::before { content: '↗'; position: absolute; left: 0; color: #2ecc71; font-weight: bold; }
+        .faiblesses li::before { content: '↘'; position: absolute; left: 0; color: #E74C3C; font-weight: bold; }
+        .opportunites li::before { content: '→'; position: absolute; left: 0; color: #3498db; font-weight: bold; }
+
         .forces {
-            background: #E8F8F5;
-            border-left: 4px solid #27AE60;
+            background: rgba(39, 174, 96, 0.06);
+            border: 1px solid rgba(39, 174, 96, 0.15);
+        }
+
+        .forces h3 {
+            color: #2ecc71;
         }
 
         .faiblesses {
-            background: #FADBD8;
-            border-left: 4px solid #E74C3C;
+            background: rgba(231, 76, 60, 0.06);
+            border: 1px solid rgba(231, 76, 60, 0.15);
+        }
+
+        .faiblesses h3 {
+            color: #E74C3C;
         }
 
         .opportunites {
-            background: #D6EAF8;
-            border-left: 4px solid #2980B9;
+            background: rgba(41, 128, 185, 0.06);
+            border: 1px solid rgba(41, 128, 185, 0.15);
+        }
+
+        .opportunites h3 {
+            color: #3498db;
         }
 
         /* Légende */
         .legend-bar {
             display: flex;
             gap: 15px;
-            padding: 10px 15px;
-            background: rgba(0,0,0,0.03);
-            border-radius: 6px;
+            padding: 10px 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 10px;
             margin-bottom: 20px;
-            font-size: 11px;
-            color: #666;
+            font-size: 12px;
+            color: rgba(248, 248, 248, 0.4);
             align-items: center;
         }
 
@@ -462,24 +526,44 @@
             margin-top: 20px;
         }
 
-        .recommendation-item {
-            background: white;
-            padding: 15px;
-            border-radius: 6px;
+        .recommendations h4 {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: rgba(248, 248, 248, 0.4);
             margin-bottom: 12px;
-            border-left: 4px solid #FF6B35;
+        }
+
+        .recommendation-item {
+            background: #1A1A1A;
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 12px;
+            border-left: 3px solid #FF6B35;
         }
 
         .recommendation-item strong {
-            color: #2C2C2C;
+            color: #F8F8F8;
+            font-size: 14px;
             display: block;
             margin-bottom: 5px;
+        }
+
+        .recommendation-item p {
+            color: rgba(248, 248, 248, 0.5);
+            font-size: 13px;
         }
 
         .recommendation-item .budget {
             color: #FF6B35;
             font-size: 12px;
-            font-weight: bold;
+            font-weight: 700;
+            display: inline-block;
+            margin-top: 8px;
+            background: rgba(255, 107, 53, 0.08);
+            padding: 4px 10px;
+            border-radius: 100px;
         }
 
         /* Benchmark Table */
@@ -487,38 +571,49 @@
             width: 100%;
             border-collapse: collapse;
             margin: 20px 0;
-            background: white;
+            background: #1A1A1A;
+            border-radius: 16px;
+            overflow: hidden;
         }
 
         .benchmark-table th,
         .benchmark-table td {
             padding: 12px;
             text-align: left;
-            border-bottom: 1px solid #eee;
-            font-size: 12px;
+            font-size: 13px;
         }
 
         .benchmark-table th {
-            background: #2C2C2C;
-            color: white;
-            font-weight: bold;
+            background: #1A1A1A;
+            color: rgba(248, 248, 248, 0.4);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            font-weight: 600;
         }
 
-        .benchmark-table tr:hover {
-            background: #f9f9f9;
+        .benchmark-table td {
+            color: rgba(248, 248, 248, 0.65);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .benchmark-table tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
         }
 
         /* Actions */
         .actions-grid {
             display: grid;
             grid-template-columns: repeat(1, 1fr);
-            gap: 15px;
+            gap: 12px;
         }
 
         .action-card {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
+            background: #1A1A1A;
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 16px;
+            padding: 24px;
             border-left: 4px solid;
         }
 
@@ -531,31 +626,37 @@
         }
 
         .action-card.medium {
-            border-left-color: #2980B9;
+            border-left-color: #3498db;
         }
 
         .action-card h3 {
-            font-size: 16px;
-            color: #2C2C2C;
+            font-size: 15px;
+            font-weight: 700;
+            color: #F8F8F8;
             margin-bottom: 8px;
         }
 
         .action-card p {
             font-size: 13px;
-            color: #666;
+            color: rgba(248, 248, 248, 0.55);
             margin-bottom: 8px;
         }
 
         .action-card ul {
-            font-size: 12px;
-            color: #555;
-            margin: 10px 0 10px 20px;
+            font-size: 13px;
+            color: rgba(248, 248, 248, 0.5);
+            margin: 10px 0 10px 16px;
         }
 
         .action-card .budget {
             font-size: 12px;
-            font-weight: bold;
+            font-weight: 700;
             color: #FF6B35;
+            background: rgba(255, 107, 53, 0.08);
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 100px;
+            margin-top: 12px;
         }
 
         /* Packages */
@@ -567,60 +668,59 @@
         }
 
         .package-card {
-            background: white;
-            color: #2C2C2C;
-            padding: 25px;
-            border-radius: 8px;
+            background: #1A1A1A;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 32px 28px;
             text-align: center;
-            border-top: 4px solid #FED700;
         }
 
         .package-card.recommended {
-            background: #FED700;
-            color: #2C2C2C;
-            border-top-color: #FF6B35;
-            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.2);
+            background: linear-gradient(135deg, #1f1a00, #2a2200);
+            border-color: rgba(254, 215, 0, 0.3);
+            box-shadow: 0 0 60px rgba(254, 215, 0, 0.08);
         }
 
         .package-card h3 {
-            font-size: 20px;
+            font-size: 18px;
+            font-weight: 800;
+            color: #F8F8F8;
             margin-bottom: 15px;
-            font-weight: bold;
         }
 
         .package-card .price {
-            font-size: 28px;
-            color: #FF6B35;
+            font-size: 36px;
+            color: #FED700;
+            font-weight: 900;
+            letter-spacing: -1px;
             margin-bottom: 5px;
-            font-weight: bold;
         }
 
         .package-card .duration {
             font-size: 12px;
-            color: #666;
-            margin-bottom: 20px;
-        }
-
-        .package-card.recommended .duration {
-            color: #2C2C2C;
+            color: rgba(248, 248, 248, 0.35);
+            margin-bottom: 24px;
         }
 
         .package-card ul {
             list-style: none;
             text-align: left;
             margin-bottom: 20px;
-            font-size: 12px;
+            font-size: 13px;
         }
 
         .package-card li {
-            padding: 6px 0;
-            border-bottom: 1px solid #eee;
-            color: #444;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            color: rgba(248, 248, 248, 0.55);
+            text-align: left;
         }
 
-        .package-card.recommended li {
-            border-bottom-color: rgba(0,0,0,0.1);
-            color: #2C2C2C;
+        .package-card li::before {
+            content: '✓';
+            color: #FED700;
+            margin-right: 8px;
+            font-weight: 700;
         }
 
         .package-card li:last-child {
@@ -628,18 +728,22 @@
         }
 
         .contact-info {
-            background: #2C2C2C;
-            color: white;
-            padding: 20px;
-            border-radius: 8px;
-            text-align: center;
-            margin-top: 20px;
+            background: #1A1A1A;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 28px;
+            margin-top: 32px;
+        }
+
+        .contact-info p {
+            color: rgba(248, 248, 248, 0.7);
+            font-size: 16px;
         }
 
         .contact-info a {
             color: #FED700;
             text-decoration: none;
-            font-weight: bold;
+            font-weight: 700;
         }
 
         /* Navigation */
@@ -649,19 +753,19 @@
             right: 30px;
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
             z-index: 50;
         }
 
         .nav-button {
-            background: #2C2C2C;
+            background: #1A1A1A;
             color: #FED700;
-            border: 2px solid #FED700;
-            width: 50px;
-            height: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             cursor: pointer;
-            font-size: 24px;
+            font-size: 18px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -671,16 +775,17 @@
 
         .nav-button:hover {
             background: #FED700;
-            color: #2C2C2C;
+            color: #0A0A0A;
+            border-color: #FED700;
         }
 
         .slide-counter {
-            background: #2C2C2C;
-            color: #FED700;
-            padding: 8px 12px;
-            border-radius: 4px;
-            font-size: 14px;
-            font-weight: bold;
+            background: #1A1A1A;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(248, 248, 248, 0.5);
+            font-size: 13px;
+            padding: 8px 16px;
+            border-radius: 100px;
             min-width: 60px;
             text-align: center;
         }
@@ -693,6 +798,8 @@
     </style>
 </head>
 <body>
+    <div id="progress-bar"></div>
+
     <div class="nav-sidebar" id="sidebar">
         <div class="nav-dot active" data-slide="0" data-tooltip="Couverture">1</div>
         <div class="nav-dot" data-slide="1" data-tooltip="Sommaire">2</div>
@@ -712,10 +819,10 @@
         <div class="slides-container" id="slidesContainer">
             <!-- SLIDE 0 - Couverture -->
             <div class="slide slide-cover active" data-slide="0">
-                <div style="position: absolute; top: 30px; left: 40px; font-size: 11px; color: #666; letter-spacing: 3px; text-transform: uppercase; font-weight: 800;">LOLLY Communication — Audit Report</div>
-                <div style="position: absolute; top: 25px; right: 40px; width: 60px; height: 4px; background: #FF6B35; border-radius: 2px;"></div>
+                <div style="position: absolute; top: 30px; left: 40px; font-size: 11px; color: rgba(248,248,248,0.35); letter-spacing: 3px; text-transform: uppercase; font-weight: 800;">LOLLY Communication — Audit Report</div>
+                <div style="position: absolute; top: 25px; right: 40px; width: 60px; height: 3px; background: #FF6B35; border-radius: 2px;"></div>
                 <div class="cover-content">
-                    <div style="width: 80px; height: 4px; background: #FF6B35; border-radius: 2px; margin: 0 auto 30px;"></div>
+                    <div style="width: 80px; height: 3px; background: #FF6B35; border-radius: 2px; margin: 0 auto 30px;"></div>
                     <h1>Audit Communication</h1>
                     <h2>PayDunya — Fintech / Paiement en Ligne</h2>
 
@@ -729,12 +836,13 @@
 
                     <div class="cover-score">6,3 / 10</div>
                     <div style="display: flex; gap: 15px; justify-content: center; margin: 20px 0; flex-wrap: wrap;">
-                        <span style="background: rgba(254,215,0,0.15); color: #FED700; padding: 8px 18px; border-radius: 20px; font-size: 13px; font-weight: 700;">Fondations solides</span>
-                        <span style="background: rgba(255,107,53,0.15); color: #FF6B35; padding: 8px 18px; border-radius: 20px; font-size: 13px; font-weight: 700;">Communication à structurer</span>
-                        <span style="background: rgba(231,76,60,0.15); color: #E74C3C; padding: 8px 18px; border-radius: 20px; font-size: 13px; font-weight: 700;">Réputation à sécuriser</span>
+                        <span style="background: rgba(254,215,0,0.15); color: #FED700; padding: 8px 18px; border-radius: 20px; font-size: 13px; font-weight: 700; border: 1px solid rgba(254,215,0,0.2);">Fondations solides</span>
+                        <span style="background: rgba(255,107,53,0.15); color: #FF6B35; padding: 8px 18px; border-radius: 20px; font-size: 13px; font-weight: 700; border: 1px solid rgba(255,107,53,0.2);">Communication à structurer</span>
+                        <span style="background: rgba(231,76,60,0.15); color: #E74C3C; padding: 8px 18px; border-radius: 20px; font-size: 13px; font-weight: 700; border: 1px solid rgba(231,76,60,0.2);">Réputation à sécuriser</span>
                     </div>
                 </div>
                 <div class="cover-tagline">LOLLY Communication · Des mots qui touchent, des images qui marquent.</div>
+                <div class="keyboard-hint">← → pour naviguer</div>
             </div>
 
             <!-- SLIDE 1 - Sommaire -->
@@ -777,17 +885,17 @@
                     <div class="card" onclick="currentSlide(9)">
                         <h3>⚔️ Benchmark vs Wave</h3>
                         <p>Comparatif domaine par domaine</p>
-                        <span class="score-tag orange" style="background: #2980B9;">Analyse</span>
+                        <span class="score-tag orange" style="background: rgba(41,128,185,0.15); color: #3498db; border-color: rgba(41,128,185,0.25);">Analyse</span>
                     </div>
                     <div class="card" onclick="currentSlide(10)">
                         <h3>🎯 Actions Prioritaires</h3>
                         <p>Top 5 actions classées par urgence</p>
-                        <span class="score-tag orange" style="background: #E74C3C;">Plan</span>
+                        <span class="score-tag red">Plan</span>
                     </div>
                     <div class="card" onclick="currentSlide(11)">
                         <h3>💼 Offre LOLLY</h3>
                         <p>3 packages adaptés aux faiblesses détectées</p>
-                        <span class="score-tag orange" style="background: #FF6B35;">Proposition</span>
+                        <span class="score-tag orange" style="background: rgba(255,107,53,0.15); color: #FF6B35; border-color: rgba(255,107,53,0.25);">Proposition</span>
                     </div>
                 </div>
             </div>
@@ -799,7 +907,7 @@
                 </div>
 
                 <div class="legend-bar">
-                    <span><strong>Légende des scores :</strong></span>
+                    <span><strong style="color: rgba(248,248,248,0.6);">Légende des scores :</strong></span>
                     <span style="margin-left: auto; color: #27AE60;">🟢 7-10 Bon niveau</span>
                     <span style="color: #F39C12;">🟠 5-6 À améliorer</span>
                     <span style="color: #E74C3C;">🔴 0-4 Critique</span>
@@ -809,34 +917,34 @@
                     <h3>Score Global PayDunya</h3>
                     <div class="global-score-value">6,3/10</div>
                     <div class="score-gauge">
-                        <div class="score-gauge-fill" style="width: 63%;"></div>
+                        <div class="score-gauge-fill" style="width: 0%;" data-target="63%"></div>
                     </div>
                 </div>
 
                 <div class="score-items">
                     <div class="score-item">
                         <div class="score-item-label"><span>🎨 Identité Visuelle</span> <span>6,5/10</span></div>
-                        <div class="score-item-bar"><div class="score-item-bar-fill bar-orange" style="width: 65%;"></div></div>
+                        <div class="score-item-bar"><div class="score-item-bar-fill bar-orange" style="width: 0%;" data-target="65%"></div></div>
                     </div>
                     <div class="score-item">
                         <div class="score-item-label"><span>🌐 Site Web</span> <span>7,5/10</span></div>
-                        <div class="score-item-bar"><div class="score-item-bar-fill bar-green" style="width: 75%;"></div></div>
+                        <div class="score-item-bar"><div class="score-item-bar-fill bar-green" style="width: 0%;" data-target="75%"></div></div>
                     </div>
                     <div class="score-item">
                         <div class="score-item-label"><span>📱 Réseaux Sociaux</span> <span>5,0/10</span></div>
-                        <div class="score-item-bar"><div class="score-item-bar-fill bar-orange" style="width: 50%;"></div></div>
+                        <div class="score-item-bar"><div class="score-item-bar-fill bar-orange" style="width: 0%;" data-target="50%"></div></div>
                     </div>
                     <div class="score-item">
                         <div class="score-item-label"><span>⭐ Réputation</span> <span>6,0/10</span></div>
-                        <div class="score-item-bar"><div class="score-item-bar-fill bar-orange" style="width: 60%;"></div></div>
+                        <div class="score-item-bar"><div class="score-item-bar-fill bar-orange" style="width: 0%;" data-target="60%"></div></div>
                     </div>
                     <div class="score-item">
                         <div class="score-item-label"><span>✍️ Stratégie Éditoriale</span> <span>6,0/10</span></div>
-                        <div class="score-item-bar"><div class="score-item-bar-fill bar-orange" style="width: 60%;"></div></div>
+                        <div class="score-item-bar"><div class="score-item-bar-fill bar-orange" style="width: 0%;" data-target="60%"></div></div>
                     </div>
                     <div class="score-item">
                         <div class="score-item-label"><span>⚙️ Maturité Digitale</span> <span>6,5/10</span></div>
-                        <div class="score-item-bar"><div class="score-item-bar-fill bar-orange" style="width: 65%;"></div></div>
+                        <div class="score-item-bar"><div class="score-item-bar-fill bar-orange" style="width: 0%;" data-target="65%"></div></div>
                     </div>
                 </div>
 
@@ -1003,48 +1111,48 @@
 
                 <p class="analysis-note" style="margin-bottom: 20px;">La présence sociale de PayDunya repose essentiellement sur LinkedIn (17 317 abonnés, page vérifiée) qui concentre l'essentiel de l'engagement B2B. Les autres plateformes révèlent des lacunes : X/Twitter n'a même pas de photo de profil, YouTube est dormant depuis 3 ans malgré 30 vidéos existantes, Instagram plafonne à 2 353 abonnés après 10 ans d'existence, et TikTok est totalement absent. Le compte GitHub, pourtant lié dans le footer du site, ne contient aucun répertoire public — une occasion manquée pour une fintech orientée développeurs.</p>
 
-                <h4 style="margin: 20px 0; font-size: 16px; color: #2C2C2C;">Analyse par plateforme</h4>
-                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 30px;">
-                    <div style="background: white; padding: 15px; border-radius: 6px; border-left: 4px solid #FF6B35;">
-                        <p style="font-size: 14px; font-weight: bold; margin-bottom: 5px;">📘 Facebook</p>
-                        <p style="font-size: 13px; color: #666; margin-bottom: 5px;">16,7K followers</p>
-                        <p style="font-size: 13px; color: #666; margin-bottom: 5px;">62% recommandation (35 avis)</p>
-                        <span style="background: #F39C12; color: white; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold;">5/10</span>
+                <h4 style="margin: 20px 0; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: rgba(248,248,248,0.4);">Analyse par plateforme</h4>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 30px;">
+                    <div style="background: #1A1A1A; padding: 16px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.07); border-top: 3px solid #F39C12;">
+                        <p style="font-size: 14px; font-weight: bold; margin-bottom: 5px; color: #F8F8F8;">📘 Facebook</p>
+                        <p style="font-size: 13px; color: rgba(248,248,248,0.45); margin-bottom: 5px;">16,7K followers</p>
+                        <p style="font-size: 13px; color: rgba(248,248,248,0.45); margin-bottom: 8px;">62% recommandation (35 avis)</p>
+                        <span style="background: rgba(243,156,18,0.15); color: #F39C12; border: 1px solid rgba(243,156,18,0.25); padding: 4px 10px; border-radius: 100px; font-size: 11px; font-weight: bold;">5/10</span>
                     </div>
 
-                    <div style="background: white; padding: 15px; border-radius: 6px; border-left: 4px solid #FF6B35;">
-                        <p style="font-size: 14px; font-weight: bold; margin-bottom: 5px;">📸 Instagram</p>
-                        <p style="font-size: 13px; color: #666; margin-bottom: 5px;">2 353 followers</p>
-                        <p style="font-size: 13px; color: #666; margin-bottom: 5px;">290 posts · 1 Highlight</p>
-                        <span style="background: #F39C12; color: white; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold;">5/10</span>
+                    <div style="background: #1A1A1A; padding: 16px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.07); border-top: 3px solid #F39C12;">
+                        <p style="font-size: 14px; font-weight: bold; margin-bottom: 5px; color: #F8F8F8;">📸 Instagram</p>
+                        <p style="font-size: 13px; color: rgba(248,248,248,0.45); margin-bottom: 5px;">2 353 followers</p>
+                        <p style="font-size: 13px; color: rgba(248,248,248,0.45); margin-bottom: 8px;">290 posts · 1 Highlight</p>
+                        <span style="background: rgba(243,156,18,0.15); color: #F39C12; border: 1px solid rgba(243,156,18,0.25); padding: 4px 10px; border-radius: 100px; font-size: 11px; font-weight: bold;">5/10</span>
                     </div>
 
-                    <div style="background: white; padding: 15px; border-radius: 6px; border-left: 4px solid #27AE60;">
-                        <p style="font-size: 14px; font-weight: bold; margin-bottom: 5px;">💼 LinkedIn</p>
-                        <p style="font-size: 13px; color: #666; margin-bottom: 5px;">17 317 followers — Vérifié</p>
-                        <p style="font-size: 13px; color: #666; margin-bottom: 5px;">Bannière "10 ans"</p>
-                        <span style="background: #27AE60; color: white; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold;">7,5/10</span>
+                    <div style="background: #1A1A1A; padding: 16px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.07); border-top: 3px solid #27AE60;">
+                        <p style="font-size: 14px; font-weight: bold; margin-bottom: 5px; color: #F8F8F8;">💼 LinkedIn</p>
+                        <p style="font-size: 13px; color: rgba(248,248,248,0.45); margin-bottom: 5px;">17 317 followers — Vérifié</p>
+                        <p style="font-size: 13px; color: rgba(248,248,248,0.45); margin-bottom: 8px;">Bannière "10 ans"</p>
+                        <span style="background: rgba(39,174,96,0.15); color: #27AE60; border: 1px solid rgba(39,174,96,0.25); padding: 4px 10px; border-radius: 100px; font-size: 11px; font-weight: bold;">7,5/10</span>
                     </div>
 
-                    <div style="background: white; padding: 15px; border-radius: 6px; border-left: 4px solid #E74C3C;">
-                        <p style="font-size: 14px; font-weight: bold; margin-bottom: 5px;">🐦 X/Twitter</p>
-                        <p style="font-size: 13px; color: #666; margin-bottom: 5px;">1 566 followers</p>
-                        <p style="font-size: 13px; color: #666; margin-bottom: 5px;">PAS DE PHOTO NI BANNIÈRE</p>
-                        <span style="background: #E74C3C; color: white; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold;">3/10</span>
+                    <div style="background: #1A1A1A; padding: 16px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.07); border-top: 3px solid #E74C3C;">
+                        <p style="font-size: 14px; font-weight: bold; margin-bottom: 5px; color: #F8F8F8;">🐦 X/Twitter</p>
+                        <p style="font-size: 13px; color: rgba(248,248,248,0.45); margin-bottom: 5px;">1 566 followers</p>
+                        <p style="font-size: 13px; color: rgba(248,248,248,0.45); margin-bottom: 8px;">PAS DE PHOTO NI BANNIÈRE</p>
+                        <span style="background: rgba(231,76,60,0.15); color: #E74C3C; border: 1px solid rgba(231,76,60,0.25); padding: 4px 10px; border-radius: 100px; font-size: 11px; font-weight: bold;">3/10</span>
                     </div>
 
-                    <div style="background: white; padding: 15px; border-radius: 6px; border-left: 4px solid #E74C3C;">
-                        <p style="font-size: 14px; font-weight: bold; margin-bottom: 5px;">▶️ YouTube</p>
-                        <p style="font-size: 13px; color: #666; margin-bottom: 5px;">1 950 abonnés</p>
-                        <p style="font-size: 13px; color: #666; margin-bottom: 5px;">DORMANT 3+ ANS</p>
-                        <span style="background: #E74C3C; color: white; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold;">3/10</span>
+                    <div style="background: #1A1A1A; padding: 16px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.07); border-top: 3px solid #E74C3C;">
+                        <p style="font-size: 14px; font-weight: bold; margin-bottom: 5px; color: #F8F8F8;">▶️ YouTube</p>
+                        <p style="font-size: 13px; color: rgba(248,248,248,0.45); margin-bottom: 5px;">1 950 abonnés</p>
+                        <p style="font-size: 13px; color: rgba(248,248,248,0.45); margin-bottom: 8px;">DORMANT 3+ ANS</p>
+                        <span style="background: rgba(231,76,60,0.15); color: #E74C3C; border: 1px solid rgba(231,76,60,0.25); padding: 4px 10px; border-radius: 100px; font-size: 11px; font-weight: bold;">3/10</span>
                     </div>
 
-                    <div style="background: white; padding: 15px; border-radius: 6px; border-left: 4px solid #E74C3C;">
-                        <p style="font-size: 14px; font-weight: bold; margin-bottom: 5px;">🎵 TikTok & 🐙 GitHub</p>
-                        <p style="font-size: 13px; color: #666; margin-bottom: 5px;">TikTok : Absent</p>
-                        <p style="font-size: 13px; color: #666; margin-bottom: 5px;">GitHub : 0 repos</p>
-                        <span style="background: #E74C3C; color: white; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold;">1/10</span>
+                    <div style="background: #1A1A1A; padding: 16px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.07); border-top: 3px solid #E74C3C;">
+                        <p style="font-size: 14px; font-weight: bold; margin-bottom: 5px; color: #F8F8F8;">🎵 TikTok & 🐙 GitHub</p>
+                        <p style="font-size: 13px; color: rgba(248,248,248,0.45); margin-bottom: 5px;">TikTok : Absent</p>
+                        <p style="font-size: 13px; color: rgba(248,248,248,0.45); margin-bottom: 8px;">GitHub : 0 repos</p>
+                        <span style="background: rgba(231,76,60,0.15); color: #E74C3C; border: 1px solid rgba(231,76,60,0.25); padding: 4px 10px; border-radius: 100px; font-size: 11px; font-weight: bold;">1/10</span>
                     </div>
                 </div>
 
@@ -1336,7 +1444,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td><strong>Identité Visuelle</strong></td>
+                            <td><strong style="color: #F8F8F8;">Identité Visuelle</strong></td>
                             <td>Logo bleu cohérent, plateforme omnicanale</td>
                             <td>6,5</td>
                             <td>Signature géométrique épurée</td>
@@ -1344,7 +1452,7 @@
                             <td>Wave</td>
                         </tr>
                         <tr>
-                            <td><strong>Site Web</strong></td>
+                            <td><strong style="color: #F8F8F8;">Site Web</strong></td>
                             <td>Title SEO, meta OK, OG OK, PCI-DSS</td>
                             <td>7,5</td>
                             <td>Interface épurée, mobile-first</td>
@@ -1352,7 +1460,7 @@
                             <td>PayDunya</td>
                         </tr>
                         <tr>
-                            <td><strong>Réseaux Sociaux</strong></td>
+                            <td><strong style="color: #F8F8F8;">Réseaux Sociaux</strong></td>
                             <td>LinkedIn 17K, Facebook 16K, YouTube dormant</td>
                             <td>5,0</td>
                             <td>LinkedIn 128K+, Instagram 183K SN</td>
@@ -1360,7 +1468,7 @@
                             <td>Wave</td>
                         </tr>
                         <tr>
-                            <td><strong>Réputation</strong></td>
+                            <td><strong style="color: #F8F8F8;">Réputation</strong></td>
                             <td>PCI-DSS, mais RéclameICI critique</td>
                             <td>6,0</td>
                             <td>Licorne, 4.4/5 (89K ratings)</td>
@@ -1368,7 +1476,7 @@
                             <td>Wave</td>
                         </tr>
                         <tr>
-                            <td><strong>Stratégie Édit.</strong></td>
+                            <td><strong style="color: #F8F8F8;">Stratégie Édit.</strong></td>
                             <td>Blog 4 articles, pas newsletter</td>
                             <td>6,0</td>
                             <td>Blog 100+, newsletter hebdo</td>
@@ -1376,18 +1484,18 @@
                             <td>Wave</td>
                         </tr>
                         <tr>
-                            <td><strong>Maturité Digitale</strong></td>
+                            <td><strong style="color: #F8F8F8;">Maturité Digitale</strong></td>
                             <td>API robuste, 6+ SDKs, 18+ opérateurs</td>
                             <td>6,5</td>
                             <td>Mobile-first, stack avancée</td>
                             <td>7,0</td>
                             <td>Wave</td>
                         </tr>
-                        <tr style="font-weight: bold; background: #f0f0f0;">
-                            <td colspan="2">GLOBAL PayDunya</td>
-                            <td style="background: #F39C12; color: white;">6,3</td>
-                            <td colspan="2">GLOBAL Wave</td>
-                            <td style="background: #27AE60; color: white;">7,3</td>
+                        <tr style="font-weight: bold;">
+                            <td colspan="2" style="color: #F8F8F8;">GLOBAL PayDunya</td>
+                            <td style="background: rgba(243,156,18,0.2); color: #F39C12; font-weight: 800;">6,3</td>
+                            <td colspan="2" style="color: #F8F8F8;">GLOBAL Wave</td>
+                            <td style="background: rgba(39,174,96,0.2); color: #27AE60; font-weight: 800;">7,3</td>
                         </tr>
                     </tbody>
                 </table>
@@ -1409,8 +1517,8 @@
                 <div class="actions-grid" style="margin-top: 30px;">
                     <div class="action-card immediate">
                         <h3>🔴 IMMÉDIAT — Gestion de Crise Réputation</h3>
-                        <p><strong>Problème :</strong> RéclameICI 9,9/100, Trustpilot inexistant, GMB absent.</p>
-                        <p><strong>Actions :</strong></p>
+                        <p><strong style="color: rgba(248,248,248,0.8);">Problème :</strong> RéclameICI 9,9/100, Trustpilot inexistant, GMB absent.</p>
+                        <p><strong style="color: rgba(248,248,248,0.8);">Actions :</strong></p>
                         <ul>
                             <li>Traiter les 10 plaintes RéclameICI</li>
                             <li>Créer Trustpilot + fiche GMB (24h)</li>
@@ -1421,8 +1529,8 @@
 
                     <div class="action-card immediate">
                         <h3>🔴 IMMÉDIAT — Audit SEO Technique</h3>
-                        <p><strong>Problème :</strong> 37/48 images sans alt, OG image absente, zéro schema markup.</p>
-                        <p><strong>Actions :</strong></p>
+                        <p><strong style="color: rgba(248,248,248,0.8);">Problème :</strong> 37/48 images sans alt, OG image absente, zéro schema markup.</p>
+                        <p><strong style="color: rgba(248,248,248,0.8);">Actions :</strong></p>
                         <ul>
                             <li>Ajouter 37 alt text manquantes</li>
                             <li>Créer OG image (1200x630px)</li>
@@ -1434,8 +1542,8 @@
 
                     <div class="action-card short">
                         <h3>🟠 COURT TERME — X/Twitter + YouTube</h3>
-                        <p><strong>Problème :</strong> X/Twitter sans profil, YouTube dormant 3+ ans.</p>
-                        <p><strong>Actions :</strong></p>
+                        <p><strong style="color: rgba(248,248,248,0.8);">Problème :</strong> X/Twitter sans profil, YouTube dormant 3+ ans.</p>
+                        <p><strong style="color: rgba(248,248,248,0.8);">Actions :</strong></p>
                         <ul>
                             <li>Photo + bannière X/Twitter (IMMÉDIAT)</li>
                             <li>Produire 12 vidéos YouTube</li>
@@ -1446,8 +1554,8 @@
 
                     <div class="action-card short">
                         <h3>🟠 COURT TERME — Brand Guidelines + Campagne</h3>
-                        <p><strong>Problème :</strong> Aucune Guidelines, design générique.</p>
-                        <p><strong>Actions :</strong></p>
+                        <p><strong style="color: rgba(248,248,248,0.8);">Problème :</strong> Aucune Guidelines, design générique.</p>
+                        <p><strong style="color: rgba(248,248,248,0.8);">Actions :</strong></p>
                         <ul>
                             <li>Créer Brand Guidelines PDF complet</li>
                             <li>Campagne "Ambition 2026"</li>
@@ -1458,8 +1566,8 @@
 
                     <div class="action-card medium">
                         <h3>🔵 MOYEN TERME — Stratégie Éditoriale + GitHub</h3>
-                        <p><strong>Problème :</strong> Blog 4 articles, pas newsletter, GitHub 0 repos.</p>
-                        <p><strong>Actions :</strong></p>
+                        <p><strong style="color: rgba(248,248,248,0.8);">Problème :</strong> Blog 4 articles, pas newsletter, GitHub 0 repos.</p>
+                        <p><strong style="color: rgba(248,248,248,0.8);">Actions :</strong></p>
                         <ul>
                             <li>50 articles piliers SEO (12 mois)</li>
                             <li>Newsletter PayDunya Insights (hebdo)</li>
@@ -1470,16 +1578,16 @@
                     </div>
                 </div>
 
-                <div style="background: #2C2C2C; color: white; padding: 20px; border-radius: 8px; margin-top: 30px; text-align: center;">
-                    <h4 style="color: #FED700; margin-bottom: 10px;">Budget Total Estimé</h4>
-                    <p style="font-size: 18px; font-weight: bold;">6,6M – 11M XOF sur 6 mois</p>
+                <div style="background: linear-gradient(135deg, #1f1a00, #1A1A1A); border: 1px solid rgba(254,215,0,0.15); border-radius: 16px; padding: 28px; margin-top: 30px; text-align: center;">
+                    <h4 style="color: #FED700; margin-bottom: 10px; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; font-weight: 700;">Budget Total Estimé</h4>
+                    <p style="font-size: 22px; font-weight: 800; color: #F8F8F8;">6,6M – 11M XOF sur 6 mois</p>
                 </div>
             </div>
 
             <!-- SLIDE 11 - Offre Commerciale -->
             <div class="slide slide-cover" data-slide="11">
                 <div style="text-align: center; width: 100%;">
-                    <h1 style="color: #FED700; font-size: 56px; margin-bottom: 30px;">Comment LOLLY<br>peut vous accompagner</h1>
+                    <h1 style="color: #FED700; font-size: 56px; margin-bottom: 30px; font-weight: 900; letter-spacing: -2px;">Comment LOLLY<br>peut vous accompagner</h1>
 
                     <div class="packages-grid" style="margin-top: 40px;">
                         <div class="package-card">
@@ -1521,8 +1629,8 @@
                         </div>
                     </div>
 
-                    <div class="contact-info" style="margin-top: 40px;">
-                        <p style="font-size: 18px; margin-bottom: 15px;">📞 Parlons de votre transformation</p>
+                    <div class="contact-info" style="margin-top: 40px; text-align: center;">
+                        <p style="font-size: 18px; margin-bottom: 15px; color: rgba(248,248,248,0.7);">📞 Parlons de votre transformation</p>
                         <p><a href="mailto:oudama@lolly.sn">📧 oudama@lolly.sn</a></p>
                     </div>
                 </div>
@@ -1540,6 +1648,22 @@
     <script>
         let currentSlideIndex = 0;
 
+        function animateBars(slide) {
+            const fills = slide.querySelectorAll('[data-target]');
+            fills.forEach(function(el) {
+                el.style.width = '0%';
+                setTimeout(function() {
+                    el.style.width = el.getAttribute('data-target');
+                }, 100);
+            });
+        }
+
+        function updateProgressBar(index, total) {
+            const bar = document.getElementById('progress-bar');
+            const pct = ((index + 1) / total) * 100;
+            bar.style.width = pct + '%';
+        }
+
         function showSlide(n) {
             const slides = document.querySelectorAll('.slide');
             const dots = document.querySelectorAll('.nav-dot');
@@ -1554,6 +1678,9 @@
             dots[currentSlideIndex].classList.add('active');
 
             document.getElementById('current').textContent = currentSlideIndex + 1;
+
+            updateProgressBar(currentSlideIndex, slides.length);
+            animateBars(slides[currentSlideIndex]);
         }
 
         function nextSlide() {
