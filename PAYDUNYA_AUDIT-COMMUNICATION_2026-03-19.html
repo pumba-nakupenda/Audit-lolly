@@ -797,6 +797,45 @@
             }
         }
 
+        /* ===== MOBILE ===== */
+        @media (max-width: 768px) {
+            /* Hide sidebar, full width */
+            .nav-sidebar { display: none; }
+            .container { margin-left: 0; width: 100%; }
+
+            /* Bottom nav bar */
+            .controls {
+                bottom: 0; right: 0; left: 0; top: auto;
+                justify-content: center;
+                background: rgba(10,10,10,0.96);
+                backdrop-filter: blur(12px);
+                border-top: 1px solid rgba(255,255,255,0.08);
+                padding: 10px 16px 14px;
+                border-radius: 0;
+                gap: 16px;
+            }
+            .nav-button { width: 48px; height: 48px; }
+            .slide-counter { font-size: 14px; }
+
+            /* Cover slide */
+            .slide-cover { padding: 60px 20px 90px; }
+            .cover-content h1 { font-size: clamp(32px, 10vw, 52px); letter-spacing: -1px; }
+            .cover-content h2 { font-size: clamp(16px, 5vw, 22px); margin-bottom: 24px; }
+            .cover-score { font-size: clamp(48px, 15vw, 64px); letter-spacing: -2px; margin: 16px 0; }
+            .cover-meta { max-width: 100%; padding: 16px 18px; }
+            .cover-tagline { position: static; display: block; margin-top: 20px; }
+            .keyboard-hint { display: none; }
+
+            /* Content slides */
+            .slide-content { padding: 20px 16px 90px; }
+            .slide-header { gap: 10px; margin-bottom: 20px; padding-bottom: 16px; flex-wrap: wrap; }
+            .slide-header h2 { font-size: clamp(20px, 6vw, 28px); letter-spacing: -0.5px; }
+            .slide-header .score-badge { margin-left: 0; }
+
+            /* Access gate */
+            #access-gate > div { margin: 16px; padding: 36px 24px; }
+        }
+
         .icon { width: 18px; height: 18px; display: inline-block; vertical-align: middle; stroke-width: 1.8; }
         .icon-lg { width: 24px; height: 24px; display: inline-block; vertical-align: middle; stroke-width: 1.8; }
         .icon-sm { width: 14px; height: 14px; display: inline-block; vertical-align: middle; stroke-width: 2; }
@@ -1786,6 +1825,14 @@
             if (e.key === 'ArrowRight') nextSlide();
             if (e.key === 'ArrowLeft') prevSlide();
         });
+
+        // Touch swipe
+        let touchStartX = 0;
+        document.addEventListener('touchstart', function(e) { touchStartX = e.changedTouches[0].clientX; }, {passive: true});
+        document.addEventListener('touchend', function(e) {
+            const dx = e.changedTouches[0].clientX - touchStartX;
+            if (Math.abs(dx) > 50) { if (dx < 0) nextSlide(); else prevSlide(); }
+        }, {passive: true});
 
         showSlide(currentSlideIndex);
     </script>
