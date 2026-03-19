@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audit Communication - LOLLY Communication</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0E0E0E;
+            color: #F8F8F8;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        header {
+            padding: 28px 48px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .logo-mark {
+            width: 36px;
+            height: 36px;
+            background: #FED700;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 16px;
+            color: #2C2C2C;
+            letter-spacing: -1px;
+        }
+
+        .logo-text {
+            font-size: 18px;
+            font-weight: 700;
+            color: #F8F8F8;
+            letter-spacing: -0.3px;
+        }
+
+        .logo-text span {
+            color: #FED700;
+        }
+
+        header nav a {
+            color: rgba(248,248,248,0.5);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+
+        header nav a:hover { color: #FED700; }
+
+        /* Hero */
+        .hero {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 80px 24px 60px;
+            text-align: center;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(254, 215, 0, 0.1);
+            border: 1px solid rgba(254, 215, 0, 0.25);
+            color: #FED700;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 6px 14px;
+            border-radius: 100px;
+            margin-bottom: 32px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .badge-dot {
+            width: 6px;
+            height: 6px;
+            background: #FED700;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        h1 {
+            font-size: clamp(36px, 6vw, 64px);
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -2px;
+            margin-bottom: 20px;
+            max-width: 720px;
+        }
+
+        h1 .highlight {
+            color: #FED700;
+        }
+
+        .subtitle {
+            font-size: 18px;
+            color: rgba(248,248,248,0.5);
+            max-width: 520px;
+            line-height: 1.6;
+            margin-bottom: 64px;
+        }
+
+        /* Cards */
+        .cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            max-width: 880px;
+            width: 100%;
+        }
+
+        @media (max-width: 640px) {
+            .cards { grid-template-columns: 1fr; }
+            header { padding: 20px 24px; }
+            h1 { letter-spacing: -1px; }
+        }
+
+        .card {
+            background: #1A1A1A;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 36px 32px;
+            text-align: left;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            border-color: rgba(254, 215, 0, 0.3);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+        }
+
+        .card.featured {
+            background: linear-gradient(135deg, #1A1A1A 0%, #1f1a00 100%);
+            border-color: rgba(254, 215, 0, 0.2);
+        }
+
+        .card.featured::before {
+            content: 'RECOMMANDÉ';
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #FED700;
+            color: #2C2C2C;
+            font-size: 10px;
+            font-weight: 800;
+            padding: 4px 10px;
+            border-radius: 100px;
+            letter-spacing: 0.5px;
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            margin-bottom: 24px;
+        }
+
+        .card-icon.simple { background: rgba(255,255,255,0.06); }
+        .card-icon.complete { background: rgba(254, 215, 0, 0.12); }
+
+        .card-type {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: rgba(248,248,248,0.35);
+            margin-bottom: 8px;
+        }
+
+        .card h2 {
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin-bottom: 12px;
+            color: #F8F8F8;
+        }
+
+        .card p {
+            font-size: 14px;
+            color: rgba(248,248,248,0.45);
+            line-height: 1.65;
+            margin-bottom: 28px;
+        }
+
+        .features {
+            list-style: none;
+            margin-bottom: 32px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .features li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            color: rgba(248,248,248,0.6);
+        }
+
+        .features li::before {
+            content: '';
+            width: 16px;
+            height: 16px;
+            min-width: 16px;
+            border-radius: 50%;
+            background: rgba(254, 215, 0, 0.15);
+            border: 1px solid rgba(254, 215, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath d='M2 5l2 2 4-4' stroke='%23FED700' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 14px 24px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-secondary {
+            background: rgba(255,255,255,0.07);
+            color: #F8F8F8;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.12);
+        }
+
+        .btn-primary {
+            background: #FED700;
+            color: #2C2C2C;
+        }
+
+        .btn-primary:hover {
+            background: #ffe633;
+            box-shadow: 0 0 30px rgba(254,215,0,0.3);
+        }
+
+        .btn svg {
+            transition: transform 0.2s;
+        }
+
+        .btn:hover svg {
+            transform: translateX(3px);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 32px 24px;
+            font-size: 13px;
+            color: rgba(248,248,248,0.2);
+            border-top: 1px solid rgba(255,255,255,0.06);
+        }
+
+        footer a {
+            color: rgba(254, 215, 0, 0.6);
+            text-decoration: none;
+        }
+
+        footer a:hover { color: #FED700; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a class="logo" href="/">
+            <div class="logo-mark">L</div>
+            <span class="logo-text">LOLLY <span>Communication</span></span>
+        </a>
+        <nav>
+            <a href="https://wa.me/221781234567" target="_blank">Nous contacter</a>
+        </nav>
+    </header>
+
+    <main class="hero">
+        <div class="badge">
+            <span class="badge-dot"></span>
+            Audit Communication
+        </div>
+
+        <h1>
+            Votre communication,<br>
+            <span class="highlight">analysée sans filtre.</span>
+        </h1>
+
+        <p class="subtitle">
+            Découvrez ce que votre audience voit vraiment. Nous auditons votre présence digitale et vous livrons un rapport clair, actionnable, et sans jargon.
+        </p>
+
+        <div class="cards">
+
+            <!-- Audit Simple -->
+            <div class="card">
+                <div class="card-icon simple">🔍</div>
+                <div class="card-type">Audit Simple</div>
+                <h2>Diagnostic rapide</h2>
+                <p>Un aperçu essentiel de votre communication digitale en moins de 48h.</p>
+                <ul class="features">
+                    <li>Analyse réseaux sociaux</li>
+                    <li>Audit site web</li>
+                    <li>Identité visuelle</li>
+                    <li>Rapport PDF synthétique</li>
+                </ul>
+                <a class="btn btn-secondary" href="https://wa.me/221781234567?text=Bonjour%2C%20je%20souhaite%20un%20audit%20simple%20de%20ma%20communication." target="_blank">
+                    Demander l'audit
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </a>
+            </div>
+
+            <!-- Audit Complet -->
+            <div class="card featured">
+                <div class="card-icon complete">⚡</div>
+                <div class="card-type">Audit Complet</div>
+                <h2>Analyse 360°</h2>
+                <p>Une radiographie complète de votre stratégie de communication avec recommandations détaillées.</p>
+                <ul class="features">
+                    <li>Tout l'audit simple</li>
+                    <li>Stratégie éditoriale</li>
+                    <li>Réputation en ligne</li>
+                    <li>Maturité digitale</li>
+                    <li>Plan d'action prioritaire</li>
+                    <li>Présentation de restitution</li>
+                </ul>
+                <a class="btn btn-primary" href="https://wa.me/221781234567?text=Bonjour%2C%20je%20souhaite%20un%20audit%20complet%20de%20ma%20communication." target="_blank">
+                    Demander l'audit
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="#2C2C2C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </a>
+            </div>
+
+        </div>
+    </main>
+
+    <footer>
+        &copy; 2026 <a href="#">LOLLY Communication</a> · Dakar, Sénégal
+    </footer>
+
+</body>
+</html>
