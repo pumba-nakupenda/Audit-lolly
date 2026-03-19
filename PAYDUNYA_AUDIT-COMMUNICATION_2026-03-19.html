@@ -805,6 +805,76 @@
     </style>
 </head>
 <body>
+    <!-- ACCESS GATE -->
+    <div id="access-gate" style="
+        position:fixed; inset:0; z-index:9999;
+        background:#0A0A0A;
+        display:flex; flex-direction:column;
+        align-items:center; justify-content:center;
+        gap:0;
+    ">
+        <div style="
+            background:#141414;
+            border:1px solid rgba(255,255,255,0.08);
+            border-radius:24px;
+            padding:48px 40px;
+            width:100%; max-width:420px;
+            display:flex; flex-direction:column; align-items:center; gap:24px;
+            text-align:center;
+        ">
+            <div style="width:56px;height:56px;background:rgba(254,215,0,0.1);border:1px solid rgba(254,215,0,0.2);border-radius:16px;display:flex;align-items:center;justify-content:center;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FED700" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </div>
+            <div>
+                <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:rgba(248,248,248,0.3);margin-bottom:8px;">LOLLY Communication</div>
+                <h2 style="font-size:22px;font-weight:800;color:#F8F8F8;letter-spacing:-0.5px;margin-bottom:8px;">Accès sécurisé</h2>
+                <p style="font-size:14px;color:rgba(248,248,248,0.4);line-height:1.6;">Rapport confidentiel — Audit PayDunya.<br>Entrez le code d'accès pour continuer.</p>
+            </div>
+            <div style="width:100%;display:flex;flex-direction:column;gap:12px;">
+                <input
+                    id="access-input"
+                    type="password"
+                    placeholder="Code d'accès"
+                    autocomplete="off"
+                    style="
+                        width:100%;
+                        background:rgba(255,255,255,0.05);
+                        border:1px solid rgba(255,255,255,0.1);
+                        border-radius:12px;
+                        padding:14px 18px;
+                        color:#F8F8F8;
+                        font-size:15px;
+                        font-family:inherit;
+                        letter-spacing:2px;
+                        outline:none;
+                        text-align:center;
+                        transition:border-color 0.2s;
+                    "
+                    oninput="document.getElementById('access-error').style.opacity='0'"
+                    onkeydown="if(event.key==='Enter') checkAccess()"
+                >
+                <button onclick="checkAccess()" style="
+                    background:#FED700;
+                    color:#0A0A0A;
+                    border:none;
+                    border-radius:12px;
+                    padding:14px;
+                    font-size:15px;
+                    font-weight:800;
+                    cursor:pointer;
+                    width:100%;
+                    transition:background 0.2s;
+                    display:flex;align-items:center;justify-content:center;gap:8px;
+                " onmouseover="this.style.background='#ffe633'" onmouseout="this.style.background='#FED700'">
+                    Accéder au rapport
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </button>
+                <p id="access-error" style="font-size:13px;color:#E74C3C;opacity:0;transition:opacity 0.2s;margin:0;">Code incorrect. Réessayez.</p>
+            </div>
+            <p style="font-size:11px;color:rgba(248,248,248,0.15);margin-top:-8px;">Document confidentiel · Ne pas diffuser</p>
+        </div>
+    </div>
+
     <div id="progress-bar"></div>
 
     <div class="nav-sidebar" id="sidebar">
@@ -1720,5 +1790,31 @@
         showSlide(currentSlideIndex);
     </script>
     <script>lucide.createIcons();</script>
+    <script>
+        (function() {
+            var CODE = 'AUDIT-PAYDUNYA';
+            if (sessionStorage.getItem('audit_access') === '1') {
+                document.getElementById('access-gate').style.display = 'none';
+            }
+        })();
+
+        function checkAccess() {
+            var val = document.getElementById('access-input').value.trim().toUpperCase();
+            if (val === 'AUDIT-PAYDUNYA') {
+                sessionStorage.setItem('audit_access', '1');
+                var gate = document.getElementById('access-gate');
+                gate.style.transition = 'opacity 0.4s ease';
+                gate.style.opacity = '0';
+                setTimeout(function() { gate.style.display = 'none'; }, 400);
+            } else {
+                var err = document.getElementById('access-error');
+                var inp = document.getElementById('access-input');
+                err.style.opacity = '1';
+                inp.style.borderColor = 'rgba(231,76,60,0.5)';
+                inp.value = '';
+                setTimeout(function() { inp.style.borderColor = 'rgba(255,255,255,0.1)'; }, 1500);
+            }
+        }
+    </script>
 </body>
 </html>
