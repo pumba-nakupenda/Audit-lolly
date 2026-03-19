@@ -12,6 +12,7 @@
             background: #0A0A0A;
             overflow: hidden;
             color: #F8F8F8;
+            overscroll-behavior: none;
         }
 
         /* Progress bar */
@@ -269,7 +270,7 @@
                 background: rgba(10,10,10,0.96);
                 backdrop-filter: blur(12px);
                 border-top: 1px solid rgba(255,255,255,0.08);
-                padding: 10px 16px 14px;
+                padding: 10px 16px calc(14px + env(safe-area-inset-bottom, 0px));
                 border-radius: 0;
                 gap: 16px;
             }
@@ -291,7 +292,33 @@
             .slide-header h2 { font-size: clamp(20px, 6vw, 28px); letter-spacing: -0.5px; }
             .slide-header .score-badge { margin-left: 0; }
 
+            /* Score items: 1 column on mobile */
+            .score-items { grid-template-columns: 1fr; }
+
+            /* Legend bar: wrap */
+            .legend-bar { flex-wrap: wrap; gap: 8px; }
+
+            /* Tables: horizontal scroll on mobile */
+            .benchmark-table, .social-table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+            /* Packages grid */
+            .packages-grid { grid-template-columns: 1fr !important; gap: 12px; }
+            .package-card { padding: 24px 20px; }
+
+            /* Bench cols */
+            .bench-cols { grid-template-columns: 1fr; }
+
+            /* Global score value */
+            .global-score-value { font-size: clamp(48px, 15vw, 80px); }
+
             #access-gate > div { margin: 16px; padding: 36px 24px; }
+        }
+
+        @media (max-width: 400px) {
+            .slide-content { padding: 16px 12px 90px; }
+            .column-box { padding: 16px; }
+            .recommendation-item { padding: 16px; }
+            .action-card { padding: 16px; }
         }
     </style>
 </head>

@@ -17,6 +17,7 @@
             background: #0A0A0A;
             overflow: hidden;
             color: #F8F8F8;
+            overscroll-behavior: none;
         }
 
         /* Progress bar */
@@ -803,14 +804,14 @@
             .nav-sidebar { display: none; }
             .container { margin-left: 0; width: 100%; }
 
-            /* Bottom nav bar */
+            /* Bottom nav bar with safe area */
             .controls {
                 bottom: 0; right: 0; left: 0; top: auto;
                 justify-content: center;
                 background: rgba(10,10,10,0.96);
                 backdrop-filter: blur(12px);
                 border-top: 1px solid rgba(255,255,255,0.08);
-                padding: 10px 16px 14px;
+                padding: 10px 16px calc(14px + env(safe-area-inset-bottom, 0px));
                 border-radius: 0;
                 gap: 16px;
             }
@@ -827,6 +828,8 @@
             .keyboard-hint { display: none; }
             .slide-cover > div[style*="left:40px"],
             .slide-cover > div[style*="left: 40px"] { display: none !important; }
+            .slide-cover > div[style*="right:40px"],
+            .slide-cover > div[style*="right: 40px"] { display: none !important; }
 
             /* Content slides */
             .slide-content { padding: 20px 16px 90px; }
@@ -834,8 +837,38 @@
             .slide-header h2 { font-size: clamp(20px, 6vw, 28px); letter-spacing: -0.5px; }
             .slide-header .score-badge { margin-left: 0; }
 
+            /* Score items: 1 column on small screens */
+            .score-items { grid-template-columns: 1fr; }
+
+            /* Legend bar: wrap on small screens */
+            .legend-bar { flex-wrap: wrap; gap: 8px; }
+
+            /* Tables: horizontal scroll */
+            .benchmark-table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+            /* Social platform grid (slide 5 inline grid override) */
+            [style*="grid-template-columns: repeat(3, 1fr)"] {
+                grid-template-columns: 1fr !important;
+            }
+
+            /* Packages grid on cover slide */
+            .packages-grid { grid-template-columns: 1fr !important; gap: 12px; }
+            .package-card { padding: 24px 20px; }
+            .package-card .price { font-size: 28px; }
+
+            /* Global score value */
+            .global-score-value { font-size: clamp(48px, 15vw, 80px); }
+
             /* Access gate */
             #access-gate > div { margin: 16px; padding: 36px 24px; }
+        }
+
+        @media (max-width: 400px) {
+            .score-items { grid-template-columns: 1fr; }
+            .slide-content { padding: 16px 12px 90px; }
+            .column-box { padding: 16px; }
+            .recommendation-item { padding: 16px; }
+            .action-card { padding: 16px; }
         }
 
         .icon { width: 18px; height: 18px; display: inline-block; vertical-align: middle; stroke-width: 1.8; }
@@ -1793,6 +1826,7 @@
             dots.forEach(dot => dot.classList.remove('active'));
 
             slides[currentSlideIndex].classList.add('active');
+            slides[currentSlideIndex].scrollTop = 0;
             dots[currentSlideIndex].classList.add('active');
 
             document.getElementById('current').textContent = currentSlideIndex + 1;
@@ -1824,8 +1858,10 @@
         });
 
         document.addEventListener('keydown', function(e) {
-            if (e.key === 'ArrowRight') nextSlide();
-            if (e.key === 'ArrowLeft') prevSlide();
+            if (document.getElementById('access-gate').style.display !== 'none' &&
+                document.getElementById('access-gate').style.opacity !== '0') return;
+            if (e.key === 'ArrowRight' || e.key === 'ArrowDown') nextSlide();
+            if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') prevSlide();
         });
 
         // Touch swipe
