@@ -1,1217 +1,1589 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Audit Communication — PayDunya | LOLLY Communication</title>
-<style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  :root {
-    --yellow: #FED700;
-    --orange: #FF6B35;
-    --black: #2C2C2C;
-    --white: #FFFFFF;
-    --light: #F8F8F8;
-    --green: #27AE60;
-    --red: #E74C3C;
-    --blue: #2980B9;
-    --orange-score: #F39C12;
-  }
-  body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--black); color: var(--black); overflow: hidden; height: 100vh; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audit Communication PayDunya - LOLLY Communication</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  /* ── NAVIGATION LATÉRALE ── */
-  #nav {
-    position: fixed; left: 0; top: 0; bottom: 0; width: 60px;
-    background: #1a1a1a; z-index: 100;
-    display: flex; flex-direction: column; align-items: center; padding: 20px 0; gap: 6px;
-  }
-  #nav .logo-nav { color: var(--yellow); font-weight: 900; font-size: 18px; writing-mode: vertical-rl; transform: rotate(180deg); letter-spacing: 3px; margin-bottom: 20px; }
-  .nav-dot {
-    width: 32px; height: 32px; border-radius: 50%; background: #333; cursor: pointer;
-    display: flex; align-items: center; justify-content: center; font-size: 10px; color: #888;
-    transition: all .3s; border: 2px solid transparent; position: relative;
-  }
-  .nav-dot:hover, .nav-dot.active { background: var(--yellow); color: var(--black); border-color: var(--orange); transform: scale(1.1); }
-  .nav-dot .tooltip {
-    position: absolute; left: 46px; white-space: nowrap; background: #111; color: #fff;
-    padding: 4px 10px; border-radius: 4px; font-size: 11px; opacity: 0; pointer-events: none;
-    transition: opacity .2s; z-index: 200;
-  }
-  .nav-dot:hover .tooltip { opacity: 1; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #F8F8F8;
+            overflow: hidden;
+        }
 
-  /* ── SLIDES ── */
-  #slides { margin-left: 60px; height: 100vh; overflow: hidden; position: relative; }
-  .slide { position: absolute; inset: 0; padding: 40px 50px; overflow-y: auto; opacity: 0; pointer-events: none; transition: opacity .4s ease; display: flex; flex-direction: column; }
-  .slide.active { opacity: 1; pointer-events: all; }
+        /* Navigation latérale */
+        .nav-sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 60px;
+            height: 100vh;
+            background: #2C2C2C;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0;
+            gap: 15px;
+            z-index: 100;
+            overflow-y: auto;
+        }
 
-  /* ── NAVIGATION BAS ── */
-  #bottom-nav {
-    position: fixed; bottom: 24px; right: 30px; display: flex; align-items: center; gap: 12px; z-index: 100;
-  }
-  .nav-btn {
-    background: var(--yellow); color: var(--black); border: none; padding: 10px 22px;
-    border-radius: 30px; font-weight: 700; cursor: pointer; font-size: 13px;
-    transition: all .2s; box-shadow: 0 4px 12px rgba(254,215,0,.4);
-  }
-  .nav-btn:hover { background: var(--orange); color: #fff; transform: translateY(-2px); }
-  #slide-counter { background: rgba(255,255,255,.1); color: #fff; padding: 8px 16px; border-radius: 20px; font-size: 12px; backdrop-filter: blur(10px); }
+        .nav-dot {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #555;
+            border: 2px solid transparent;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            color: #FED700;
+            transition: all 0.3s ease;
+            position: relative;
+        }
 
-  /* ── UTILITAIRES ── */
-  .tag { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
-  .tag-orange { background: rgba(255,107,53,.15); color: var(--orange); }
-  .tag-yellow { background: rgba(254,215,0,.2); color: #b8960a; }
-  .tag-green { background: rgba(39,174,96,.15); color: var(--green); }
-  .tag-red { background: rgba(231,76,60,.15); color: var(--red); }
-  .tag-blue { background: rgba(41,128,185,.15); color: var(--blue); }
+        .nav-dot:hover {
+            background: #666;
+            transform: scale(1.1);
+        }
 
-  .score-badge {
-    display: inline-flex; align-items: center; gap: 6px;
-    padding: 6px 16px; border-radius: 30px; font-weight: 800; font-size: 20px;
-  }
-  .score-red { background: rgba(231,76,60,.15); color: var(--red); border: 2px solid var(--red); }
-  .score-orange { background: rgba(243,156,18,.15); color: var(--orange-score); border: 2px solid var(--orange-score); }
-  .score-green { background: rgba(39,174,96,.15); color: var(--green); border: 2px solid var(--green); }
+        .nav-dot.active {
+            background: #FED700;
+            color: #2C2C2C;
+            border-color: #FF6B35;
+            box-shadow: 0 0 15px rgba(255, 107, 53, 0.5);
+        }
 
-  .gauge-bar { height: 10px; border-radius: 10px; background: #e9ecef; overflow: hidden; flex: 1; }
-  .gauge-fill { height: 100%; border-radius: 10px; transition: width 1s ease; }
-  .gauge-red .gauge-fill { background: var(--red); }
-  .gauge-orange .gauge-fill { background: var(--orange-score); }
-  .gauge-green .gauge-fill { background: var(--green); }
+        .nav-dot::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            left: 55px;
+            background: #FF6B35;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 1000;
+        }
 
-  /* ── SLIDE 1: COVER ── */
-  #s1 { background: var(--black); justify-content: center; }
-  .cover-logo { font-size: 13px; font-weight: 800; letter-spacing: 4px; color: #666; text-transform: uppercase; margin-bottom: 60px; }
-  .cover-bar { width: 80px; height: 5px; background: var(--orange); margin-bottom: 30px; border-radius: 3px; }
-  .cover-title { font-size: 54px; font-weight: 900; color: var(--yellow); line-height: 1.1; margin-bottom: 16px; }
-  .cover-client { font-size: 22px; color: #aaa; margin-bottom: 40px; }
-  .cover-meta { display: flex; gap: 40px; }
-  .cover-meta-item { border-left: 3px solid var(--orange); padding-left: 14px; }
-  .cover-meta-item .label { font-size: 10px; color: #666; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 4px; }
-  .cover-meta-item .val { font-size: 14px; color: #ccc; font-weight: 600; }
-  .cover-pattern { position: absolute; right: 0; top: 0; bottom: 0; width: 400px; opacity: .03; background: repeating-linear-gradient(45deg, #fff 0, #fff 1px, transparent 0, transparent 50%) center/20px 20px; }
-  .cover-accent { position: absolute; bottom: 0; right: 0; width: 300px; height: 300px; background: radial-gradient(circle, rgba(255,107,53,.15) 0%, transparent 70%); }
+        .nav-dot:hover::after {
+            opacity: 1;
+        }
 
-  /* ── SLIDE 2: SOMMAIRE ── */
-  #s2 { background: var(--light); }
-  .s2-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 30px; }
-  .s2-card {
-    background: #fff; border-radius: 12px; padding: 24px; cursor: pointer;
-    border: 2px solid transparent; transition: all .25s; box-shadow: 0 2px 10px rgba(0,0,0,.06);
-    display: flex; flex-direction: column; gap: 10px;
-  }
-  .s2-card:hover { border-color: var(--yellow); transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,.1); }
-  .s2-card .s2-num { font-size: 36px; font-weight: 900; color: var(--yellow); line-height: 1; }
-  .s2-card .s2-title { font-weight: 700; font-size: 15px; color: var(--black); }
-  .s2-card .s2-sub { font-size: 12px; color: #888; }
-  .s2-card .s2-score-line { display: flex; align-items: center; gap: 8px; margin-top: 4px; }
+        /* Container principal */
+        .container {
+            margin-left: 60px;
+            width: calc(100% - 60px);
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
 
-  /* ── SLIDE 3: SCORE GLOBAL ── */
-  #s3 { background: #fff; }
-  .score-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 24px; }
-  .score-row { background: var(--light); border-radius: 10px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px; }
-  .score-row-header { display: flex; justify-content: space-between; align-items: center; }
-  .score-row-name { font-weight: 700; font-size: 14px; }
-  .global-score-box { background: var(--black); color: var(--yellow); border-radius: 16px; padding: 30px; text-align: center; margin-bottom: 24px; }
-  .global-score-big { font-size: 72px; font-weight: 900; line-height: 1; }
-  .global-score-label { font-size: 14px; color: #aaa; margin-top: 8px; letter-spacing: 2px; text-transform: uppercase; }
-  .keywords-row { display: flex; gap: 12px; justify-content: center; margin-top: 16px; }
-  .keyword-chip { background: rgba(254,215,0,.15); color: var(--yellow); padding: 8px 20px; border-radius: 30px; font-weight: 700; font-size: 14px; }
+        /* Slides */
+        .slides-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
 
-  /* ── SLIDES 4-9: DOMAINES ── */
-  .domain-slide { background: var(--light); }
-  .domain-header {
-    background: var(--black); border-radius: 14px; padding: 24px 30px;
-    display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;
-  }
-  .domain-title-group { display: flex; flex-direction: column; gap: 6px; }
-  .domain-emoji { font-size: 30px; }
-  .domain-title { font-size: 22px; font-weight: 800; color: var(--white); }
-  .domain-subtitle { font-size: 12px; color: #888; letter-spacing: 1px; text-transform: uppercase; }
-  .domain-score-area { display: flex; align-items: center; gap: 14px; }
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
 
-  .domain-cols { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 16px; }
-  .domain-col { border-radius: 10px; padding: 18px; }
-  .col-forces { background: rgba(39,174,96,.08); border: 1.5px solid rgba(39,174,96,.2); }
-  .col-faiblesses { background: rgba(231,76,60,.08); border: 1.5px solid rgba(231,76,60,.2); }
-  .col-opportunites { background: rgba(41,128,185,.08); border: 1.5px solid rgba(41,128,185,.2); }
-  .col-header { font-weight: 800; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
-  .col-header.green { color: var(--green); }
-  .col-header.red { color: var(--red); }
-  .col-header.blue { color: var(--blue); }
-  .col-list { list-style: none; display: flex; flex-direction: column; gap: 7px; }
-  .col-list li { font-size: 12px; color: #444; line-height: 1.4; padding-left: 14px; position: relative; }
-  .col-list li::before { content: '→'; position: absolute; left: 0; font-weight: 700; }
-  .col-list.green-arrow li::before { color: var(--green); }
-  .col-list.red-arrow li::before { color: var(--red); }
-  .col-list.blue-arrow li::before { color: var(--blue); }
+        .slide.active {
+            opacity: 1;
+            z-index: 10;
+        }
 
-  .reco-section { background: #fff; border-radius: 10px; padding: 18px 20px; }
-  .reco-title { font-weight: 800; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--orange); margin-bottom: 12px; }
-  .reco-list { display: flex; flex-direction: column; gap: 10px; }
-  .reco-item { display: flex; gap: 14px; align-items: flex-start; padding: 12px 14px; background: var(--light); border-radius: 8px; border-left: 3px solid var(--orange); }
-  .reco-num { width: 26px; height: 26px; background: var(--orange); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 12px; flex-shrink: 0; }
-  .reco-text { flex: 1; font-size: 13px; color: var(--black); line-height: 1.5; }
-  .reco-budget { font-size: 11px; font-weight: 700; color: var(--orange); margin-top: 4px; }
-  .benchmark-box { background: var(--black); color: #ccc; border-radius: 10px; padding: 16px 20px; margin-top: 14px; font-size: 12px; line-height: 1.7; }
-  .benchmark-box strong { color: var(--yellow); }
+        /* SLIDE 1 - Couverture */
+        .slide-cover {
+            background: linear-gradient(135deg, #2C2C2C 0%, #1a1a1a 100%);
+            color: white;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 40px;
+        }
 
-  /* ── SLIDE 10: BENCHMARK ── */
-  #s10 { background: var(--light); }
-  .bench-table { width: 100%; border-collapse: collapse; margin-top: 20px; border-radius: 12px; overflow: hidden; }
-  .bench-table th { background: var(--black); color: var(--yellow); padding: 14px 18px; text-align: left; font-size: 13px; }
-  .bench-table td { padding: 12px 18px; font-size: 13px; border-bottom: 1px solid #e9ecef; }
-  .bench-table tr:nth-child(even) td { background: #fff; }
-  .bench-table tr:nth-child(odd) td { background: #f4f4f4; }
-  .bench-score { font-weight: 800; font-size: 15px; }
-  .score-green-text { color: var(--green); }
-  .score-orange-text { color: var(--orange-score); }
-  .score-red-text { color: var(--red); }
-  .bench-conclusion { background: var(--black); color: #ccc; border-radius: 12px; padding: 20px 24px; margin-top: 20px; font-size: 13px; line-height: 1.8; }
-  .bench-conclusion strong { color: var(--yellow); }
+        .cover-content h1 {
+            font-size: 64px;
+            color: #FED700;
+            margin-bottom: 20px;
+            font-weight: 800;
+        }
 
-  /* ── SLIDE 11: ACTIONS PRIORITAIRES ── */
-  #s11 { background: #fff; }
-  .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 24px; }
-  .action-card { border-radius: 12px; padding: 20px; border: 2px solid; }
-  .action-urgent { border-color: var(--red); background: rgba(231,76,60,.05); }
-  .action-soon { border-color: var(--orange-score); background: rgba(243,156,18,.05); }
-  .action-later { border-color: var(--blue); background: rgba(41,128,185,.05); }
-  .action-header { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
-  .action-tag { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; padding: 3px 10px; border-radius: 20px; }
-  .tag-urgent { background: rgba(231,76,60,.15); color: var(--red); }
-  .tag-1-3m { background: rgba(243,156,18,.15); color: var(--orange-score); }
-  .tag-3-6m { background: rgba(41,128,185,.15); color: var(--blue); }
-  .action-title { font-weight: 700; font-size: 15px; color: var(--black); margin-bottom: 8px; }
-  .action-desc { font-size: 12px; color: #666; line-height: 1.5; }
-  .action-budget { margin-top: 10px; font-size: 12px; font-weight: 700; }
-  .action-impact { display: inline-block; margin-top: 8px; font-size: 11px; color: #888; }
-  .action-5th { grid-column: 1 / -1; border-color: var(--green); background: rgba(39,174,96,.05); }
-  .action-5th .action-tag { background: rgba(39,174,96,.15); color: var(--green); }
+        .cover-content h2 {
+            font-size: 36px;
+            color: white;
+            margin-bottom: 50px;
+            font-weight: 300;
+        }
 
-  /* ── SLIDE 12: OFFRE LOLLY ── */
-  #s12 { background: var(--black); }
-  .offer-title { font-size: 32px; font-weight: 900; color: var(--yellow); margin-bottom: 8px; }
-  .offer-sub { color: #888; font-size: 14px; margin-bottom: 32px; }
-  .offer-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-bottom: 30px; }
-  .offer-card { border-radius: 16px; padding: 28px 24px; position: relative; overflow: hidden; }
-  .offer-starter { background: #1a1a1a; border: 2px solid #333; }
-  .offer-perf { background: linear-gradient(135deg, rgba(255,107,53,.15), rgba(254,215,0,.1)); border: 2px solid var(--orange); }
-  .offer-premium { background: linear-gradient(135deg, rgba(254,215,0,.15), rgba(255,107,53,.1)); border: 2px solid var(--yellow); }
-  .offer-medal { font-size: 36px; margin-bottom: 12px; }
-  .offer-name { font-size: 18px; font-weight: 800; color: #fff; margin-bottom: 4px; }
-  .offer-price { font-size: 22px; font-weight: 900; color: var(--yellow); margin-bottom: 16px; }
-  .offer-features { list-style: none; display: flex; flex-direction: column; gap: 8px; }
-  .offer-features li { font-size: 12px; color: #aaa; display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; }
-  .offer-features li::before { content: '✓'; color: var(--green); font-weight: 800; flex-shrink: 0; }
-  .offer-cta-wrap { text-align: center; }
-  .offer-cta { display: inline-block; background: var(--yellow); color: var(--black); font-weight: 800; font-size: 16px; padding: 16px 44px; border-radius: 40px; text-decoration: none; letter-spacing: .5px; transition: all .2s; cursor: pointer; border: none; }
-  .offer-cta:hover { background: var(--orange); color: #fff; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255,107,53,.4); }
-  .offer-contact { color: #666; font-size: 13px; margin-top: 12px; }
-  .offer-contact strong { color: var(--yellow); }
+        .cover-meta {
+            background: rgba(255, 107, 53, 0.1);
+            border-left: 4px solid #FF6B35;
+            padding: 20px;
+            margin: 30px 0;
+            text-align: left;
+            display: inline-block;
+            border-radius: 4px;
+            max-width: 500px;
+        }
 
-  /* ── PAGE TITLE ── */
-  .page-header { margin-bottom: 8px; }
-  .page-title { font-size: 28px; font-weight: 900; color: var(--black); }
-  .page-title.white { color: var(--white); }
-  .page-bar { width: 50px; height: 4px; background: var(--orange); border-radius: 2px; margin-top: 8px; margin-bottom: 16px; }
-  .page-bar.yellow { background: var(--yellow); }
+        .cover-meta p {
+            margin: 8px 0;
+            font-size: 14px;
+            color: #ddd;
+        }
 
-  /* ── SLIDE 3 AGENTS ── */
-  .agent-score-row { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: var(--light); border-radius: 8px; }
-  .agent-label { width: 280px; font-size: 13px; font-weight: 600; }
-  .agent-gauge { flex: 1; display: flex; align-items: center; gap: 10px; }
-  .agent-num { font-weight: 800; font-size: 14px; width: 40px; text-align: right; }
+        .cover-meta strong {
+            color: #FED700;
+        }
 
-  /* SCROLL override for slide content */
-  .slide { scroll-behavior: smooth; }
+        .cover-score {
+            font-size: 48px;
+            color: #FF6B35;
+            font-weight: bold;
+            margin: 30px 0;
+        }
 
-  /* Responsive */
-  @media (max-width: 900px) {
-    .domain-cols { grid-template-columns: 1fr; }
-    .offer-grid { grid-template-columns: 1fr; }
-    .s2-grid { grid-template-columns: 1fr 1fr; }
-    .action-grid { grid-template-columns: 1fr; }
-  }
+        .cover-tagline {
+            position: absolute;
+            bottom: 30px;
+            font-size: 14px;
+            color: #FED700;
+            font-style: italic;
+        }
 
-  .platform-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin: 14px 0; }
-  .platform-card { background: #fff; border-radius: 10px; padding: 14px 10px; text-align: center; border: 1.5px solid #eee; }
-  .platform-icon { font-size: 22px; margin-bottom: 6px; }
-  .platform-name { font-size: 11px; font-weight: 700; color: #666; margin-bottom: 6px; }
-  .platform-note { font-size: 15px; font-weight: 800; }
-</style>
+        /* SLIDE 2+ - Content */
+        .slide-content {
+            background: #F8F8F8;
+            padding: 40px 50px;
+        }
+
+        .slide-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 40px;
+            border-bottom: 3px solid #FED700;
+            padding-bottom: 20px;
+        }
+
+        .slide-header h2 {
+            font-size: 42px;
+            color: #2C2C2C;
+        }
+
+        .slide-header .score-badge {
+            margin-left: auto;
+            background: #FF6B35;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .score-badge.green {
+            background: #27AE60;
+        }
+
+        .score-badge.orange {
+            background: #F39C12;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            border-left: 4px solid #FED700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+        }
+
+        .card h3 {
+            font-size: 16px;
+            color: #2C2C2C;
+            margin-bottom: 8px;
+        }
+
+        .card p {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 12px;
+        }
+
+        .card .score-tag {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .score-tag.red {
+            background: #E74C3C;
+        }
+
+        .score-tag.orange {
+            background: #F39C12;
+        }
+
+        .score-tag.green {
+            background: #27AE60;
+        }
+
+        /* Score Global */
+        .global-score-box {
+            background: #2C2C2C;
+            color: white;
+            padding: 30px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .global-score-box h3 {
+            font-size: 14px;
+            color: #FED700;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        .global-score-value {
+            font-size: 64px;
+            color: #FF6B35;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .score-gauge {
+            width: 100%;
+            height: 20px;
+            background: #555;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .score-gauge-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #E74C3C, #F39C12, #27AE60);
+            transition: width 0.5s ease;
+        }
+
+        .score-items {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .score-item {
+            background: white;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 4px solid #FED700;
+        }
+
+        .score-item-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2C2C2C;
+        }
+
+        .score-item-bar {
+            width: 100%;
+            height: 12px;
+            background: #eee;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .score-item-bar-fill {
+            height: 100%;
+            border-radius: 6px;
+            transition: width 0.5s ease;
+        }
+
+        .bar-red {
+            background: #E74C3C;
+        }
+
+        .bar-orange {
+            background: #F39C12;
+        }
+
+        .bar-green {
+            background: #27AE60;
+        }
+
+        .summary-box {
+            background: #F0F0F0;
+            padding: 20px;
+            border-radius: 6px;
+            margin-top: 20px;
+        }
+
+        .summary-box h4 {
+            color: #2C2C2C;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .keywords {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .keyword-tag {
+            background: #FED700;
+            color: #2C2C2C;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .analysis-note {
+            font-size: 13px;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        /* 3 colonnes */
+        .three-columns {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .column-box {
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .column-box h3 {
+            font-size: 16px;
+            margin-bottom: 15px;
+            color: #2C2C2C;
+        }
+
+        .column-box ul {
+            list-style: none;
+        }
+
+        .column-box li {
+            padding: 10px 0 10px 20px;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #333;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            position: relative;
+        }
+
+        .forces li::before { content: '→'; position: absolute; left: 0; color: #27AE60; font-weight: bold; }
+        .faiblesses li::before { content: '→'; position: absolute; left: 0; color: #E74C3C; font-weight: bold; }
+        .opportunites li::before { content: '→'; position: absolute; left: 0; color: #2980B9; font-weight: bold; }
+
+        .column-box li:last-child {
+            border-bottom: none;
+        }
+
+        .forces {
+            background: #E8F8F5;
+            border-left: 4px solid #27AE60;
+        }
+
+        .faiblesses {
+            background: #FADBD8;
+            border-left: 4px solid #E74C3C;
+        }
+
+        .opportunites {
+            background: #D6EAF8;
+            border-left: 4px solid #2980B9;
+        }
+
+        /* Légende */
+        .legend-bar {
+            display: flex;
+            gap: 15px;
+            padding: 10px 15px;
+            background: rgba(0,0,0,0.03);
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 11px;
+            color: #666;
+            align-items: center;
+        }
+
+        /* Recommandations */
+        .recommendations {
+            margin-top: 20px;
+        }
+
+        .recommendation-item {
+            background: white;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+            border-left: 4px solid #FF6B35;
+        }
+
+        .recommendation-item strong {
+            color: #2C2C2C;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .recommendation-item .budget {
+            color: #FF6B35;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        /* Benchmark Table */
+        .benchmark-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+        }
+
+        .benchmark-table th,
+        .benchmark-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+            font-size: 12px;
+        }
+
+        .benchmark-table th {
+            background: #2C2C2C;
+            color: white;
+            font-weight: bold;
+        }
+
+        .benchmark-table tr:hover {
+            background: #f9f9f9;
+        }
+
+        /* Actions */
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: 15px;
+        }
+
+        .action-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid;
+        }
+
+        .action-card.immediate {
+            border-left-color: #E74C3C;
+        }
+
+        .action-card.short {
+            border-left-color: #F39C12;
+        }
+
+        .action-card.medium {
+            border-left-color: #2980B9;
+        }
+
+        .action-card h3 {
+            font-size: 16px;
+            color: #2C2C2C;
+            margin-bottom: 8px;
+        }
+
+        .action-card p {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .action-card ul {
+            font-size: 12px;
+            color: #555;
+            margin: 10px 0 10px 20px;
+        }
+
+        .action-card .budget {
+            font-size: 12px;
+            font-weight: bold;
+            color: #FF6B35;
+        }
+
+        /* Packages */
+        .packages-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .package-card {
+            background: white;
+            color: #2C2C2C;
+            padding: 25px;
+            border-radius: 8px;
+            text-align: center;
+            border-top: 4px solid #FED700;
+        }
+
+        .package-card.recommended {
+            background: #FED700;
+            color: #2C2C2C;
+            border-top-color: #FF6B35;
+            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.2);
+        }
+
+        .package-card h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .package-card .price {
+            font-size: 28px;
+            color: #FF6B35;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .package-card .duration {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .package-card.recommended .duration {
+            color: #2C2C2C;
+        }
+
+        .package-card ul {
+            list-style: none;
+            text-align: left;
+            margin-bottom: 20px;
+            font-size: 12px;
+        }
+
+        .package-card li {
+            padding: 6px 0;
+            border-bottom: 1px solid #eee;
+            color: #444;
+        }
+
+        .package-card.recommended li {
+            border-bottom-color: rgba(0,0,0,0.1);
+            color: #2C2C2C;
+        }
+
+        .package-card li:last-child {
+            border-bottom: none;
+        }
+
+        .contact-info {
+            background: #2C2C2C;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .contact-info a {
+            color: #FED700;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        /* Navigation */
+        .controls {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 50;
+        }
+
+        .nav-button {
+            background: #2C2C2C;
+            color: #FED700;
+            border: 2px solid #FED700;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .nav-button:hover {
+            background: #FED700;
+            color: #2C2C2C;
+        }
+
+        .slide-counter {
+            background: #2C2C2C;
+            color: #FED700;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: bold;
+            min-width: 60px;
+            text-align: center;
+        }
+
+        @media (max-width: 900px) {
+            .cards-grid, .three-columns, .packages-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
+    <div class="nav-sidebar" id="sidebar">
+        <div class="nav-dot active" data-slide="0" data-tooltip="Couverture">1</div>
+        <div class="nav-dot" data-slide="1" data-tooltip="Sommaire">2</div>
+        <div class="nav-dot" data-slide="2" data-tooltip="Score Global">3</div>
+        <div class="nav-dot" data-slide="3" data-tooltip="Identité Visuelle">4</div>
+        <div class="nav-dot" data-slide="4" data-tooltip="Site Web">5</div>
+        <div class="nav-dot" data-slide="5" data-tooltip="Réseaux Sociaux">6</div>
+        <div class="nav-dot" data-slide="6" data-tooltip="Réputation">7</div>
+        <div class="nav-dot" data-slide="7" data-tooltip="Stratégie Éditoriale">8</div>
+        <div class="nav-dot" data-slide="8" data-tooltip="Maturité Digitale">9</div>
+        <div class="nav-dot" data-slide="9" data-tooltip="Benchmark">10</div>
+        <div class="nav-dot" data-slide="10" data-tooltip="Actions Prioritaires">11</div>
+        <div class="nav-dot" data-slide="11" data-tooltip="Offre LOLLY">12</div>
+    </div>
 
-<!-- NAVIGATION LATÉRALE -->
-<nav id="nav">
-  <div class="logo-nav">LOLLY</div>
-  <div class="nav-dot active" onclick="goTo(0)" data-slide="0">1<div class="tooltip">Couverture</div></div>
-  <div class="nav-dot" onclick="goTo(1)" data-slide="1">2<div class="tooltip">Sommaire</div></div>
-  <div class="nav-dot" onclick="goTo(2)" data-slide="2">3<div class="tooltip">Score Global</div></div>
-  <div class="nav-dot" onclick="goTo(3)" data-slide="3">4<div class="tooltip">Identité Visuelle</div></div>
-  <div class="nav-dot" onclick="goTo(4)" data-slide="4">5<div class="tooltip">Site Web</div></div>
-  <div class="nav-dot" onclick="goTo(5)" data-slide="5">6<div class="tooltip">Réseaux Sociaux</div></div>
-  <div class="nav-dot" onclick="goTo(6)" data-slide="6">7<div class="tooltip">Réputation</div></div>
-  <div class="nav-dot" onclick="goTo(7)" data-slide="7">8<div class="tooltip">Stratégie Éditoriale</div></div>
-  <div class="nav-dot" onclick="goTo(8)" data-slide="8">9<div class="tooltip">Maturité Digitale</div></div>
-  <div class="nav-dot" onclick="goTo(9)" data-slide="9">10<div class="tooltip">Benchmark</div></div>
-  <div class="nav-dot" onclick="goTo(10)" data-slide="10">11<div class="tooltip">Actions Prioritaires</div></div>
-  <div class="nav-dot" onclick="goTo(11)" data-slide="11">12<div class="tooltip">Offre LOLLY</div></div>
-</nav>
+    <div class="container">
+        <div class="slides-container" id="slidesContainer">
+            <!-- SLIDE 0 - Couverture -->
+            <div class="slide slide-cover active" data-slide="0">
+                <div style="position: absolute; top: 30px; left: 40px; font-size: 11px; color: #666; letter-spacing: 3px; text-transform: uppercase; font-weight: 800;">LOLLY Communication — Audit Report</div>
+                <div style="position: absolute; top: 25px; right: 40px; width: 60px; height: 4px; background: #FF6B35; border-radius: 2px;"></div>
+                <div class="cover-content">
+                    <div style="width: 80px; height: 4px; background: #FF6B35; border-radius: 2px; margin: 0 auto 30px;"></div>
+                    <h1>Audit Communication</h1>
+                    <h2>PayDunya — Fintech / Paiement en Ligne</h2>
 
-<!-- SLIDES -->
-<div id="slides">
+                    <div class="cover-meta">
+                        <p><strong>Client :</strong> PayDunya</p>
+                        <p><strong>Secteur :</strong> Fintech · 6 pays · Afrique de l'Ouest</p>
+                        <p><strong>Concurrent :</strong> Wave</p>
+                        <p><strong>Date :</strong> 19 mars 2026</p>
+                        <p><strong>Réalisé par :</strong> LOLLY Communication, Dakar</p>
+                    </div>
 
-  <!-- SLIDE 1: COUVERTURE -->
-  <div class="slide active" id="s1">
-    <div class="cover-pattern"></div>
-    <div class="cover-accent"></div>
-    <div class="cover-logo">LOLLY Communication — Audit Report</div>
-    <div class="cover-bar"></div>
-    <div class="cover-title">Audit<br>Communication</div>
-    <div class="cover-client">PayDunya — Fintech / Paiement en Ligne</div>
-    <div class="cover-meta">
-      <div class="cover-meta-item">
-        <div class="label">Client</div>
-        <div class="val">PayDunya</div>
-      </div>
-      <div class="cover-meta-item">
-        <div class="label">Secteur</div>
-        <div class="val">Fintech · Afrique de l'Ouest</div>
-      </div>
-      <div class="cover-meta-item">
-        <div class="label">Concurrent analysé</div>
-        <div class="val">Wave</div>
-      </div>
-      <div class="cover-meta-item">
-        <div class="label">Date</div>
-        <div class="val">19 mars 2026</div>
-      </div>
-      <div class="cover-meta-item">
-        <div class="label">Score Global</div>
-        <div class="val" style="color:var(--yellow); font-size:20px; font-weight:900;">6,6 / 10</div>
-      </div>
-    </div>
-    <div style="position:absolute; bottom:40px; left:110px; font-size:11px; color:#444; letter-spacing:1px;">
-      Réalisé par LOLLY Communication · Des mots qui touchent, des images qui marquent.
-    </div>
-  </div>
+                    <div class="cover-score">6,3 / 10</div>
+                    <div style="display: flex; gap: 15px; justify-content: center; margin: 20px 0; flex-wrap: wrap;">
+                        <span style="background: rgba(254,215,0,0.15); color: #FED700; padding: 8px 18px; border-radius: 20px; font-size: 13px; font-weight: 700;">Fondations solides</span>
+                        <span style="background: rgba(255,107,53,0.15); color: #FF6B35; padding: 8px 18px; border-radius: 20px; font-size: 13px; font-weight: 700;">Communication à structurer</span>
+                        <span style="background: rgba(231,76,60,0.15); color: #E74C3C; padding: 8px 18px; border-radius: 20px; font-size: 13px; font-weight: 700;">Réputation à sécuriser</span>
+                    </div>
+                </div>
+                <div class="cover-tagline">LOLLY Communication · Des mots qui touchent, des images qui marquent.</div>
+            </div>
 
-  <!-- SLIDE 2: SOMMAIRE -->
-  <div class="slide" id="s2">
-    <div class="page-header">
-      <div class="page-title">Sommaire de l'Audit</div>
-      <div class="page-bar"></div>
-    </div>
-    <div class="s2-grid">
-      <div class="s2-card" onclick="goTo(2)">
-        <div class="s2-num">03</div>
-        <div class="s2-title">🎯 Score Global</div>
-        <div class="s2-sub">Tableau récapitulatif des 6 domaines</div>
-        <div class="s2-score-line">
-          <div class="tag tag-orange">6,6 / 10</div>
-        </div>
-      </div>
-      <div class="s2-card" onclick="goTo(3)">
-        <div class="s2-num">04</div>
-        <div class="s2-title">🎨 Identité Visuelle & Branding</div>
-        <div class="s2-sub">Logo, charte graphique, positionnement</div>
-        <div class="s2-score-line"><div class="tag tag-orange">6,5 / 10</div></div>
-      </div>
-      <div class="s2-card" onclick="goTo(4)">
-        <div class="s2-num">05</div>
-        <div class="s2-title">🌐 Site Web & Présence Digitale</div>
-        <div class="s2-sub">SEO, UX, performance, contenu</div>
-        <div class="s2-score-line"><div class="tag tag-green">7,5 / 10</div></div>
-      </div>
-      <div class="s2-card" onclick="goTo(5)">
-        <div class="s2-num">06</div>
-        <div class="s2-title">📱 Réseaux Sociaux & Contenu</div>
-        <div class="s2-sub">Facebook, Instagram, LinkedIn, TikTok, YouTube</div>
-        <div class="s2-score-line"><div class="tag tag-orange">5,5 / 10</div></div>
-      </div>
-      <div class="s2-card" onclick="goTo(6)">
-        <div class="s2-num">07</div>
-        <div class="s2-title">⭐ Réputation & Avis en Ligne</div>
-        <div class="s2-sub">GMB, avis, presse, mentions web</div>
-        <div class="s2-score-line"><div class="tag tag-orange">6,5 / 10</div></div>
-      </div>
-      <div class="s2-card" onclick="goTo(7)">
-        <div class="s2-num">08</div>
-        <div class="s2-title">✍️ Stratégie Éditoriale</div>
-        <div class="s2-sub">Message, ton, storytelling, blog</div>
-        <div class="s2-score-line"><div class="tag tag-orange">6,5 / 10</div></div>
-      </div>
-      <div class="s2-card" onclick="goTo(8)">
-        <div class="s2-num">09</div>
-        <div class="s2-title">⚙️ Maturité Digitale Interne</div>
-        <div class="s2-sub">API, CRM, automatisations, outils</div>
-        <div class="s2-score-line"><div class="tag tag-green">7,0 / 10</div></div>
-      </div>
-      <div class="s2-card" onclick="goTo(9)">
-        <div class="s2-num">10</div>
-        <div class="s2-title">⚔️ Benchmark vs Wave</div>
-        <div class="s2-sub">Comparatif domaine par domaine</div>
-        <div class="s2-score-line"><div class="tag tag-yellow">Analyse</div></div>
-      </div>
-      <div class="s2-card" onclick="goTo(10)">
-        <div class="s2-num">11</div>
-        <div class="s2-title">🚀 Top 5 Actions Prioritaires</div>
-        <div class="s2-sub">Plan d'action classé par urgence</div>
-        <div class="s2-score-line"><div class="tag tag-orange">Plan d'action</div></div>
-      </div>
-      <div class="s2-card" onclick="goTo(11)">
-        <div class="s2-num">12</div>
-        <div class="s2-title">💼 Offre Commerciale LOLLY</div>
-        <div class="s2-sub">3 packages adaptés à PayDunya</div>
-        <div class="s2-score-line"><div class="tag tag-yellow">Proposition</div></div>
-      </div>
-    </div>
-  </div>
+            <!-- SLIDE 1 - Sommaire -->
+            <div class="slide slide-content" data-slide="1">
+                <div class="slide-header">
+                    <h2>📋 Sommaire</h2>
+                </div>
 
-  <!-- SLIDE 3: SCORE GLOBAL -->
-  <div class="slide" id="s3">
-    <div class="page-header">
-      <div class="page-title">Score Global — PayDunya</div>
-      <div class="page-bar"></div>
-    </div>
-    <div style="display:grid; grid-template-columns:200px 1fr; gap:24px;">
-      <div class="global-score-box" style="display:flex;flex-direction:column;justify-content:center;">
-        <div style="font-size:11px;color:#888;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;">Note Globale</div>
-        <div class="global-score-big">6,6</div>
-        <div style="font-size:14px;color:var(--orange);font-weight:700;margin-top:6px;">/10</div>
-        <div style="height:1px;background:#333;margin:16px 0;"></div>
-        <div class="keywords-row" style="flex-direction:column;gap:8px;align-items:center;">
-          <div class="keyword-chip" style="font-size:11px;">En progression</div>
-          <div class="keyword-chip" style="font-size:11px;background:rgba(255,107,53,.15);color:var(--orange);">À renforcer</div>
-          <div class="keyword-chip" style="font-size:11px;background:rgba(39,174,96,.1);color:var(--green);">Fondations solides</div>
-        </div>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:10px;">
-        <div class="agent-score-row">
-          <div class="agent-label">🎨 Identité Visuelle & Branding</div>
-          <div class="agent-gauge gauge-orange">
-            <div class="gauge-bar"><div class="gauge-fill" style="width:65%;background:var(--orange-score);"></div></div>
-          </div>
-          <div class="agent-num score-orange-text">6,5</div>
-        </div>
-        <div class="agent-score-row">
-          <div class="agent-label">🌐 Site Web & Présence Digitale</div>
-          <div class="agent-gauge gauge-green">
-            <div class="gauge-bar"><div class="gauge-fill" style="width:75%;background:var(--green);"></div></div>
-          </div>
-          <div class="agent-num score-green-text">7,5</div>
-        </div>
-        <div class="agent-score-row">
-          <div class="agent-label">📱 Réseaux Sociaux & Contenu</div>
-          <div class="agent-gauge gauge-orange">
-            <div class="gauge-bar"><div class="gauge-fill" style="width:55%;background:var(--orange-score);"></div></div>
-          </div>
-          <div class="agent-num score-orange-text">5,5</div>
-        </div>
-        <div class="agent-score-row">
-          <div class="agent-label">⭐ Réputation & Avis en Ligne</div>
-          <div class="agent-gauge gauge-orange">
-            <div class="gauge-bar"><div class="gauge-fill" style="width:65%;background:var(--orange-score);"></div></div>
-          </div>
-          <div class="agent-num score-orange-text">6,5</div>
-        </div>
-        <div class="agent-score-row">
-          <div class="agent-label">✍️ Communication & Stratégie Éditoriale</div>
-          <div class="agent-gauge gauge-orange">
-            <div class="gauge-bar"><div class="gauge-fill" style="width:65%;background:var(--orange-score);"></div></div>
-          </div>
-          <div class="agent-num score-orange-text">6,5</div>
-        </div>
-        <div class="agent-score-row">
-          <div class="agent-label">⚙️ Maturité Digitale Interne</div>
-          <div class="agent-gauge gauge-green">
-            <div class="gauge-bar"><div class="gauge-fill" style="width:70%;background:var(--green);"></div></div>
-          </div>
-          <div class="agent-num score-green-text">7,0</div>
-        </div>
-        <div style="margin-top:16px;padding:16px 20px;background:#fff;border-radius:10px;border:2px solid var(--yellow);font-size:13px;color:#444;line-height:1.7;">
-          <strong style="color:var(--black);">📊 Lecture du score :</strong> PayDunya présente une base technique et produit solide (Site web 7,5 — Maturité digitale 7,0), mais accuse un retard sur l'animation de sa communauté digitale (Réseaux sociaux 5,5) et la cohérence globale de sa communication. La marge de progression est significative avec des actions prioritaires à fort ROI identifiées.
-        </div>
-        <div style="display:flex;gap:16px;margin-top:8px;">
-          <div style="flex:1;background:rgba(39,174,96,.1);border:1.5px solid var(--green);border-radius:8px;padding:12px;text-align:center;">
-            <div style="font-size:10px;color:var(--green);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">🟢 Bon niveau (7-10)</div>
-            <div style="font-size:13px;font-weight:600;color:#444;">Site Web · Maturité Digitale</div>
-          </div>
-          <div style="flex:1;background:rgba(243,156,18,.1);border:1.5px solid var(--orange-score);border-radius:8px;padding:12px;text-align:center;">
-            <div style="font-size:10px;color:var(--orange-score);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">🟠 À améliorer (5-6)</div>
-            <div style="font-size:13px;font-weight:600;color:#444;">Branding · Réputation · Édito · RS</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+                <div class="cards-grid">
+                    <div class="card" onclick="currentSlide(3)">
+                        <h3>🎨 Identité Visuelle</h3>
+                        <p>Logo, charte, présence multicanale</p>
+                        <span class="score-tag orange">6,5/10</span>
+                    </div>
+                    <div class="card" onclick="currentSlide(4)">
+                        <h3>🌐 Site Web</h3>
+                        <p>SEO, UX, conversion, certificats</p>
+                        <span class="score-tag green">7,5/10</span>
+                    </div>
+                    <div class="card" onclick="currentSlide(5)">
+                        <h3>📱 Réseaux Sociaux</h3>
+                        <p>Facebook, Instagram, LinkedIn, X, YouTube, TikTok, GitHub</p>
+                        <span class="score-tag orange">5,0/10</span>
+                    </div>
+                    <div class="card" onclick="currentSlide(6)">
+                        <h3>⭐ Réputation</h3>
+                        <p>RéclameICI, Trustpilot, GMB, Play Store, ScamAdviser</p>
+                        <span class="score-tag orange">6,0/10</span>
+                    </div>
+                    <div class="card" onclick="currentSlide(7)">
+                        <h3>✍️ Stratégie Éditoriale</h3>
+                        <p>Blog, newsletter, messaging, storytelling</p>
+                        <span class="score-tag orange">6,0/10</span>
+                    </div>
+                    <div class="card" onclick="currentSlide(8)">
+                        <h3>⚙️ Maturité Digitale</h3>
+                        <p>API, GitHub, CRM, automatisations</p>
+                        <span class="score-tag orange">6,5/10</span>
+                    </div>
+                    <div class="card" onclick="currentSlide(9)">
+                        <h3>⚔️ Benchmark vs Wave</h3>
+                        <p>Comparatif domaine par domaine</p>
+                        <span class="score-tag orange" style="background: #2980B9;">Analyse</span>
+                    </div>
+                    <div class="card" onclick="currentSlide(10)">
+                        <h3>🎯 Actions Prioritaires</h3>
+                        <p>Top 5 actions classées par urgence</p>
+                        <span class="score-tag orange" style="background: #E74C3C;">Plan</span>
+                    </div>
+                    <div class="card" onclick="currentSlide(11)">
+                        <h3>💼 Offre LOLLY</h3>
+                        <p>3 packages adaptés aux faiblesses détectées</p>
+                        <span class="score-tag orange" style="background: #FF6B35;">Proposition</span>
+                    </div>
+                </div>
+            </div>
 
-  <!-- SLIDE 4: IDENTITÉ VISUELLE -->
-  <div class="slide domain-slide" id="s4">
-    <div class="domain-header">
-      <div class="domain-title-group">
-        <div class="domain-emoji">🎨</div>
-        <div class="domain-title">Identité Visuelle & Branding</div>
-        <div class="domain-subtitle">Logo · Charte graphique · Positionnement · Offre</div>
-      </div>
-      <div class="domain-score-area">
-        <div class="score-badge score-orange">6,5 <span style="font-size:14px;font-weight:600;">/10</span></div>
-      </div>
-    </div>
-    <div class="domain-cols">
-      <div class="domain-col col-forces">
-        <div class="col-header green">✅ Forces</div>
-        <ul class="col-list green-arrow">
-          <li>Logo bleu distinctif, cohérent et décliné correctement (versions colorée & blanche)</li>
-          <li>Positionnement clair : 3 piliers "Pionnier · Sécurisé · Performant"</li>
-          <li>Présence multicanale : Facebook 16,7K · LinkedIn 17,3K (vérifié ✓) · Instagram 2,3K <span class="tag tag-green" style="font-size:9px;">✅ Chrome</span></li>
-          <li>Bannière cohérente "10 ans d'Audace, d'Impact & d'Engagement" sur LinkedIn + Facebook <span class="tag tag-green" style="font-size:9px;">✅ Chrome</span></li>
-          <li>Hiérarchie visuelle structurée sur le site (6 solutions en cartes distinctes)</li>
-          <li>Social Shop innovant comme avantage différenciant visible</li>
-          <li>Illustrations animées (SVG Lottie) qui modernisent l'interface</li>
-        </ul>
-      </div>
-      <div class="domain-col col-faiblesses">
-        <div class="col-header red">⚠️ Faiblesses</div>
-        <ul class="col-list red-arrow">
-          <li>Aucune brand guidelines publique consultable par les partenaires</li>
-          <li>Slogan "Digitaliser votre business" générique, peu différenciant vs Wave</li>
-          <li>Pas de page "À propos" ou storytelling fondateur visible</li>
-          <li>Design conservateur, palette bleu/blanc/gris standard fintech</li>
-          <li>Décalage entre "relation de proximité" revendiquée et manque d'humain visible</li>
-          <li>Supports partenaires non centralisés (pas de Brand Portal)</li>
-        </ul>
-      </div>
-      <div class="domain-col col-opportunites">
-        <div class="col-header blue">💡 Opportunités</div>
-        <ul class="col-list blue-arrow">
-          <li>Créer un Brand Portal public (logos SVG, couleurs hex, guidelines)</li>
-          <li>Développer une signature visuelle distinctive (motif, illustration)</li>
-          <li>Renforcer le storytelling sénégalais : équipe fondatrice, vision locale</li>
-          <li>Optimiser la cohérence mobile (app PAYDUNYA Business)</li>
-          <li>Campagnes visuelles saisonnières pour les réseaux sociaux</li>
-          <li>Visual comparator tarifaire vs Wave pour différenciation claire</li>
-        </ul>
-      </div>
-    </div>
-    <div class="reco-section">
-      <div class="reco-title">🎯 Top 3 Recommandations</div>
-      <div class="reco-list">
-        <div class="reco-item">
-          <div class="reco-num">1</div>
-          <div class="reco-text">
-            Concevoir & publier une Brand Guidelines complète (logo, couleurs, typographie, tone of voice, usages interdits) — hébergement type Brandfetch
-            <div class="reco-budget">💰 Budget estimé : 150 000 – 250 000 XOF</div>
-          </div>
-        </div>
-        <div class="reco-item">
-          <div class="reco-num">2</div>
-          <div class="reco-text">
-            Créer une mini-campagne visuelle "Ambition 2026" avec illustrations singulières (3-5 assets) pour web + réseaux sociaux — délégation à Awa Sow (motion + illustration)
-            <div class="reco-budget">💰 Budget estimé : 200 000 – 350 000 XOF</div>
-          </div>
-        </div>
-        <div class="reco-item">
-          <div class="reco-num">3</div>
-          <div class="reco-text">
-            Optimiser l'UX/UI de l'application mobile pour assurer cohérence avec la charte web (logo, couleurs, micro-interactions, accessibilité devices bas de gamme)
-            <div class="reco-budget">💰 Budget estimé : 400 000 – 600 000 XOF</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="benchmark-box">
-      <strong>⚔️ Benchmark Wave :</strong> Wave déploie un positionnement inverse : messaging simplifié autour de la "gratuité" et l'"accessibilité", logo minimaliste épuré. Wave a investi dans des assets de marque publics (Brandfetch, Behance) créant une perception de "scale technologique" supérieure. PayDunya doit capitaliser sur son ADN B2B professionnel et son ancrage local sénégalais plutôt que de faire la course à l'inclusion grand public.
-    </div>
-  </div>
+            <!-- SLIDE 2 - Score Global -->
+            <div class="slide slide-content" data-slide="2">
+                <div class="slide-header">
+                    <h2>📊 Score Global</h2>
+                </div>
 
-  <!-- SLIDE 5: SITE WEB -->
-  <div class="slide domain-slide" id="s5">
-    <div class="domain-header">
-      <div class="domain-title-group">
-        <div class="domain-emoji">🌐</div>
-        <div class="domain-title">Présence Digitale & Site Web</div>
-        <div class="domain-subtitle">SEO · UX · Performance · Contenu · Documentation</div>
-      </div>
-      <div class="domain-score-area">
-        <div class="score-badge score-green">7,5 <span style="font-size:14px;font-weight:600;">/10</span></div>
-      </div>
-    </div>
-    <div class="domain-cols">
-      <div class="domain-col col-forces">
-        <div class="col-header green">✅ Forces</div>
-        <ul class="col-list green-arrow">
-          <li>Title SEO percutant : "La digitalisation de tous vos paiements | PayDunya"</li>
-          <li>Certification PCI-DSS Level 1 affichée en premier plan</li>
-          <li>Documentation développeurs dédiée (developers.paydunya.com)</li>
-          <li>7 solutions produits distinctes, bien différenciées visuellement</li>
-          <li>Design moderne : illustrations Lottie, simulateurs, partenaires affichés</li>
-          <li>6 témoignages clients avec preuve sociale concrète</li>
-          <li>Blog éducatif actif (blog.paydunya.com) par secteur</li>
-          <li>Responsive design et compatibilité mobile assurée</li>
-          <li>HTTPS actif ✅</li>
-          <li>Menu clair : Solutions, Sécurité, Comment ça marche?, Développeur + double CTA (Créer un compte / Se connecter) <span class="tag tag-green" style="font-size:9px;">✅ Chrome</span></li>
-          <li>Simulateur de produit interactif avec CTA dédié <span class="tag tag-green" style="font-size:9px;">✅ Chrome</span></li>
-          <li>Logos partenaires visibles : Orange Money, Wave, VISA, Mixx, Mastercard, Moov, MTN <span class="tag tag-green" style="font-size:9px;">✅ Chrome</span></li>
-        </ul>
-      </div>
-      <div class="domain-col col-faiblesses">
-        <div class="col-header red">⚠️ Faiblesses</div>
-        <ul class="col-list red-arrow">
-          <li>Meta description absente → perte de CTR sur Google</li>
-          <li>Aucune information tarifaire publique (freemium, commissions, forfaits)</li>
-          <li>Blog sous-optimisé SEO : faible maillage interne</li>
-          <li>Pas de section "Cas d'usage" structurée avec ROI démontré</li>
-          <li>Aucune page "À propos" ou "Équipe" dans le menu principal <span class="tag tag-red" style="font-size:9px;">⚠️ Vérifié Chrome</span></li>
-          <li>CTA non hiérarchisés par persona (PME ≠ Développeur ≠ Grand compte)</li>
-          <li>Page Sécurité peu exploitée (certificat affiché, pas de page dédiée)</li>
-          <li>Estimation : Core Web Vitals non optimaux (LCP 2-4s)</li>
-          <li>Pas de contenu multilingue visible (EN/FR au minimum)</li>
-        </ul>
-      </div>
-      <div class="domain-col col-opportunites">
-        <div class="col-header blue">💡 Opportunités</div>
-        <ul class="col-list blue-arrow">
-          <li>Créer une page "Pricing & Plans" transparents (3 tiers tarifaires)</li>
-          <li>Blog SEO : 15 articles/an sur mots-clés long-tail fintech Afrique</li>
-          <li>10 case studies par secteur (EdTech, e-commerce, SaaS, tourisme)</li>
-          <li>Exposer extraits API sur la page d'accueil (SDK snippets)</li>
-          <li>Optimisation Core Web Vitals → gain ranking Google</li>
-          <li>Contenu multilingue : EN, PT, AR pour expansion CEDEAO</li>
-          <li>Intégration blog sidebar CTA → +35% trafic organique</li>
-        </ul>
-      </div>
-    </div>
-    <div class="reco-section">
-      <div class="reco-title">🎯 Top 3 Recommandations</div>
-      <div class="reco-list">
-        <div class="reco-item">
-          <div class="reco-num">1</div>
-          <div class="reco-text">
-            Créer une page "Pricing & Plans" transparente (3 tiers : Startup / PME / Enterprise) avec simulateur de coûts
-            <div class="reco-budget">💰 Budget estimé : 450 000 – 750 000 XOF</div>
-          </div>
-        </div>
-        <div class="reco-item">
-          <div class="reco-num">2</div>
-          <div class="reco-text">
-            Refondre le Blog + stratégie SEO content (calendrier 12 mois, mots-clés ciblés, CTA contextualisés, ebooks lead-gen)
-            <div class="reco-budget">💰 Budget estimé : 1 200 000 – 1 800 000 XOF</div>
-          </div>
-        </div>
-        <div class="reco-item">
-          <div class="reco-num">3</div>
-          <div class="reco-text">
-            Produire 5 "Customer Stories" illustrés par secteur (avant/après, volumes, ROI) — shooting + montage via Awa Sow
-            <div class="reco-budget">💰 Budget estimé : 800 000 – 1 200 000 XOF</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="benchmark-box">
-      <strong>⚔️ Benchmark Wave :</strong> Wave.com adopte un messaging ultra-simplifié ("Mobile money, reinvented") avec double CTA vers téléchargement app. PayDunya détient un avantage structurel : documentation API complète, gamme produits plus riche, blog existant. Mais Wave surpasse sur clarté tarifaire et UX conversionnelle mobile. L'acquisition par Peach Payments (avril 2025) ouvre de nouvelles audiences : capitaliser via landing pages EN dédiées Afrique du Sud.
-    </div>
-  </div>
+                <div class="legend-bar">
+                    <span><strong>Légende des scores :</strong></span>
+                    <span style="margin-left: auto; color: #27AE60;">🟢 7-10 Bon niveau</span>
+                    <span style="color: #F39C12;">🟠 5-6 À améliorer</span>
+                    <span style="color: #E74C3C;">🔴 0-4 Critique</span>
+                </div>
 
-  <!-- SLIDE 6: RÉSEAUX SOCIAUX -->
-  <div class="slide domain-slide" id="s6">
-    <div class="domain-header">
-      <div class="domain-title-group">
-        <div class="domain-emoji">📱</div>
-        <div class="domain-title">Réseaux Sociaux & Contenu</div>
-        <div class="domain-subtitle">Facebook · Instagram · LinkedIn · TikTok · YouTube</div>
-      </div>
-      <div class="domain-score-area">
-        <div class="score-badge score-orange">5,5 <span style="font-size:14px;font-weight:600;">/10</span></div>
-      </div>
-    </div>
-    <div class="platform-grid">
-      <div class="platform-card">
-        <div class="platform-icon">📘</div>
-        <div class="platform-name">Facebook</div>
-        <div class="platform-note score-orange-text">5/10</div>
-        <div style="font-size:10px;color:#888;margin-top:4px;">16,7K abonnés · <strong style="color:var(--red);">62% recommandé (35 avis)</strong> · Non certifié</div>
-        <div style="font-size:8px;color:var(--green);margin-top:2px;">✅ Chrome</div>
-      </div>
-      <div class="platform-card">
-        <div class="platform-icon">📸</div>
-        <div class="platform-name">Instagram</div>
-        <div class="platform-note score-orange-text">5/10</div>
-        <div style="font-size:10px;color:#888;margin-top:4px;">2 353 abonnés · 290 posts · Non vérifié · 1 seul Highlight</div>
-        <div style="font-size:8px;color:var(--green);margin-top:2px;">✅ Chrome</div>
-      </div>
-      <div class="platform-card">
-        <div class="platform-icon">💼</div>
-        <div class="platform-name">LinkedIn</div>
-        <div class="platform-note score-green-text">7,5/10</div>
-        <div style="font-size:10px;color:#888;margin-top:4px;">17 317 abonnés · <strong style="color:var(--green);">✓ Vérifié</strong> · Bannière 10 ans</div>
-        <div style="font-size:8px;color:var(--green);margin-top:2px;">✅ Chrome</div>
-      </div>
-      <div class="platform-card">
-        <div class="platform-icon">🎵</div>
-        <div class="platform-name">TikTok</div>
-        <div class="platform-note score-red-text">1/10</div>
-        <div style="font-size:10px;color:#888;margin-top:4px;">Absent · Opportunité majeure</div>
-      </div>
-      <div class="platform-card">
-        <div class="platform-icon">▶️</div>
-        <div class="platform-name">YouTube</div>
-        <div class="platform-note score-red-text">2/10</div>
-        <div style="font-size:10px;color:#888;margin-top:4px;">Absent · Canal clé non exploité</div>
-      </div>
-    </div>
-    <div class="domain-cols" style="margin-top:12px;">
-      <div class="domain-col col-forces">
-        <div class="col-header green">✅ Forces</div>
-        <ul class="col-list green-arrow">
-          <li>LinkedIn dominée : 17K+ audience B2B, contenu stratégique billingue (FR/EN)</li>
-          <li>Bio Instagram optimisée avec proposition de valeur claire</li>
-          <li>Présence Facebook établie depuis 2015 (antériorité + confiance)</li>
-          <li>Engagement LinkedIn modéré mais stable (27-518 réactions/post)</li>
-          <li>Contenu gouvernance + impact social bien ciblé B2B</li>
-        </ul>
-      </div>
-      <div class="domain-col col-faiblesses">
-        <div class="col-header red">⚠️ Faiblesses</div>
-        <ul class="col-list red-arrow">
-          <li>Absence totale TikTok et YouTube (canaux <35 ans non exploités)</li>
-          <li>X/Twitter dormant : 1 546 followers, zéro contenu publié</li>
-          <li>Aucun badge de certification Meta (Facebook/Instagram)</li>
-          <li>Pas de contenu vidéo court (Reels, Stories, Shorts)</li>
-          <li>Asymétrie : LinkedIn surperformant vs Instagram/Facebook stagnants</li>
-        </ul>
-      </div>
-      <div class="domain-col col-opportunites">
-        <div class="col-header blue">💡 Opportunités</div>
-        <ul class="col-list blue-arrow">
-          <li>Lancer TikTok + YouTube : tutos paiements, stories clients, explainers</li>
-          <li>Stratégie Reels Instagram 3x/semaine (gap concurrentiel encore ouvert)</li>
-          <li>Activer X/Twitter avec thought leadership fintech (4 posts/semaine)</li>
-          <li>User-generated content : mobiliser les marchands pour témoignages vidéo</li>
-          <li>Contenu localisé par pays : SN, CI, BF (vs pan-africain générique)</li>
-          <li>Certification Meta (démarche gratuite, impact crédibilité fort)</li>
-        </ul>
-      </div>
-    </div>
-    <div class="reco-section" style="margin-top:10px;">
-      <div class="reco-title">🎯 Top 3 Recommandations</div>
-      <div class="reco-list">
-        <div class="reco-item">
-          <div class="reco-num">1</div>
-          <div class="reco-text">
-            Créer chaîne YouTube officielle + 10 vidéos fondatrices (tutos produits, webinaires, case studies) — délégation à Awa Sow pour la production
-            <div class="reco-budget">💰 Budget estimé : 400 000 – 600 000 XOF</div>
-          </div>
-        </div>
-        <div class="reco-item">
-          <div class="reco-num">2</div>
-          <div class="reco-text">
-            Lancer TikTok + Instagram Reels (15-60s) : 3 publications/semaine · Créateurs de contenu locaux + Awa Sow
-            <div class="reco-budget">💰 Budget estimé : 200 000 – 350 000 XOF/mois</div>
-          </div>
-        </div>
-        <div class="reco-item">
-          <div class="reco-num">3</div>
-          <div class="reco-text">
-            Demander les certifications Meta (Facebook + Instagram) et activer X/Twitter avec stratégie B2B
-            <div class="reco-budget">💰 Budget estimé : 80 000 XOF (gestion communauté) + certification gratuite</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+                <div class="global-score-box">
+                    <h3>Score Global PayDunya</h3>
+                    <div class="global-score-value">6,3/10</div>
+                    <div class="score-gauge">
+                        <div class="score-gauge-fill" style="width: 63%;"></div>
+                    </div>
+                </div>
 
-  <!-- SLIDE 7: RÉPUTATION -->
-  <div class="slide domain-slide" id="s7">
-    <div class="domain-header">
-      <div class="domain-title-group">
-        <div class="domain-emoji">⭐</div>
-        <div class="domain-title">Réputation & Avis en Ligne</div>
-        <div class="domain-subtitle">GMB · Stores · Presse · Mentions web · Avis clients</div>
-      </div>
-      <div class="domain-score-area">
-        <div class="score-badge score-orange">6,5 <span style="font-size:14px;font-weight:600;">/10</span></div>
-      </div>
-    </div>
-    <div class="domain-cols">
-      <div class="domain-col col-forces">
-        <div class="col-header green">✅ Forces</div>
-        <ul class="col-list green-arrow">
-          <li>Acquisition par Peach Payments (avril 2025) : signal fort de crédibilité internationale</li>
-          <li>Présence dans SenPages (annuaires locaux sénégalais)</li>
-          <li>50 000 transactions/jour, 4 Mds FCFA CA (données vérifiées Pulse.sn)</li>
-          <li>Certification PCI-DSS Level 1 + licence BCEAO valide</li>
-          <li>Couverture presse positive : Pulse.sn, Jeune Afrique, Agence Ecofin</li>
-          <li>Site jugé "légitime" par ScamAdviser et FranceVérif</li>
-        </ul>
-      </div>
-      <div class="domain-col col-faiblesses">
-        <div class="col-header red">⚠️ Faiblesses</div>
-        <ul class="col-list red-arrow">
-          <li>Score RéclameICI critique : <strong>9,9/100</strong> — alerte reputationnelle</li>
-          <li><strong>Facebook : 62% de recommandation sur 35 avis</strong> — signal de confiance faible <span class="tag tag-red" style="font-size:9px;">⚠️ Vérifié Chrome</span></li>
-          <li><strong>Play Store MyDunya : 10K+ DL, aucune note affichée</strong> — nombre insuffisant de reviews <span class="tag tag-red" style="font-size:9px;">⚠️ Vérifié Chrome</span></li>
-          <li><strong>Aucune fiche Google My Business</strong> — confirmé par recherche Chrome directe <span class="tag tag-red" style="font-size:9px;">⚠️ Vérifié Chrome</span></li>
-          <li>Avis stores mitigés : problèmes de synchronisation, comptabilité signalés</li>
-          <li>Mentions isolées de fraudes sur des plateformes tierces</li>
-          <li>Aucune réponse visible aux avis négatifs (RéclameICI, stores)</li>
-          <li>Community management apparent peu actif</li>
-        </ul>
-      </div>
-      <div class="domain-col col-opportunites">
-        <div class="col-header blue">💡 Opportunités</div>
-        <ul class="col-list blue-arrow">
-          <li>Capitaliser sur l'acquisition Peach Payments dans une campagne PR</li>
-          <li>Créer et optimiser la fiche Google My Business (adresse + photos + avis)</li>
-          <li>Programme de gestion proactive des avis négatifs (réponses 48h)</li>
-          <li>Améliorer rating App Stores : correction bugs + push avis positifs</li>
-          <li>Renforcer community management (8-12 posts/mois + interactions)</li>
-          <li>Publier un "Security & Trust" report annuel (transparence)</li>
-        </ul>
-      </div>
-    </div>
-    <div class="reco-section">
-      <div class="reco-title">🎯 Top 3 Recommandations</div>
-      <div class="reco-list">
-        <div class="reco-item">
-          <div class="reco-num">1</div>
-          <div class="reco-text">
-            Mettre en place une fiche Google My Business complète (adresse, horaires, photos bureau, invitation aux avis, CTA contact)
-            <div class="reco-budget">💰 Budget estimé : 0 XOF (démarche gratuite) + 50 000 XOF gestion mensuelle</div>
-          </div>
-        </div>
-        <div class="reco-item">
-          <div class="reco-num">2</div>
-          <div class="reco-text">
-            Lancer un programme de réponse aux avis négatifs : formation équipe support, réponse 48h sur RéclameICI/stores, documentation des résolutions
-            <div class="reco-budget">💰 Budget estimé : 500 000 – 1 000 000 XOF (outils monitoring + formation)</div>
-          </div>
-        </div>
-        <div class="reco-item">
-          <div class="reco-num">3</div>
-          <div class="reco-text">
-            Campagne PR autour de l'acquisition Peach Payments : communiqué de presse, webinaire expansion, partenariats médias (Jeune Afrique, Agence Ecofin)
-            <div class="reco-budget">💰 Budget estimé : 1 500 000 – 2 500 000 XOF (RP + diffusion)</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="benchmark-box">
-      <strong>⚔️ Benchmark Wave :</strong> Wave domine avec 4-5M comptes actifs au Sénégal et 70% de part de marché en CI. Présence médias massive, brand equity de licorne (valorisation 1,7 Mrd $), reviews stores positives. PayDunya doit jouer sur la <strong>niche B2B, l'innovation post-acquisition et la transparence</strong> pour construire une réputation de confiance différenciante.
-    </div>
-  </div>
+                <div class="score-items">
+                    <div class="score-item">
+                        <div class="score-item-label"><span>🎨 Identité Visuelle</span> <span>6,5/10</span></div>
+                        <div class="score-item-bar"><div class="score-item-bar-fill bar-orange" style="width: 65%;"></div></div>
+                    </div>
+                    <div class="score-item">
+                        <div class="score-item-label"><span>🌐 Site Web</span> <span>7,5/10</span></div>
+                        <div class="score-item-bar"><div class="score-item-bar-fill bar-green" style="width: 75%;"></div></div>
+                    </div>
+                    <div class="score-item">
+                        <div class="score-item-label"><span>📱 Réseaux Sociaux</span> <span>5,0/10</span></div>
+                        <div class="score-item-bar"><div class="score-item-bar-fill bar-orange" style="width: 50%;"></div></div>
+                    </div>
+                    <div class="score-item">
+                        <div class="score-item-label"><span>⭐ Réputation</span> <span>6,0/10</span></div>
+                        <div class="score-item-bar"><div class="score-item-bar-fill bar-orange" style="width: 60%;"></div></div>
+                    </div>
+                    <div class="score-item">
+                        <div class="score-item-label"><span>✍️ Stratégie Éditoriale</span> <span>6,0/10</span></div>
+                        <div class="score-item-bar"><div class="score-item-bar-fill bar-orange" style="width: 60%;"></div></div>
+                    </div>
+                    <div class="score-item">
+                        <div class="score-item-label"><span>⚙️ Maturité Digitale</span> <span>6,5/10</span></div>
+                        <div class="score-item-bar"><div class="score-item-bar-fill bar-orange" style="width: 65%;"></div></div>
+                    </div>
+                </div>
 
-  <!-- SLIDE 8: STRATÉGIE ÉDITORIALE -->
-  <div class="slide domain-slide" id="s8">
-    <div class="domain-header">
-      <div class="domain-title-group">
-        <div class="domain-emoji">✍️</div>
-        <div class="domain-title">Communication & Stratégie Éditoriale</div>
-        <div class="domain-subtitle">Message · Ton · Storytelling · Blog · RP</div>
-      </div>
-      <div class="domain-score-area">
-        <div class="score-badge score-orange">6,5 <span style="font-size:14px;font-weight:600;">/10</span></div>
-      </div>
-    </div>
-    <div class="domain-cols">
-      <div class="domain-col col-forces">
-        <div class="col-header green">✅ Forces</div>
-        <ul class="col-list green-arrow">
-          <li>Tagline défini : "Développez votre potentiel grâce à nos solutions de paiements digitals"</li>
-          <li>Piliers de marque solides : Pioneer · Secure · Performant</li>
-          <li>Certification PCI-DSS + agrément BCEAO régulièrement mentionnés</li>
-          <li>Blog actif avec contenu spécialisé par secteur (éducation, tourisme, hospitalité)</li>
-          <li>Message B2B cohérent sur la valeur numérique pour les PME</li>
-          <li>Histoire fondatrice authentique (2015, accès des femmes au paiement en ligne)</li>
-          <li>Présence multicanale (web + réseaux + blog)</li>
-        </ul>
-      </div>
-      <div class="domain-col col-faiblesses">
-        <div class="col-header red">⚠️ Faiblesses</div>
-        <ul class="col-list red-arrow">
-          <li>Absence de newsletter B2B structurée et régulière</li>
-          <li>Incohérence tonale : registre professionnel Enterprise mélangé à "accès facile PME"</li>
-          <li>Blog insuffisamment positionné en thought leadership fintech</li>
-          <li>Pas de communiqués de presse proactifs (communication réactive uniquement)</li>
-          <li>Message produit fragmenté : 6 noms de produits sans unification narrative</li>
-          <li>Peu d'adaptation culturelle visible (pas de nuances régionales SN/CI/BF)</li>
-          <li>Positionnement face à Wave flou (segments complémentaires non clairement articulés)</li>
-        </ul>
-      </div>
-      <div class="domain-col col-opportunites">
-        <div class="col-header blue">💡 Opportunités</div>
-        <ul class="col-list blue-arrow">
-          <li>Lancer "PayDunya Insights" : newsletter B2B éducative mensuelle</li>
-          <li>Thought leadership LinkedIn des fondateurs et execs</li>
-          <li>Monétiser le blog : e-books, webinaires enregistrés, certifications gratuites</li>
-          <li>5-10 vidéos "Client Success Stories" pour converter des prospects similaires</li>
-          <li>Partenariats médias proactifs (Jeune Afrique, Pulse, Agence Ecofin)</li>
-          <li>Académie PayDunya : formations en ligne, podcasts, certifications PME</li>
-          <li>Localiser messages par marché (Dakar, Abidjan, Douala)</li>
-        </ul>
-      </div>
-    </div>
-    <div class="reco-section">
-      <div class="reco-title">🎯 Top 3 Recommandations</div>
-      <div class="reco-list">
-        <div class="reco-item">
-          <div class="reco-num">1</div>
-          <div class="reco-text">
-            Lancer une newsletter B2B segmentée "PayDunya Insights" (3 segments : PME Tech, PME Services, Institutions) — automatisation via N8N
-            <div class="reco-budget">💰 Budget estimé : 2 500 000 – 3 500 000 XOF (design + copy + automation)</div>
-          </div>
-        </div>
-        <div class="reco-item">
-          <div class="reco-num">2</div>
-          <div class="reco-text">
-            Produire 12 vidéos "Client Success" court-format (60-90s) pour LinkedIn + Reels — partenariat LOLLY (Awa Sow production)
-            <div class="reco-budget">💰 Budget estimé : 6 000 000 – 8 000 000 XOF (shooting + montage + diffusion)</div>
-          </div>
-        </div>
-        <div class="reco-item">
-          <div class="reco-num">3</div>
-          <div class="reco-text">
-            Structurer une stratégie RP : 1 communiqué/mois, 2 interviews d'expert/trimestre, partenariats Jeune Afrique / Agence Ecofin
-            <div class="reco-budget">💰 Budget estimé : 3 500 000 XOF/semestre (rédaction + relations presse + achat espace)</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="benchmark-box">
-      <strong>⚔️ Benchmark Wave :</strong> Wave gagne par <strong>clarté et simplicité</strong> (promesse unique : gratuité + accessibilité, tonalité inclusive). PayDunya est plus institutionnel et B2B, mais fragmenté en sous-produits. La faiblesse principale de PayDunya : absence d'unification narrative malgré de bons éléments existants. Recommandation : articuler clairement la distinction PayDunya (B2B, PME, intégration API) vs Wave (grand public, mobile money) dans chaque support.
-    </div>
-  </div>
+                <div class="summary-box">
+                    <h4>Mots-clés de l'analyse</h4>
+                    <div class="keywords">
+                        <span class="keyword-tag">Fondations solides</span>
+                        <span class="keyword-tag">Communication à structurer</span>
+                        <span class="keyword-tag">Réputation à sécuriser</span>
+                    </div>
+                    <h4 style="margin-top: 15px;">Note d'analyse</h4>
+                    <p class="analysis-note">PayDunya a une base technique et produit exceptionnelle (Site Web 7,5/10) mais la communication ne reflète pas cette qualité. L'urgence porte sur la réputation (RéclameICI 9,9/100 critique, Facebook 62% recommandation). L'infrastructure digitale est mature mais la stratégie de contenu manque de structure. Une réorganisation complète de la présence publique s'impose sur 6 mois.</p>
+                </div>
+            </div>
 
-  <!-- SLIDE 9: MATURITÉ DIGITALE -->
-  <div class="slide domain-slide" id="s9">
-    <div class="domain-header">
-      <div class="domain-title-group">
-        <div class="domain-emoji">⚙️</div>
-        <div class="domain-title">Maturité Digitale Interne</div>
-        <div class="domain-subtitle">API · CRM · Automatisations · Stack tech · App mobile</div>
-      </div>
-      <div class="domain-score-area">
-        <div class="score-badge score-green">7,0 <span style="font-size:14px;font-weight:600;">/10</span></div>
-      </div>
-    </div>
-    <div class="domain-cols">
-      <div class="domain-col col-forces">
-        <div class="col-header green">✅ Forces</div>
-        <ul class="col-list green-arrow">
-          <li>Documentation API exceptionnelle (developers.paydunya.com) : 6+ SDKs (PHP, Python, Java, .NET, Node, Ruby)</li>
-          <li>Intégrations e-commerce natives : WordPress, WooCommerce, PrestaShop, Magento</li>
-          <li>Stack technologique robuste : Google Analytics, Hotjar, Bugsnag, Cloudflare</li>
-          <li>Services automatisés : Collect (paiements récurrents), Push (déboursements masse)</li>
-          <li>Support client multicanal avec Intercom intégré</li>
-          <li>Applications mobiles natives (MyDunya 10K+ DL Android — MAJ 23/02/2026 — aucune note Store visible) <span class="tag tag-red" style="font-size:9px;">⚠️ Corrigé Chrome</span></li>
-          <li>18+ opérateurs intégrés (Orange Money, Wave, MTN, Moov, cartes Mastercard)</li>
-          <li>Certification PCI-DSS + protection Cloudflare anti-DDoS</li>
-          <li>Plugin Bubble pour développeurs low-code + revenue sharing partenaires</li>
-        </ul>
-      </div>
-      <div class="domain-col col-faiblesses">
-        <div class="col-header red">⚠️ Faiblesses</div>
-        <ul class="col-list red-arrow">
-          <li>Absence de CRM propriétaire identifiable (HubSpot, Salesforce, Pipedrive)</li>
-          <li>Pas de chatbot AI ou WhatsApp Bot visible pour le support</li>
-          <li>Aucune newsletter ou email marketing automatisé documenté</li>
-          <li>Marketplace développeurs non formalisée (pas d'App Store PayDunya)</li>
-          <li>Documentation en 2 langues uniquement (FR/EN)</li>
-          <li>Outils collaboratifs internes non documentés publiquement</li>
-          <li>Roadmap publique développeurs absente</li>
-        </ul>
-      </div>
-      <div class="domain-col col-opportunites">
-        <div class="col-header blue">💡 Opportunités</div>
-        <ul class="col-list blue-arrow">
-          <li>Implémenter CRM (HubSpot) pour centraliser gestion clients et pipeline</li>
-          <li>Déployer Chatbot WhatsApp Business 24/7 (Botpress ou N8N)</li>
-          <li>Email marketing segmenté (Brevo/Mailchimp) avec automation rétention</li>
-          <li>Créer Developer Marketplace formelle (App Store PayDunya)</li>
-          <li>Publier Roadmap publique développeurs (endpoints, breaking changes)</li>
-          <li>Badge "PayDunya Certified Developer" pour valoriser l'écosystème</li>
-          <li>Dashboard Analytics exposé aux clients pour tracking conversions temps réel</li>
-        </ul>
-      </div>
-    </div>
-    <div class="reco-section">
-      <div class="reco-title">🎯 Top 3 Recommandations</div>
-      <div class="reco-list">
-        <div class="reco-item">
-          <div class="reco-num">1</div>
-          <div class="reco-text">
-            Implémenter HubSpot CRM : centraliser contacts, deals, pipeline et suivi clients — setup 4-6 semaines
-            <div class="reco-budget">💰 Budget estimé : 2 500 000 XOF/an (licence + consulting implémentation)</div>
-          </div>
+            <!-- SLIDE 3 - Identité Visuelle -->
+            <div class="slide slide-content" data-slide="3">
+                <div class="slide-header">
+                    <h2>🎨 Identité Visuelle</h2>
+                    <div class="score-badge orange">6,5/10</div>
+                </div>
+
+                <p class="analysis-note" style="margin-bottom: 20px;">PayDunya dispose d'un logo reconnaissable et d'un positionnement clair autour de trois piliers (Pionnier, Sécurisé, Performant). La bannière anniversaire "10 ans d'Audace" est bien déclinée sur LinkedIn et Facebook. En revanche, l'absence de Brand Guidelines publiques et de page "À propos" fragilise la cohérence de la marque. Le design du site reste conservateur pour une fintech qui se veut pionnière.</p>
+
+                <div class="three-columns">
+                    <div class="column-box forces">
+                        <h3>✅ Forces</h3>
+                        <ul>
+                            <li>Logo bleu distinctif, cohérent, bien décliné</li>
+                            <li>Positionnement clair : "Pionnier · Sécurisé · Performant"</li>
+                            <li>Présence multicanale (Facebook 16,7K · LinkedIn 17,3K · Instagram 2,3K)</li>
+                            <li>Bannière "10 ans d'Audace" sur LinkedIn + Facebook</li>
+                            <li>Illustrations SVG Lottie modernes</li>
+                            <li>Social Shop comme avantage différenciant</li>
+                        </ul>
+                    </div>
+
+                    <div class="column-box faiblesses">
+                        <h3>❌ Faiblesses</h3>
+                        <ul>
+                            <li>Aucune Brand Guidelines publique</li>
+                            <li>Slogan "Digitaliser votre business" générique</li>
+                            <li>Pas de page "À propos" ou storytelling visible</li>
+                            <li>Design conservateur, palette standard</li>
+                            <li>Supports partenaires non centralisés</li>
+                            <li>Absence de signature visuelle distinctive</li>
+                        </ul>
+                    </div>
+
+                    <div class="column-box opportunites">
+                        <h3>💡 Opportunités</h3>
+                        <ul>
+                            <li>Créer Brand Portal public</li>
+                            <li>Développer signature sénégalaise unique</li>
+                            <li>Renforcer storytelling des fondateurs</li>
+                            <li>Campagnes visuelles saisonnières</li>
+                            <li>Kit partenaire harmonisé</li>
+                            <li>Identité versionnée par marché</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="recommendations">
+                    <h4>Recommandations</h4>
+                    <div class="recommendation-item">
+                        <strong>1. Brand Guidelines complète</strong>
+                        <p>Logo, grille, typographie, couleurs, iconographie, tone of voice, usages partenaires.</p>
+                        <div class="budget">150 000 – 250 000 XOF</div>
+                    </div>
+                    <div class="recommendation-item">
+                        <strong>2. Campagne visuelle "Ambition 2026"</strong>
+                        <p>Posters A3, bannières web, visuels réseaux sociaux, motion design.</p>
+                        <div class="budget">200 000 – 350 000 XOF</div>
+                    </div>
+                    <div class="recommendation-item">
+                        <strong>3. Optimiser cohérence app mobile</strong>
+                        <p>Refonte interface MyDunya avec nouvelle identité.</p>
+                        <div class="budget">400 000 – 600 000 XOF</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 4 - Site Web -->
+            <div class="slide slide-content" data-slide="4">
+                <div class="slide-header">
+                    <h2>🌐 Site Web</h2>
+                    <div class="score-badge green">7,5/10</div>
+                </div>
+
+                <p class="analysis-note" style="margin-bottom: 20px;">Le site paydunya.com est le point fort de l'entreprise : SEO de base correct (title, meta description, Open Graph), certification PCI-DSS v4.0.1 affichée avec certificat téléchargeable, et un portail développeurs dédié. Cependant, 77% des images n'ont pas d'attribut alt (problème d'accessibilité et SEO), aucun schema markup n'est implémenté, et il n'y a ni page tarifaire ni page "À propos" dans le menu principal.</p>
+
+                <div class="three-columns">
+                    <div class="column-box forces">
+                        <h3>✅ Forces</h3>
+                        <ul>
+                            <li>Title SEO percutant</li>
+                            <li>Meta description PRÉSENTE</li>
+                            <li>OG Title + OG Description</li>
+                            <li>PCI-DSS Level 1 v4.0.1</li>
+                            <li>Documentation développeurs (developers.paydunya.com)</li>
+                            <li>Page Sécurité dédiée + certificat</li>
+                            <li>7 solutions produits bien présentées</li>
+                            <li>Blog existant (blog.paydunya.com)</li>
+                            <li>Responsive + HTTPS</li>
+                            <li>Menu clair + double CTA</li>
+                            <li>Simulateur produit interactif</li>
+                        </ul>
+                    </div>
+
+                    <div class="column-box faiblesses">
+                        <h3>❌ Faiblesses</h3>
+                        <ul>
+                            <li>OG Image ABSENTE — partage sans image</li>
+                            <li>37/48 images sans alt (77%) — SEO critique</li>
+                            <li>0 schema markup JSON-LD</li>
+                            <li>Pas de canonical URL</li>
+                            <li>Pas de hreflang</li>
+                            <li>Aucune page "À propos" dans menu</li>
+                            <li>Pas de tarifs publics</li>
+                            <li>Blog ~4 articles seulement (sept-oct 2025)</li>
+                        </ul>
+                    </div>
+
+                    <div class="column-box opportunites">
+                        <h3>💡 Opportunités</h3>
+                        <ul>
+                            <li>Page Pricing transparente</li>
+                            <li>SEO content strategy (50+ articles)</li>
+                            <li>Case studies par secteur</li>
+                            <li>Ajouter 37 images alt manquantes</li>
+                            <li>JSON-LD schema (FAQPage, LocalBusiness)</li>
+                            <li>Page "À propos" + Fondateurs</li>
+                            <li>Hreflang FR/EN</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="recommendations">
+                    <h4>Recommandations</h4>
+                    <div class="recommendation-item">
+                        <strong>1. Audit SEO technique complet</strong>
+                        <p>Corriger 37 images alt, ajouter schema markup, canonical, OG image.</p>
+                        <div class="budget">200 000 – 400 000 XOF</div>
+                    </div>
+                    <div class="recommendation-item">
+                        <strong>2. Stratégie contenu SEO (6 mois)</strong>
+                        <p>50 articles piliers, intégration blog, landing pages solutions.</p>
+                        <div class="budget">1,5M – 2,5M XOF</div>
+                    </div>
+                    <div class="recommendation-item">
+                        <strong>3. Page Pricing + Case studies</strong>
+                        <p>Transparence tarifaire, 5 success stories by vertical.</p>
+                        <div class="budget">300 000 – 500 000 XOF</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 5 - Réseaux Sociaux -->
+            <div class="slide slide-content" data-slide="5">
+                <div class="slide-header">
+                    <h2>📱 Réseaux Sociaux</h2>
+                    <div class="score-badge orange">5,0/10</div>
+                </div>
+
+                <p class="analysis-note" style="margin-bottom: 20px;">La présence sociale de PayDunya repose essentiellement sur LinkedIn (17 317 abonnés, page vérifiée) qui concentre l'essentiel de l'engagement B2B. Les autres plateformes révèlent des lacunes : X/Twitter n'a même pas de photo de profil, YouTube est dormant depuis 3 ans malgré 30 vidéos existantes, Instagram plafonne à 2 353 abonnés après 10 ans d'existence, et TikTok est totalement absent. Le compte GitHub, pourtant lié dans le footer du site, ne contient aucun répertoire public — une occasion manquée pour une fintech orientée développeurs.</p>
+
+                <h4 style="margin: 20px 0; font-size: 16px; color: #2C2C2C;">Analyse par plateforme</h4>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 30px;">
+                    <div style="background: white; padding: 15px; border-radius: 6px; border-left: 4px solid #FF6B35;">
+                        <p style="font-size: 14px; font-weight: bold; margin-bottom: 5px;">📘 Facebook</p>
+                        <p style="font-size: 13px; color: #666; margin-bottom: 5px;">16,7K followers</p>
+                        <p style="font-size: 13px; color: #666; margin-bottom: 5px;">62% recommandation (35 avis)</p>
+                        <span style="background: #F39C12; color: white; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold;">5/10</span>
+                    </div>
+
+                    <div style="background: white; padding: 15px; border-radius: 6px; border-left: 4px solid #FF6B35;">
+                        <p style="font-size: 14px; font-weight: bold; margin-bottom: 5px;">📸 Instagram</p>
+                        <p style="font-size: 13px; color: #666; margin-bottom: 5px;">2 353 followers</p>
+                        <p style="font-size: 13px; color: #666; margin-bottom: 5px;">290 posts · 1 Highlight</p>
+                        <span style="background: #F39C12; color: white; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold;">5/10</span>
+                    </div>
+
+                    <div style="background: white; padding: 15px; border-radius: 6px; border-left: 4px solid #27AE60;">
+                        <p style="font-size: 14px; font-weight: bold; margin-bottom: 5px;">💼 LinkedIn</p>
+                        <p style="font-size: 13px; color: #666; margin-bottom: 5px;">17 317 followers — Vérifié</p>
+                        <p style="font-size: 13px; color: #666; margin-bottom: 5px;">Bannière "10 ans"</p>
+                        <span style="background: #27AE60; color: white; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold;">7,5/10</span>
+                    </div>
+
+                    <div style="background: white; padding: 15px; border-radius: 6px; border-left: 4px solid #E74C3C;">
+                        <p style="font-size: 14px; font-weight: bold; margin-bottom: 5px;">🐦 X/Twitter</p>
+                        <p style="font-size: 13px; color: #666; margin-bottom: 5px;">1 566 followers</p>
+                        <p style="font-size: 13px; color: #666; margin-bottom: 5px;">PAS DE PHOTO NI BANNIÈRE</p>
+                        <span style="background: #E74C3C; color: white; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold;">3/10</span>
+                    </div>
+
+                    <div style="background: white; padding: 15px; border-radius: 6px; border-left: 4px solid #E74C3C;">
+                        <p style="font-size: 14px; font-weight: bold; margin-bottom: 5px;">▶️ YouTube</p>
+                        <p style="font-size: 13px; color: #666; margin-bottom: 5px;">1 950 abonnés</p>
+                        <p style="font-size: 13px; color: #666; margin-bottom: 5px;">DORMANT 3+ ANS</p>
+                        <span style="background: #E74C3C; color: white; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold;">3/10</span>
+                    </div>
+
+                    <div style="background: white; padding: 15px; border-radius: 6px; border-left: 4px solid #E74C3C;">
+                        <p style="font-size: 14px; font-weight: bold; margin-bottom: 5px;">🎵 TikTok & 🐙 GitHub</p>
+                        <p style="font-size: 13px; color: #666; margin-bottom: 5px;">TikTok : Absent</p>
+                        <p style="font-size: 13px; color: #666; margin-bottom: 5px;">GitHub : 0 repos</p>
+                        <span style="background: #E74C3C; color: white; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold;">1/10</span>
+                    </div>
+                </div>
+
+                <div class="three-columns">
+                    <div class="column-box forces">
+                        <h3>✅ Forces</h3>
+                        <ul>
+                            <li>LinkedIn dominé : 17K+ B2B, contenu bilingue, vérifié</li>
+                            <li>YouTube existe avec 1,950 abonnés à réactiver</li>
+                            <li>X/Twitter a 1 321 posts historiques</li>
+                            <li>Facebook : présence établie 16,7K</li>
+                        </ul>
+                    </div>
+
+                    <div class="column-box faiblesses">
+                        <h3>❌ Faiblesses</h3>
+                        <ul>
+                            <li>YouTube dormant depuis 3+ ans</li>
+                            <li>X/Twitter SANS photo ni bannière</li>
+                            <li>Instagram très faible (2 353, non vérifié)</li>
+                            <li>TikTok absent (opportunité Gen Z)</li>
+                            <li>Facebook : 62% recommandation seulement</li>
+                            <li>GitHub 0 repos publics</li>
+                        </ul>
+                    </div>
+
+                    <div class="column-box opportunites">
+                        <h3>💡 Opportunités</h3>
+                        <ul>
+                            <li>Réactiver YouTube (tutos, webinaires)</li>
+                            <li>Corriger X/Twitter (IMMÉDIAT : photo + bannière)</li>
+                            <li>Lancer Reels Instagram</li>
+                            <li>Publier SDKs sur GitHub</li>
+                            <li>Tester TikTok pour PME targets</li>
+                            <li>Synchroniser calendrier éditorial</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="recommendations">
+                    <h4>Recommandations</h4>
+                    <div class="recommendation-item">
+                        <strong>1. Audit + Correction X/Twitter IMMÉDIATE</strong>
+                        <p>Photo de profil + bannière de marque. 5 tweets par semaine.</p>
+                        <div class="budget">50 000 XOF (immédiat)</div>
+                    </div>
+                    <div class="recommendation-item">
+                        <strong>2. Réactivation YouTube + Stratégie Vidéo</strong>
+                        <p>12 vidéos : tutos produit, client stories, webinaires. Production + montage.</p>
+                        <div class="budget">600 000 – 950 000 XOF</div>
+                    </div>
+                    <div class="recommendation-item">
+                        <strong>3. Calendrier éditorial multicanal (6 mois)</strong>
+                        <p>Harmonisation contenu Facebook, LinkedIn, Instagram, X/Twitter.</p>
+                        <div class="budget">300 000 – 500 000 XOF</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 6 - Réputation -->
+            <div class="slide slide-content" data-slide="6">
+                <div class="slide-header">
+                    <h2>⭐ Réputation</h2>
+                    <div class="score-badge orange">6,0/10</div>
+                </div>
+
+                <p class="analysis-note" style="margin-bottom: 20px;">La réputation en ligne de PayDunya présente un paradoxe : des signaux de crédibilité forts (certification PCI-DSS, acquisition par Peach Payments, couverture presse positive, ScamAdviser 89/100) coexistent avec des alertes critiques. Le score RéclameICI de 9,9/100 avec 0% de recommandation est un signal d'alarme majeur. Sur Facebook, seuls 62% des avis sont positifs. L'application MyDunya n'affiche aucune note sur le Play Store (trop peu d'avis), et PayDunya n'a ni fiche Google My Business ni profil Trustpilot — deux piliers essentiels de la confiance B2B.</p>
+
+                <div class="three-columns">
+                    <div class="column-box forces">
+                        <h3>✅ Forces</h3>
+                        <ul>
+                            <li>Acquisition Peach Payments (avril 2025) : crédibilité</li>
+                            <li>PCI DSS Level 1 v4.0.1 confirmé</li>
+                            <li>ScamAdviser : 89/100 LÉGITIME</li>
+                            <li>50M+ transactions traitées</li>
+                            <li>30 000 entreprises accompagnées</li>
+                            <li>Couverture presse positive</li>
+                            <li>App iOS PAYDUNYA BUSINESS</li>
+                        </ul>
+                    </div>
+
+                    <div class="column-box faiblesses">
+                        <h3>❌ Faiblesses</h3>
+                        <ul>
+                            <li>RéclameICI : 9,9/100 CRITIQUE</li>
+                            <li>10 plaintes, 2 résolues, 0% recommandation</li>
+                            <li>Facebook : 62% recommandation (35 avis)</li>
+                            <li>Trustpilot : page INEXISTANTE</li>
+                            <li>Play Store : 10K DL, AUCUNE NOTE</li>
+                            <li>Aucune fiche Google My Business</li>
+                            <li>Pas de réponse aux avis négatifs</li>
+                        </ul>
+                    </div>
+
+                    <div class="column-box opportunites">
+                        <h3>💡 Opportunités</h3>
+                        <ul>
+                            <li>Créer compte Trustpilot</li>
+                            <li>Créer fiche GMB</li>
+                            <li>Programme réponse avis (24h)</li>
+                            <li>Campagne PR : acquisition Peach</li>
+                            <li>Témoignages clients vidéo</li>
+                            <li>Certification Google Partners</li>
+                            <li>Améliorer Play Store note</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="recommendations">
+                    <h4>Recommandations</h4>
+                    <div class="recommendation-item">
+                        <strong>1. Crise RéclameICI — Plan d'action immédiat</strong>
+                        <p>Traiter les 10 plaintes, fournir preuves de résolution, créer Trustpilot + GMB en parallèle.</p>
+                        <div class="budget">200 000 – 400 000 XOF</div>
+                    </div>
+                    <div class="recommendation-item">
+                        <strong>2. Reputation Management complet (6 mois)</strong>
+                        <p>Monitoring 24/7, réponse avis, content marketing positif, PR coverage.</p>
+                        <div class="budget">300 000 – 600 000 XOF</div>
+                    </div>
+                    <div class="recommendation-item">
+                        <strong>3. Campagne "Success Stories" client</strong>
+                        <p>5 vidéos + articles + témoignages sur site. Distribution Facebook, LinkedIn, Trustpilot.</p>
+                        <div class="budget">400 000 – 800 000 XOF</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 7 - Stratégie Éditoriale -->
+            <div class="slide slide-content" data-slide="7">
+                <div class="slide-header">
+                    <h2>✍️ Stratégie Éditoriale</h2>
+                    <div class="score-badge orange">6,0/10</div>
+                </div>
+
+                <p class="analysis-note" style="margin-bottom: 20px;">PayDunya possède les éléments de base d'une stratégie éditoriale — piliers de marque définis, blog actif, histoire fondatrice de 2015 — mais l'exécution reste insuffisante. Le blog ne compte que 4 articles, tous publiés en septembre-octobre 2025 autour de l'anniversaire des 10 ans, sans calendrier éditorial régulier. Il n'existe pas de newsletter B2B, pas de guest posting, et le messaging reste fragmenté entre 6 noms de produits différents sans récit unifié. Le positionnement face à Wave (B2B vs B2C) mériterait d'être clairement articulé dans chaque support.</p>
+
+                <div class="three-columns">
+                    <div class="column-box forces">
+                        <h3>✅ Forces</h3>
+                        <ul>
+                            <li>Piliers de marque définis</li>
+                            <li>Blog existant (blog.paydunya.com)</li>
+                            <li>Histoire fondatrice authentique (2015)</li>
+                            <li>PCI-DSS régulièrement mentionné</li>
+                            <li>Messaging sécurité + innovation</li>
+                            <li>Présence multicanale</li>
+                        </ul>
+                    </div>
+
+                    <div class="column-box faiblesses">
+                        <h3>❌ Faiblesses</h3>
+                        <ul>
+                            <li>Blog : ~4 articles seulement</li>
+                            <li>Tous "Hors séries" anniversaire (sept-oct 2025)</li>
+                            <li>Rédactrice avatar stock photo</li>
+                            <li>Aucun calendrier éditorial</li>
+                            <li>Pas de newsletter B2B</li>
+                            <li>Message produit fragmenté (6 noms)</li>
+                            <li>Pas de guest posting</li>
+                        </ul>
+                    </div>
+
+                    <div class="column-box opportunites">
+                        <h3>💡 Opportunités</h3>
+                        <ul>
+                            <li>Newsletter PayDunya Insights (hebdo)</li>
+                            <li>Thought leadership fondateurs</li>
+                            <li>12 vidéos Client Success Stories</li>
+                            <li>Partenariats médias (Pulse.sn, JeuneAfrique)</li>
+                            <li>Webinaires par vertical</li>
+                            <li>Ebooks gratuits (guides PME)</li>
+                            <li>Podcast podcast</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="recommendations">
+                    <h4>Recommandations</h4>
+                    <div class="recommendation-item">
+                        <strong>1. Stratégie éditoriale B2B (12 mois)</strong>
+                        <p>50 articles piliers, calendrier mensuel, 4 ebooks, newsletter hebdomadaire.</p>
+                        <div class="budget">2M – 3,5M XOF</div>
+                    </div>
+                    <div class="recommendation-item">
+                        <strong>2. Thought Leadership (6 mois)</strong>
+                        <p>Articles signés fondateurs (LinkedIn, Medium), interviews presse, webinaires.</p>
+                        <div class="budget">800 000 – 1,2M XOF</div>
+                    </div>
+                    <div class="recommendation-item">
+                        <strong>3. Transformation contenu (photo + profils équipe)</strong>
+                        <p>Photo professionelle rédactrice, bios équipe, interviews vidéo.</p>
+                        <div class="budget">300 000 – 500 000 XOF</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 8 - Maturité Digitale -->
+            <div class="slide slide-content" data-slide="8">
+                <div class="slide-header">
+                    <h2>⚙️ Maturité Digitale</h2>
+                    <div class="score-badge orange">6,5/10</div>
+                </div>
+
+                <p class="analysis-note" style="margin-bottom: 20px;">C'est le domaine où PayDunya se distingue le plus nettement de ses concurrents. La documentation API couvre 6 langages (PHP, Python, Java, .NET, Node, Ruby) avec des plugins e-commerce natifs. Le stack technique est robuste (Analytics, Hotjar, Bugsnag, Cloudflare). Cependant, le compte GitHub affiché dans le footer du site ne contient aucun dépôt public — une incohérence qui nuit à la crédibilité auprès des développeurs. L'absence de CRM identifiable et de chatbot WhatsApp Business représente des opportunités d'automatisation majeures.</p>
+
+                <div class="three-columns">
+                    <div class="column-box forces">
+                        <h3>✅ Forces</h3>
+                        <ul>
+                            <li>API exceptionnelle (6+ SDKs)</li>
+                            <li>Intégrations e-commerce (WooCommerce, PrestaShop, Magento)</li>
+                            <li>Stack robuste : Analytics, Hotjar, Bugsnag, Cloudflare</li>
+                            <li>Automatisations métier (Collect, Push, Demande de Paiement)</li>
+                            <li>Support Intercom</li>
+                            <li>App mobile MyDunya (10K+ DL)</li>
+                            <li>18+ opérateurs intégrés</li>
+                            <li>PCI-DSS + Cloudflare anti-DDoS</li>
+                            <li>Page Sécurité (certificat)</li>
+                        </ul>
+                    </div>
+
+                    <div class="column-box faiblesses">
+                        <h3>❌ Faiblesses</h3>
+                        <ul>
+                            <li>GitHub : 0 repos publics</li>
+                            <li>Absence CRM identifiable</li>
+                            <li>Pas de chatbot AI ou WhatsApp Bot</li>
+                            <li>Blog ~4 articles</li>
+                            <li>Pas de calendrier éditorial</li>
+                            <li>Play Store : 10K DL, 0 note visible</li>
+                            <li>Pas de programme partenaire formalisé</li>
+                        </ul>
+                    </div>
+
+                    <div class="column-box opportunites">
+                        <h3>💡 Opportunités</h3>
+                        <ul>
+                            <li>HubSpot CRM intégration</li>
+                            <li>Chatbot WhatsApp (Twilio)</li>
+                            <li>Publier SDKs sur GitHub (open-source)</li>
+                            <li>Email marketing segmenté (Klaviyo)</li>
+                            <li>Developer Marketplace</li>
+                            <li>API Analytics dashboard</li>
+                            <li>Plugin WP officiel</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="recommendations">
+                    <h4>Recommandations</h4>
+                    <div class="recommendation-item">
+                        <strong>1. HubSpot CRM + Marketing Automation</strong>
+                        <p>Implémentation, intégration API, formation équipe, segmentation leads.</p>
+                        <div class="budget">800 000 – 1,5M XOF</div>
+                    </div>
+                    <div class="recommendation-item">
+                        <strong>2. Publier SDK & Documentation GitHub</strong>
+                        <p>Créer repos publics (Python, JS, PHP, Java), contribution guidelines, exemples.</p>
+                        <div class="budget">400 000 – 700 000 XOF</div>
+                    </div>
+                    <div class="recommendation-item">
+                        <strong>3. Chatbot WhatsApp + Email Marketing</strong>
+                        <p>Twilio integration, support automation, Klaviyo newsletters, drip campaigns.</p>
+                        <div class="budget">600 000 – 1M XOF</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 9 - Benchmark -->
+            <div class="slide slide-content" data-slide="9">
+                <div class="slide-header">
+                    <h2>📊 Benchmark vs Wave</h2>
+                </div>
+
+                <p class="analysis-note" style="margin-bottom: 20px;">Wave et PayDunya opèrent sur des segments partiellement complémentaires : Wave domine le marché grand public (B2C) avec 29 millions d'utilisateurs et un modèle zéro frais, tandis que PayDunya cible les entreprises (B2B) avec une API riche et des intégrations e-commerce. L'écart de notoriété est significatif : Wave compte 7 fois plus d'abonnés LinkedIn et 78 fois plus de followers Instagram au Sénégal. PayDunya doit capitaliser sur son avantage technique pour dominer son segment PME/développeurs.</p>
+
+                <table class="benchmark-table">
+                    <thead>
+                        <tr>
+                            <th>Domaine</th>
+                            <th>PayDunya</th>
+                            <th>Score</th>
+                            <th>Wave</th>
+                            <th>Score est.</th>
+                            <th>Avantage</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Identité Visuelle</strong></td>
+                            <td>Logo bleu cohérent, plateforme omnicanale</td>
+                            <td>6,5</td>
+                            <td>Signature géométrique épurée</td>
+                            <td>7,5</td>
+                            <td>Wave</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Site Web</strong></td>
+                            <td>Title SEO, meta OK, OG OK, PCI-DSS</td>
+                            <td>7,5</td>
+                            <td>Interface épurée, mobile-first</td>
+                            <td>6,0</td>
+                            <td>PayDunya</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Réseaux Sociaux</strong></td>
+                            <td>LinkedIn 17K, Facebook 16K, YouTube dormant</td>
+                            <td>5,0</td>
+                            <td>LinkedIn 128K+, Instagram 183K SN</td>
+                            <td>8,0</td>
+                            <td>Wave</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Réputation</strong></td>
+                            <td>PCI-DSS, mais RéclameICI critique</td>
+                            <td>6,0</td>
+                            <td>Licorne, 4.4/5 (89K ratings)</td>
+                            <td>8,0</td>
+                            <td>Wave</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Stratégie Édit.</strong></td>
+                            <td>Blog 4 articles, pas newsletter</td>
+                            <td>6,0</td>
+                            <td>Blog 100+, newsletter hebdo</td>
+                            <td>7,0</td>
+                            <td>Wave</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Maturité Digitale</strong></td>
+                            <td>API robuste, 6+ SDKs, 18+ opérateurs</td>
+                            <td>6,5</td>
+                            <td>Mobile-first, stack avancée</td>
+                            <td>7,0</td>
+                            <td>Wave</td>
+                        </tr>
+                        <tr style="font-weight: bold; background: #f0f0f0;">
+                            <td colspan="2">GLOBAL PayDunya</td>
+                            <td style="background: #F39C12; color: white;">6,3</td>
+                            <td colspan="2">GLOBAL Wave</td>
+                            <td style="background: #27AE60; color: white;">7,3</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="summary-box" style="margin-top: 30px;">
+                    <h4>Analyse comparative</h4>
+                    <p class="analysis-note">PayDunya excelle en infrastructure technique B2B (API, SDKs, intégrations) et détails produit. Wave domine en scale (utilisateurs, capital, valuation) et présence commerciale. Segments partiellement complémentaires.</p>
+                </div>
+            </div>
+
+            <!-- SLIDE 10 - Actions Prioritaires -->
+            <div class="slide slide-content" data-slide="10">
+                <div class="slide-header">
+                    <h2>🎯 Top 5 Actions Prioritaires</h2>
+                </div>
+
+                <p class="analysis-note" style="margin-bottom: 20px;">Ces 5 actions sont classées par urgence et impact. Les deux premières (réputation et SEO technique) sont critiques et doivent être lancées immédiatement — elles représentent un risque direct sur la conversion client. Les actions court terme (réseaux sociaux et branding) consolident la présence publique. L'action moyen terme (stratégie éditoriale) construit le positionnement durable de PayDunya comme référence fintech B2B en Afrique de l'Ouest.</p>
+
+                <div class="actions-grid" style="margin-top: 30px;">
+                    <div class="action-card immediate">
+                        <h3>🔴 IMMÉDIAT — Gestion de Crise Réputation</h3>
+                        <p><strong>Problème :</strong> RéclameICI 9,9/100, Trustpilot inexistant, GMB absent.</p>
+                        <p><strong>Actions :</strong></p>
+                        <ul>
+                            <li>Traiter les 10 plaintes RéclameICI</li>
+                            <li>Créer Trustpilot + fiche GMB (24h)</li>
+                            <li>Programme réponse avis (48h SLA)</li>
+                        </ul>
+                        <div class="budget">500K – 1M XOF (6 semaines)</div>
+                    </div>
+
+                    <div class="action-card immediate">
+                        <h3>🔴 IMMÉDIAT — Audit SEO Technique</h3>
+                        <p><strong>Problème :</strong> 37/48 images sans alt, OG image absente, zéro schema markup.</p>
+                        <p><strong>Actions :</strong></p>
+                        <ul>
+                            <li>Ajouter 37 alt text manquantes</li>
+                            <li>Créer OG image (1200x630px)</li>
+                            <li>JSON-LD schema markup</li>
+                            <li>Canonical URLs + hreflang</li>
+                        </ul>
+                        <div class="budget">200K – 400K XOF (3-4 semaines)</div>
+                    </div>
+
+                    <div class="action-card short">
+                        <h3>🟠 COURT TERME — X/Twitter + YouTube</h3>
+                        <p><strong>Problème :</strong> X/Twitter sans profil, YouTube dormant 3+ ans.</p>
+                        <p><strong>Actions :</strong></p>
+                        <ul>
+                            <li>Photo + bannière X/Twitter (IMMÉDIAT)</li>
+                            <li>Produire 12 vidéos YouTube</li>
+                            <li>5 posts X/Twitter par semaine</li>
+                        </ul>
+                        <div class="budget">600K – 950K XOF (8 semaines)</div>
+                    </div>
+
+                    <div class="action-card short">
+                        <h3>🟠 COURT TERME — Brand Guidelines + Campagne</h3>
+                        <p><strong>Problème :</strong> Aucune Guidelines, design générique.</p>
+                        <p><strong>Actions :</strong></p>
+                        <ul>
+                            <li>Créer Brand Guidelines PDF complet</li>
+                            <li>Campagne "Ambition 2026"</li>
+                            <li>Optimiser MyDunya</li>
+                        </ul>
+                        <div class="budget">350K – 600K XOF (6 semaines)</div>
+                    </div>
+
+                    <div class="action-card medium">
+                        <h3>🔵 MOYEN TERME — Stratégie Éditoriale + GitHub</h3>
+                        <p><strong>Problème :</strong> Blog 4 articles, pas newsletter, GitHub 0 repos.</p>
+                        <p><strong>Actions :</strong></p>
+                        <ul>
+                            <li>50 articles piliers SEO (12 mois)</li>
+                            <li>Newsletter PayDunya Insights (hebdo)</li>
+                            <li>Publier SDKs sur GitHub</li>
+                            <li>Thought leadership fondateurs</li>
+                        </ul>
+                        <div class="budget">5M – 8M XOF (6 mois)</div>
+                    </div>
+                </div>
+
+                <div style="background: #2C2C2C; color: white; padding: 20px; border-radius: 8px; margin-top: 30px; text-align: center;">
+                    <h4 style="color: #FED700; margin-bottom: 10px;">Budget Total Estimé</h4>
+                    <p style="font-size: 18px; font-weight: bold;">6,6M – 11M XOF sur 6 mois</p>
+                </div>
+            </div>
+
+            <!-- SLIDE 11 - Offre Commerciale -->
+            <div class="slide slide-cover" data-slide="11">
+                <div style="text-align: center; width: 100%;">
+                    <h1 style="color: #FED700; font-size: 56px; margin-bottom: 30px;">Comment LOLLY<br>peut vous accompagner</h1>
+
+                    <div class="packages-grid" style="margin-top: 40px;">
+                        <div class="package-card">
+                            <h3>🥉 Starter</h3>
+                            <div class="price">550K – 900K</div>
+                            <div class="duration">XOF / mois</div>
+                            <ul>
+                                <li>Audit communication complet</li>
+                                <li>Stratégie digitale initiale</li>
+                                <li>4 posts réseaux/mois</li>
+                                <li>Suivi 1x/mois</li>
+                            </ul>
+                        </div>
+
+                        <div class="package-card recommended">
+                            <h3>🥈 Performance ⭐<br>RECOMMANDÉ</h3>
+                            <div class="price">1,5M – 2,5M</div>
+                            <div class="duration">XOF / mois</div>
+                            <ul>
+                                <li>Stratégie 6 mois</li>
+                                <li>8 posts réseaux + calendrier</li>
+                                <li>2 articles blog/mois</li>
+                                <li>Gestion crise réputation</li>
+                                <li>Suivi hebdomadaire</li>
+                            </ul>
+                        </div>
+
+                        <div class="package-card">
+                            <h3>🥇 Premium</h3>
+                            <div class="price">3,5M – 6M</div>
+                            <div class="duration">XOF / mois</div>
+                            <ul>
+                                <li>Transformation complète</li>
+                                <li>Brand refresh + Guidelines</li>
+                                <li>12 articles SEO/mois</li>
+                                <li>8 vidéos/trimestre</li>
+                                <li>Gestion 24/7 réseaux</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="contact-info" style="margin-top: 40px;">
+                        <p style="font-size: 18px; margin-bottom: 15px;">📞 Parlons de votre transformation</p>
+                        <p><a href="mailto:oudama@lolly.sn">📧 oudama@lolly.sn</a></p>
+                    </div>
+                </div>
+                <div class="cover-tagline">Des mots qui touchent, des images qui marquent.</div>
+            </div>
         </div>
-        <div class="reco-item">
-          <div class="reco-num">2</div>
-          <div class="reco-text">
-            Déployer Chatbot WhatsApp Business + Support IA (automation 24/7 via Botpress/N8N) pour FAQs et qualification leads
-            <div class="reco-budget">💰 Budget estimé : 1 500 000 – 3 000 000 XOF (dev + licence)</div>
-          </div>
-        </div>
-        <div class="reco-item">
-          <div class="reco-num">3</div>
-          <div class="reco-text">
-            Mettre en place email marketing + automation rétention (segments clients : Onboarding, Rétention, Upsell) via Brevo/Mailchimp
-            <div class="reco-budget">💰 Budget estimé : 800 000 XOF/an</div>
-          </div>
-        </div>
-      </div>
     </div>
-    <div class="benchmark-box">
-      <strong>⚔️ Benchmark Wave :</strong> Wave excelle en <strong>scale & adoption utilisateur</strong> (10M+ utilisateurs, architecture mobile-first optimisée feature phones). PayDunya excelle en <strong>richesse API & intégrations B2B</strong> (6 SDKs, 18+ opérateurs, plugins e-commerce). Wave reste plus fermé côté développeurs. PayDunya doit accélérer sur CRM + support automation pour atteindre la maturité digitale interne d'une fintech de Série B.
+
+    <div class="controls">
+        <button class="nav-button" onclick="prevSlide()">←</button>
+        <div class="slide-counter"><span id="current">1</span> / <span id="total">12</span></div>
+        <button class="nav-button" onclick="nextSlide()">→</button>
     </div>
-  </div>
 
-  <!-- SLIDE 10: BENCHMARK -->
-  <div class="slide" id="s10" style="background:var(--light);">
-    <div class="page-header">
-      <div class="page-title">⚔️ Benchmark PayDunya vs Wave</div>
-      <div class="page-bar"></div>
-    </div>
-    <table class="bench-table">
-      <thead>
-        <tr>
-          <th>Domaine</th>
-          <th>PayDunya</th>
-          <th>Score PayDunya</th>
-          <th>Wave</th>
-          <th>Score Wave (est.)</th>
-          <th>Avantage</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>🎨 Identité Visuelle</strong></td>
-          <td>Logo cohérent, piliers clairs, pas de brand guidelines publiées</td>
-          <td><span class="bench-score score-orange-text">6,5/10</span></td>
-          <td>Minimaliste, épuré, assets Brandfetch publics, messaging "gratuité"</td>
-          <td><span class="bench-score score-green-text">7,5/10</span></td>
-          <td><span class="tag tag-blue">Wave</span></td>
-        </tr>
-        <tr>
-          <td><strong>🌐 Site Web</strong></td>
-          <td>SEO solide, docs API, blog, 7 produits bien présentés, pas de pricing</td>
-          <td><span class="bench-score score-green-text">7,5/10</span></td>
-          <td>Messaging ultra-simple, CTA app dominant, pas de docs développeurs</td>
-          <td><span class="bench-score score-orange-text">6,0/10</span></td>
-          <td><span class="tag tag-green">PayDunya</span></td>
-        </tr>
-        <tr>
-          <td><strong>📱 Réseaux Sociaux</strong></td>
-          <td>LinkedIn fort (17K), Facebook 15K, TikTok/YouTube absents</td>
-          <td><span class="bench-score score-orange-text">5,5/10</span></td>
-          <td>LinkedIn 128K (7x), engagement premium, funding stories</td>
-          <td><span class="bench-score score-green-text">7,5/10</span></td>
-          <td><span class="tag tag-blue">Wave</span></td>
-        </tr>
-        <tr>
-          <td><strong>⭐ Réputation</strong></td>
-          <td>Acquisition Peach Payments positive, mais RéclameICI 9,9/100 critique</td>
-          <td><span class="bench-score score-orange-text">6,5/10</span></td>
-          <td>Brand equity licorne, couverture presse massive, reviews stores positives</td>
-          <td><span class="bench-score score-green-text">8,0/10</span></td>
-          <td><span class="tag tag-blue">Wave</span></td>
-        </tr>
-        <tr>
-          <td><strong>✍️ Stratégie Éditoriale</strong></td>
-          <td>Blog actif, piliers définis, newsletter absente, RP réactif</td>
-          <td><span class="bench-score score-orange-text">6,5/10</span></td>
-          <td>Messaging cristallin, promesse unique, adaptation locale intuitive</td>
-          <td><span class="bench-score score-green-text">7,0/10</span></td>
-          <td><span class="tag tag-blue">Wave</span></td>
-        </tr>
-        <tr>
-          <td><strong>⚙️ Maturité Digitale</strong></td>
-          <td>API riche (6 SDKs), 18+ intégrations, plugins e-commerce, Intercom</td>
-          <td><span class="bench-score score-green-text">7,0/10</span></td>
-          <td>Mobile-first mass market, pas de docs API B2B publiques</td>
-          <td><span class="bench-score score-orange-text">6,5/10</span></td>
-          <td><span class="tag tag-green">PayDunya</span></td>
-        </tr>
-        <tr style="background:var(--black)!important;">
-          <td style="color:var(--yellow);font-weight:800;">SCORE GLOBAL</td>
-          <td style="color:#ccc;">6 domaines analysés</td>
-          <td><span class="bench-score" style="color:var(--yellow);">6,6/10</span></td>
-          <td style="color:#ccc;">Estimation basée sur données publiques</td>
-          <td><span class="bench-score" style="color:var(--orange);">7,1/10</span></td>
-          <td><span class="tag tag-blue" style="background:rgba(255,107,53,.2);color:var(--orange);">Wave (est.)</span></td>
-        </tr>
-      </tbody>
-    </table>
-    <div class="bench-conclusion">
-      <strong>🔍 Conclusion du Benchmark :</strong> PayDunya détient des avances structurelles significatives sur Wave en matière d'<strong>infrastructure technique et d'intégrations B2B</strong> (site web 7,5 vs 6,0 estimé, API riche, documentation développeurs). En revanche, Wave surpasse nettement sur la <strong>présence sociale</strong> (LinkedIn x7), la <strong>réputation de marque</strong> (brand equity licorne) et la <strong>clarté du messaging</strong>. La bonne nouvelle : PayDunya et Wave opèrent sur des segments complémentaires (B2B vs B2C), ce qui signifie que PayDunya n'a pas à "battre" Wave, mais à <strong>dominer son segment PME/développeurs</strong> avec une communication à la hauteur de son produit.
-    </div>
-  </div>
+    <script>
+        let currentSlideIndex = 0;
 
-  <!-- SLIDE 11: ACTIONS PRIORITAIRES -->
-  <div class="slide" id="s11">
-    <div class="page-header">
-      <div class="page-title">🚀 Top 5 Actions Prioritaires</div>
-      <div class="page-bar"></div>
-    </div>
-    <div class="action-grid">
-      <div class="action-card action-urgent">
-        <div class="action-header">
-          <span class="action-tag tag-urgent">🔴 Immédiat — 0 à 30 jours</span>
-        </div>
-        <div class="action-title">1. Réputation & Avis — Plan d'urgence RéclameICI</div>
-        <div class="action-desc">Score RéclameICI de 9,9/100 = risque commercial critique. Former l'équipe support, répondre à chaque avis négatif, corriger les bugs signalés sur les stores, mettre en place un monitoring des mentions. + Créer la fiche Google My Business.</div>
-        <div class="action-budget" style="color:var(--red);">💰 Budget : 500 000 – 1 000 000 XOF</div>
-        <span class="action-impact">📊 Impact : Réduction du risque de perte client · Confiance acheteurs</span>
-      </div>
-      <div class="action-card action-soon">
-        <div class="action-header">
-          <span class="action-tag tag-1-3m">🟠 Court terme — 1 à 3 mois</span>
-        </div>
-        <div class="action-title">2. Réseaux Sociaux — Lancement TikTok + YouTube</div>
-        <div class="action-desc">Absence totale sur les 2 plateformes de contenu vidéo les plus croissantes. Créer 10 vidéos fondatrices (tutos PayDunya, cas clients, explainers API), lancer Instagram Reels 3x/semaine. Délégation à Awa Sow + créateurs locaux.</div>
-        <div class="action-budget" style="color:var(--orange-score);">💰 Budget : 600 000 – 950 000 XOF</div>
-        <span class="action-impact">📊 Impact : Audience <35 ans · +40% reach organique estimé</span>
-      </div>
-      <div class="action-card action-soon">
-        <div class="action-header">
-          <span class="action-tag tag-1-3m">🟠 Court terme — 1 à 3 mois</span>
-        </div>
-        <div class="action-title">3. Branding — Brand Guidelines + Campagne Visuelle</div>
-        <div class="action-desc">Créer et publier les Brand Guidelines complètes (logo, couleurs, typographie, usages), puis lancer la campagne visuelle "Ambition 2026" (5 assets multi-canaux). Humaniser la marque avec storytelling fondateurs.</div>
-        <div class="action-budget" style="color:var(--orange-score);">💰 Budget : 350 000 – 600 000 XOF</div>
-        <span class="action-impact">📊 Impact : Cohérence perçue · Crédibilité partenaires</span>
-      </div>
-      <div class="action-card action-later">
-        <div class="action-header">
-          <span class="action-tag tag-3-6m">🔵 Moyen terme — 3 à 6 mois</span>
-        </div>
-        <div class="action-title">4. Stratégie Éditoriale — Hub Contenu B2B + Newsletter</div>
-        <div class="action-desc">Refondre le blog en Hub éducatif (3 pôles : Entrepreneuriat, Technologie, Régulation), lancer "PayDunya Insights" (newsletter B2B segmentée, automation N8N), produire 12 vidéos Client Success Stories.</div>
-        <div class="action-budget" style="color:var(--blue);">💰 Budget : 5 000 000 – 8 000 000 XOF</div>
-        <span class="action-impact">📊 Impact : Thought leadership · Génération leads qualifiés</span>
-      </div>
-      <div class="action-card action-5th action-later">
-        <div class="action-header">
-          <span class="action-tag" style="background:rgba(39,174,96,.15);color:var(--green);">🟢 Moyen terme — 3 à 6 mois</span>
-        </div>
-        <div class="action-title">5. Site Web — Pricing Transparent + Page Sécurité + SEO</div>
-        <div class="action-desc">Créer la page "Pricing & Plans" transparente (3 tiers tarifaires avec simulateur), développer une page Sécurité dédiée (PCI-DSS, audits, protections), lancer la stratégie SEO contenu (15 articles/an) et optimiser les Core Web Vitals.</div>
-        <div class="action-budget" style="color:var(--green);">💰 Budget : 2 000 000 – 3 500 000 XOF</div>
-        <span class="action-impact">📊 Impact : +25% conversions leads · Ranking Google amélioré · Confiance B2B</span>
-      </div>
-    </div>
-    <div style="margin-top:16px;padding:14px 20px;background:var(--black);border-radius:10px;font-size:12px;color:#aaa;line-height:1.7;">
-      <strong style="color:var(--yellow);">📋 Budget total estimé :</strong> 8 450 000 – 14 050 000 XOF sur 6 mois, couvrant l'ensemble du plan de transformation communication de PayDunya. LOLLY Communication peut piloter l'ensemble de cette feuille de route.
-    </div>
-  </div>
+        function showSlide(n) {
+            const slides = document.querySelectorAll('.slide');
+            const dots = document.querySelectorAll('.nav-dot');
 
-  <!-- SLIDE 12: OFFRE LOLLY -->
-  <div class="slide" id="s12">
-    <div class="offer-title">Comment LOLLY peut vous accompagner</div>
-    <div class="offer-sub">3 packages adaptés aux faiblesses identifiées de PayDunya</div>
-    <div class="offer-grid">
-      <div class="offer-card offer-starter">
-        <div class="offer-medal">🥉</div>
-        <div class="offer-name">Package Starter</div>
-        <div class="offer-price">550 000 – 900 000 XOF/mois</div>
-        <ul class="offer-features">
-          <li>Brand Guidelines complètes (logo, couleurs, typographie)</li>
-          <li>Création & optimisation fiche Google My Business</li>
-          <li>Gestion réseaux sociaux : 2 plateformes (LinkedIn + Instagram)</li>
-          <li>8 posts/mois + réponse aux commentaires</li>
-          <li>Rapport mensuel de performance</li>
-          <li>Idéal pour : démarrer l'amélioration immédiate de la cohérence</li>
-        </ul>
-      </div>
-      <div class="offer-card offer-perf">
-        <div style="position:absolute;top:16px;right:16px;background:var(--orange);color:#fff;font-size:10px;font-weight:800;padding:3px 10px;border-radius:20px;letter-spacing:1px;">RECOMMANDÉ</div>
-        <div class="offer-medal">🥈</div>
-        <div class="offer-name">Package Performance</div>
-        <div class="offer-price" style="color:var(--orange);">1 500 000 – 2 500 000 XOF/mois</div>
-        <ul class="offer-features">
-          <li>Tout le Starter +</li>
-          <li>Production vidéo (4 Reels + 2 vidéos YouTube/mois)</li>
-          <li>Stratégie éditoriale + calendrier contenu 3 mois</li>
-          <li>Newsletter mensuelle "PayDunya Insights" (design + copy)</li>
-          <li>Campagne PR : 1 communiqué/mois + relations médias</li>
-          <li>Gestion 4 plateformes sociales (+ TikTok + Facebook)</li>
-          <li>Suivi réputation + réponse avis (RéclameICI, stores)</li>
-          <li>Tableau de bord mensuel avec KPIs</li>
-        </ul>
-      </div>
-      <div class="offer-card offer-premium">
-        <div class="offer-medal">🥇</div>
-        <div class="offer-name">Package Premium</div>
-        <div class="offer-price">3 500 000 – 6 000 000 XOF/mois</div>
-        <ul class="offer-features">
-          <li>Tout le Performance +</li>
-          <li>Refonte Hub contenu B2B (blog, ebooks, webinaires)</li>
-          <li>12 vidéos "Client Success Stories" sur 6 mois</li>
-          <li>Campagne Identité Visuelle "Ambition 2026" complète</li>
-          <li>Stratégie SEO contenu (15 articles/an + optimisation technique)</li>
-          <li>Accompagnement page Pricing & CTA du site web</li>
-          <li>Coordination avec équipe développeurs (documentation)</li>
-          <li>Compte dédié LOLLY + points hebdomadaires</li>
-          <li>Transformation digitale 360° sur 12 mois</li>
-        </ul>
-      </div>
-    </div>
-    <div class="offer-cta-wrap">
-      <button class="offer-cta" onclick="window.open('mailto:oudama@lolly.sn?subject=Audit PayDunya – Accompagnement LOLLY', '_blank')">
-        Parlons de votre transformation →
-      </button>
-      <div class="offer-contact">
-        Contact : <strong>oudama@lolly.sn</strong> &nbsp;·&nbsp; <strong>LOLLY Communication, Dakar, Sénégal</strong>
-        <br><em style="font-size:11px;color:#555;">"Des mots qui touchent, des images qui marquent."</em>
-      </div>
-    </div>
-  </div>
+            if (n >= slides.length) currentSlideIndex = 0;
+            if (n < 0) currentSlideIndex = slides.length - 1;
 
-</div><!-- /slides -->
+            slides.forEach(slide => slide.classList.remove('active'));
+            dots.forEach(dot => dot.classList.remove('active'));
 
-<!-- NAVIGATION BAS -->
-<div id="bottom-nav">
-  <button class="nav-btn" onclick="prev()">← Précédent</button>
-  <div id="slide-counter">Slide <span id="current">1</span> / 12</div>
-  <button class="nav-btn" onclick="next()">Suivant →</button>
-</div>
+            slides[currentSlideIndex].classList.add('active');
+            dots[currentSlideIndex].classList.add('active');
 
-<script>
-  let current = 0;
-  const total = 12;
-  const slides = document.querySelectorAll('.slide');
-  const dots = document.querySelectorAll('.nav-dot');
+            document.getElementById('current').textContent = currentSlideIndex + 1;
+        }
 
-  function goTo(n) {
-    slides[current].classList.remove('active');
-    dots[current].classList.remove('active');
-    current = Math.max(0, Math.min(n, total - 1));
-    slides[current].classList.add('active');
-    dots[current].classList.add('active');
-    document.getElementById('current').textContent = current + 1;
-    slides[current].scrollTop = 0;
-  }
+        function nextSlide() {
+            currentSlideIndex++;
+            showSlide(currentSlideIndex);
+        }
 
-  function next() { goTo(current + 1); }
-  function prev() { goTo(current - 1); }
+        function prevSlide() {
+            currentSlideIndex--;
+            showSlide(currentSlideIndex);
+        }
 
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next();
-    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') prev();
-  });
+        function currentSlide(n) {
+            currentSlideIndex = n;
+            showSlide(currentSlideIndex);
+        }
 
-  // Animate gauges on slide 3
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.querySelectorAll('.gauge-fill').forEach(el => {
-          el.style.width = el.getAttribute('data-width') || el.style.width;
+        document.querySelectorAll('.nav-dot').forEach(dot => {
+            dot.addEventListener('click', function() {
+                currentSlideIndex = parseInt(this.getAttribute('data-slide'));
+                showSlide(currentSlideIndex);
+            });
         });
-      }
-    });
-  });
 
-  document.querySelectorAll('.slide').forEach(s => observer.observe(s));
-</script>
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === 'ArrowLeft') prevSlide();
+        });
+
+        showSlide(currentSlideIndex);
+    </script>
 </body>
 </html>
