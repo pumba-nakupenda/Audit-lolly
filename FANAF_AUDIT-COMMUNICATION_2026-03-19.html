@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audit Communication FANAF - LOLLY Communication</title>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0A0A0A;
+            overflow: hidden;
+            color: #F8F8F8;
+        }
+
+        /* Progress bar */
+        #progress-bar {
+            position: fixed; top: 0; left: 0; height: 2px;
+            background: #FED700; z-index: 200; transition: width 0.4s ease;
+        }
+
+        /* Navigation latérale */
+        .nav-sidebar {
+            position: fixed; left: 0; top: 0; width: 64px; height: 100vh;
+            background: #0A0A0A; border-right: 1px solid rgba(255,255,255,0.06);
+            display: flex; flex-direction: column; align-items: center;
+            padding: 20px 0; gap: 10px; z-index: 100; overflow-y: auto;
+        }
+        .nav-dot {
+            width: 36px; height: 36px; border-radius: 100%;
+            background: #1E1E1E; border: none; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 11px; font-weight: bold; color: rgba(248,248,248,0.4);
+            transition: all 0.3s ease; position: relative;
+        }
+        .nav-dot:hover { background: #2a2a2a; color: rgba(248,248,248,0.8); }
+        .nav-dot.active { background: #FED700; color: #0A0A0A; }
+        .nav-dot::after {
+            content: attr(data-tooltip); position: absolute; left: 48px;
+            background: #FF6B35; color: white; padding: 5px 10px; border-radius: 6px;
+            font-size: 11px; white-space: nowrap; opacity: 0; pointer-events: none;
+            transition: opacity 0.3s ease; z-index: 1000;
+        }
+        .nav-dot:hover::after { opacity: 1; }
+
+        /* Container principal */
+        .container {
+            margin-left: 64px; width: calc(100% - 64px);
+            height: 100vh; position: relative; overflow: hidden;
+        }
+        .slides-container { position: relative; width: 100%; height: 100%; }
+
+        /* Slides */
+        .slide {
+            position: absolute; width: 100%; height: 100%;
+            opacity: 0; transition: opacity 0.5s ease;
+            display: flex; flex-direction: column; overflow-y: auto;
+        }
+        .slide.active { opacity: 1; z-index: 10; }
+
+        /* SLIDE 0 — Couverture */
+        .slide-cover {
+            background: linear-gradient(135deg, #0A0A0A 0%, #111111 50%, #1a1400 100%);
+            color: white; justify-content: center; align-items: center;
+            text-align: center; padding: 40px;
+        }
+        .cover-content h1 {
+            font-size: 72px; color: #FED700; margin-bottom: 20px;
+            font-weight: 900; letter-spacing: -3px;
+        }
+        .cover-content h2 {
+            font-size: 28px; color: rgba(248,248,248,0.7); margin-bottom: 50px; font-weight: 300;
+        }
+        .cover-meta {
+            background: rgba(255,107,53,0.08); border-left: 3px solid #FF6B35;
+            padding: 20px 24px; margin: 30px 0; text-align: left;
+            display: inline-block; border-radius: 12px; max-width: 500px;
+        }
+        .cover-meta p { margin: 8px 0; font-size: 14px; color: rgba(248,248,248,0.7); }
+        .cover-meta strong { color: #FED700; }
+        .cover-score { font-size: 80px; color: #FF6B35; font-weight: 900; letter-spacing: -3px; margin: 30px 0; }
+        .cover-tagline {
+            position: absolute; bottom: 30px;
+            font-size: 11px; color: rgba(254,215,0,0.5); letter-spacing: 2px; text-transform: uppercase;
+        }
+        .keyboard-hint {
+            position: absolute; bottom: 30px; right: 40px;
+            font-size: 11px; color: rgba(248,248,248,0.25); letter-spacing: 1px;
+        }
+
+        /* SLIDE 1+ — Content */
+        .slide-content { background: #111111; padding: 40px 56px; color: #F8F8F8; }
+        .slide-header {
+            display: flex; align-items: center; gap: 15px; margin-bottom: 36px;
+            border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 24px;
+        }
+        .slide-header h2 { font-size: 36px; font-weight: 800; letter-spacing: -1px; color: #F8F8F8; }
+        .slide-header .score-badge { margin-left: auto; padding: 6px 16px; border-radius: 100px; font-size: 13px; font-weight: 700; }
+        .score-badge.green  { background: rgba(39,174,96,0.15);  color: #27AE60; border: 1px solid rgba(39,174,96,0.3); }
+        .score-badge.orange { background: rgba(243,156,18,0.15); color: #F39C12; border: 1px solid rgba(243,156,18,0.3); }
+        .score-badge.red    { background: rgba(231,76,60,0.15);  color: #E74C3C; border: 1px solid rgba(231,76,60,0.3); }
+
+        /* Cards grid */
+        .cards-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+        .card {
+            background: #1A1A1A; border: 1px solid rgba(255,255,255,0.07); border-radius: 16px;
+            padding: 24px; cursor: pointer; transition: all 0.3s ease;
+        }
+        .card:hover { border-color: rgba(254,215,0,0.25); transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,0.4); }
+        .card h3 { font-size: 15px; font-weight: 700; color: #F8F8F8; margin-bottom: 8px; }
+        .card p { font-size: 13px; color: rgba(248,248,248,0.45); margin-bottom: 12px; }
+        .card .score-tag { display: inline-block; padding: 4px 12px; border-radius: 100px; font-size: 11px; font-weight: 700; }
+        .score-tag.red    { background: rgba(231,76,60,0.15);  color: #E74C3C; border: 1px solid rgba(231,76,60,0.25); }
+        .score-tag.orange { background: rgba(243,156,18,0.15); color: #F39C12; border: 1px solid rgba(243,156,18,0.25); }
+        .score-tag.green  { background: rgba(39,174,96,0.15);  color: #2ecc71; border: 1px solid rgba(46,204,113,0.25); }
+
+        /* Score Global */
+        .global-score-box {
+            background: #1A1A1A; border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px; padding: 36px; text-align: center; margin-bottom: 30px;
+        }
+        .global-score-box h3 { color: #FED700; text-transform: uppercase; letter-spacing: 2px; font-size: 11px; font-weight: 700; margin-bottom: 15px; }
+        .global-score-value { font-size: 80px; color: #FF6B35; font-weight: 900; letter-spacing: -3px; margin-bottom: 20px; }
+        .score-gauge { width: 100%; height: 6px; background: rgba(255,255,255,0.08); border-radius: 10px; overflow: hidden; margin-top: 10px; }
+        .score-gauge-fill { height: 100%; background: linear-gradient(90deg, #E74C3C, #FF6B35, #FED700, #27AE60); transition: width 0.8s ease; }
+
+        .score-items { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 30px; }
+        .score-item { background: #1A1A1A; border: 1px solid rgba(255,255,255,0.07); border-radius: 12px; padding: 16px; cursor: pointer; transition: all 0.2s; }
+        .score-item:hover { border-color: rgba(254,215,0,0.2); }
+        .score-item-label { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 13px; color: rgba(248,248,248,0.7); }
+        .score-item-bar { width: 100%; height: 4px; background: rgba(255,255,255,0.08); border-radius: 4px; overflow: hidden; }
+        .score-item-bar-fill { height: 100%; border-radius: 4px; transition: width 0.8s ease; }
+        .bar-red    { background: #E74C3C; }
+        .bar-orange { background: #F39C12; }
+        .bar-green  { background: #27AE60; }
+
+        .summary-box { background: #1A1A1A; border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; padding: 24px; margin-top: 20px; }
+        .summary-box h4 { color: rgba(248,248,248,0.5); text-transform: uppercase; letter-spacing: 1px; font-size: 11px; margin-bottom: 10px; }
+        .keywords { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px; }
+        .keyword-tag { background: rgba(254,215,0,0.12); color: #FED700; border: 1px solid rgba(254,215,0,0.2); border-radius: 100px; padding: 6px 14px; font-size: 12px; font-weight: 600; }
+        .analysis-note { font-size: 14px; color: rgba(248,248,248,0.55); line-height: 1.7; }
+
+        /* 3 colonnes */
+        .three-columns { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 30px; }
+        .column-box { border-radius: 16px; padding: 24px; }
+        .column-box h3 { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; }
+        .column-box ul { list-style: none; }
+        .column-box li { padding: 8px 0 8px 20px; font-size: 13px; line-height: 1.6; color: rgba(248,248,248,0.6); border-bottom: 1px solid rgba(255,255,255,0.04); position: relative; }
+        .column-box li:last-child { border-bottom: none; }
+        .forces li::before    { content: '↗'; position: absolute; left: 0; color: #2ecc71; font-weight: bold; }
+        .faiblesses li::before { content: '↘'; position: absolute; left: 0; color: #E74C3C; font-weight: bold; }
+        .opportunites li::before { content: '→'; position: absolute; left: 0; color: #3498db; font-weight: bold; }
+        .forces     { background: rgba(39,174,96,0.06); border: 1px solid rgba(39,174,96,0.15); }
+        .forces h3  { color: #2ecc71; }
+        .faiblesses { background: rgba(231,76,60,0.06); border: 1px solid rgba(231,76,60,0.15); }
+        .faiblesses h3 { color: #E74C3C; }
+        .opportunites { background: rgba(41,128,185,0.06); border: 1px solid rgba(41,128,185,0.15); }
+        .opportunites h3 { color: #3498db; }
+
+        /* Recommandations */
+        .recommendations { margin-top: 20px; }
+        .recommendations h4 { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: rgba(248,248,248,0.4); margin-bottom: 12px; }
+        .recommendation-item {
+            background: #1A1A1A; border: 1px solid rgba(255,255,255,0.07); border-radius: 12px;
+            padding: 20px; margin-bottom: 12px; border-left: 3px solid #FF6B35;
+        }
+        .recommendation-item strong { color: #F8F8F8; font-size: 14px; display: block; margin-bottom: 5px; }
+        .recommendation-item p { color: rgba(248,248,248,0.5); font-size: 13px; }
+
+        /* Benchmark */
+        .benchmark-table { width: 100%; border-collapse: collapse; margin: 20px 0; background: #1A1A1A; border-radius: 16px; overflow: hidden; }
+        .benchmark-table th, .benchmark-table td { padding: 12px; text-align: left; font-size: 13px; }
+        .benchmark-table th { background: #1A1A1A; color: rgba(248,248,248,0.4); font-size: 11px; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid rgba(255,255,255,0.08); font-weight: 600; }
+        .benchmark-table td { color: rgba(248,248,248,0.65); border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .benchmark-table tr:hover td { background: rgba(255,255,255,0.02); }
+        .fanaf-col { color: #F39C12 !important; font-weight: 700; }
+        .cima-col  { color: #3498db !important; font-weight: 700; }
+        .win-fanaf { background: rgba(255,107,53,0.08) !important; }
+        .win-cima  { background: rgba(52,152,219,0.06) !important; }
+
+        /* Actions */
+        .actions-grid { display: grid; grid-template-columns: repeat(1, 1fr); gap: 12px; }
+        .action-card { background: #1A1A1A; border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; padding: 24px; border-left: 4px solid; }
+        .action-card.immediate { border-left-color: #E74C3C; }
+        .action-card.short { border-left-color: #F39C12; }
+        .action-card.medium { border-left-color: #3498db; }
+        .action-card h3 { font-size: 15px; font-weight: 700; color: #F8F8F8; margin-bottom: 8px; }
+        .action-card p { font-size: 13px; color: rgba(248,248,248,0.55); margin-bottom: 8px; }
+        .action-card ul { font-size: 13px; color: rgba(248,248,248,0.5); margin: 10px 0 10px 16px; }
+        .timeline-tag { font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 100px; display: inline-block; margin-top: 8px; }
+        .tl-red    { background: rgba(231,76,60,0.12); color: #E74C3C; }
+        .tl-orange { background: rgba(243,156,18,0.12); color: #F39C12; }
+        .tl-blue   { background: rgba(52,152,219,0.12); color: #3498db; }
+
+        /* Packages */
+        .packages-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin: 30px 0; }
+        .package-card { background: #1A1A1A; border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 32px 28px; text-align: center; }
+        .package-card.recommended { background: linear-gradient(135deg, #1f1a00, #2a2200); border-color: rgba(254,215,0,0.3); box-shadow: 0 0 60px rgba(254,215,0,0.08); }
+        .package-card h3 { font-size: 18px; font-weight: 800; color: #F8F8F8; margin-bottom: 8px; }
+        .package-card .pkg-badge { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: rgba(248,248,248,0.3); margin-bottom: 20px; }
+        .package-card .pkg-badge.rec-badge { color: #FED700; }
+        .package-card ul { list-style: none; text-align: left; margin-bottom: 20px; font-size: 13px; }
+        .package-card li { padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.06); color: rgba(248,248,248,0.55); }
+        .package-card li::before { content: '✓'; color: #FED700; margin-right: 8px; font-weight: 700; }
+        .package-card li:last-child { border-bottom: none; }
+        .pkg-cta { display: inline-block; margin-top: 16px; padding: 12px 24px; border-radius: 10px; font-size: 14px; font-weight: 800; text-decoration: none; transition: all 0.2s; cursor: pointer; border: none; width: 100%; }
+        .pkg-cta-std  { background: rgba(255,255,255,0.07); color: rgba(248,248,248,0.7); }
+        .pkg-cta-std:hover { background: rgba(255,255,255,0.12); }
+        .pkg-cta-feat { background: #FED700; color: #0A0A0A; }
+        .pkg-cta-feat:hover { background: #ffe633; }
+
+        .contact-info { background: #1A1A1A; border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 28px; margin-top: 32px; text-align: center; }
+        .contact-info p { color: rgba(248,248,248,0.7); font-size: 16px; margin-bottom: 8px; }
+        .contact-info a { color: #FED700; text-decoration: none; font-weight: 700; }
+
+        /* Navigation bottom */
+        .controls { position: fixed; bottom: 30px; right: 30px; display: flex; align-items: center; gap: 12px; z-index: 50; }
+        .nav-button {
+            background: #1A1A1A; color: #FED700; border: 1px solid rgba(255,255,255,0.1);
+            width: 44px; height: 44px; border-radius: 50%; cursor: pointer; font-size: 18px;
+            display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; font-weight: bold;
+        }
+        .nav-button:hover { background: #FED700; color: #0A0A0A; border-color: #FED700; }
+        .slide-counter { background: #1A1A1A; border: 1px solid rgba(255,255,255,0.1); color: rgba(248,248,248,0.5); font-size: 13px; padding: 8px 16px; border-radius: 100px; min-width: 60px; text-align: center; }
+
+        /* Legend bar */
+        .legend-bar { display: flex; gap: 15px; padding: 10px 16px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; margin-bottom: 20px; font-size: 12px; color: rgba(248,248,248,0.4); align-items: center; }
+
+        /* Social table */
+        .social-table { width: 100%; border-collapse: collapse; margin-bottom: 24px; background: #1A1A1A; border-radius: 16px; overflow: hidden; }
+        .social-table th { background: #141414; color: rgba(248,248,248,0.4); font-size: 11px; text-transform: uppercase; letter-spacing: 1px; padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.06); text-align: left; }
+        .social-table td { padding: 12px 16px; font-size: 13px; color: rgba(248,248,248,0.65); border-bottom: 1px solid rgba(255,255,255,0.04); }
+        .social-table tr:last-child td { border-bottom: none; }
+        .social-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+        /* Bench two-col */
+        .bench-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+        .bench-box { background: #1A1A1A; border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; padding: 20px; }
+        .bench-box h4 { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; margin-bottom: 12px; }
+        .bench-box.fanaf h4 { color: #F39C12; }
+        .bench-box.cima h4 { color: #3498db; }
+        .bench-box ul { list-style: none; }
+        .bench-box li { font-size: 12.5px; color: rgba(248,248,248,0.55); padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+        .bench-box li:last-child { border-bottom: none; }
+
+        /* Offre section content box */
+        .offre-intro { background: #1A1A1A; border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; padding: 20px 24px; margin-bottom: 24px; font-size: 14px; color: rgba(248,248,248,0.55); line-height: 1.8; text-align: center; }
+
+        /* icon helpers */
+        .icon { width: 18px; height: 18px; display: inline-block; vertical-align: middle; stroke-width: 1.8; }
+        .icon-lg { width: 24px; height: 24px; display: inline-block; vertical-align: middle; stroke-width: 1.8; }
+        .icon-sm { width: 14px; height: 14px; display: inline-block; vertical-align: middle; stroke-width: 2; }
+        .card-icon-wrap { width: 48px; height: 48px; border-radius: 12px; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+        .card-icon-wrap svg { width: 22px; height: 22px; stroke: #FED700; stroke-width: 1.8; }
+
+        @media (max-width: 900px) {
+            .cards-grid, .three-columns, .packages-grid, .bench-cols { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ═══ ACCESS GATE ═══ -->
+<div id="access-gate" style="position:fixed;inset:0;z-index:9999;background:#0A0A0A;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+    <div style="background:#141414;border:1px solid rgba(255,255,255,0.08);border-radius:24px;padding:48px 40px;width:100%;max-width:420px;display:flex;flex-direction:column;align-items:center;gap:24px;text-align:center;">
+        <div style="width:56px;height:56px;background:rgba(254,215,0,0.1);border:1px solid rgba(254,215,0,0.2);border-radius:16px;display:flex;align-items:center;justify-content:center;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FED700" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+        <div>
+            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:rgba(248,248,248,0.3);margin-bottom:8px;">LOLLY Communication</div>
+            <h2 style="font-size:22px;font-weight:800;color:#F8F8F8;letter-spacing:-0.5px;margin-bottom:8px;">Accès sécurisé</h2>
+            <p style="font-size:14px;color:rgba(248,248,248,0.4);line-height:1.6;">Rapport confidentiel — Audit FANAF.<br>Entrez le code d'accès pour continuer.</p>
+        </div>
+        <div style="width:100%;display:flex;flex-direction:column;gap:12px;">
+            <input id="access-input" type="password" placeholder="Code d'accès" autocomplete="off"
+                style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:14px 18px;color:#F8F8F8;font-size:15px;font-family:inherit;letter-spacing:2px;outline:none;text-align:center;transition:border-color 0.2s;"
+                oninput="document.getElementById('access-error').style.opacity='0'"
+                onkeydown="if(event.key==='Enter') checkAccess()">
+            <button onclick="checkAccess()" style="background:#FED700;color:#0A0A0A;border:none;border-radius:12px;padding:14px;font-size:15px;font-weight:800;cursor:pointer;width:100%;display:flex;align-items:center;justify-content:center;gap:8px;" onmouseover="this.style.background='#ffe633'" onmouseout="this.style.background='#FED700'">
+                Accéder au rapport
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+            <p id="access-error" style="font-size:13px;color:#E74C3C;opacity:0;transition:opacity 0.2s;margin:0;">Code incorrect. Réessayez.</p>
+        </div>
+        <p style="font-size:11px;color:rgba(248,248,248,0.15);margin-top:-8px;">Document confidentiel · Ne pas diffuser</p>
+    </div>
+</div>
+
+<div id="progress-bar"></div>
+
+<!-- ═══ SIDEBAR ═══ -->
+<div class="nav-sidebar" id="sidebar">
+    <div class="nav-dot active" data-slide="0" data-tooltip="Couverture"><i data-lucide="layout-dashboard" class="icon-sm"></i></div>
+    <div class="nav-dot" data-slide="1" data-tooltip="Sommaire"><i data-lucide="list" class="icon-sm"></i></div>
+    <div class="nav-dot" data-slide="2" data-tooltip="Score Global"><i data-lucide="bar-chart-2" class="icon-sm"></i></div>
+    <div class="nav-dot" data-slide="3" data-tooltip="Identité Visuelle"><i data-lucide="palette" class="icon-sm"></i></div>
+    <div class="nav-dot" data-slide="4" data-tooltip="Site Web"><i data-lucide="globe" class="icon-sm"></i></div>
+    <div class="nav-dot" data-slide="5" data-tooltip="Réseaux Sociaux"><i data-lucide="share-2" class="icon-sm"></i></div>
+    <div class="nav-dot" data-slide="6" data-tooltip="Réputation"><i data-lucide="star" class="icon-sm"></i></div>
+    <div class="nav-dot" data-slide="7" data-tooltip="Stratégie Éditoriale"><i data-lucide="pen-line" class="icon-sm"></i></div>
+    <div class="nav-dot" data-slide="8" data-tooltip="Maturité Digitale"><i data-lucide="cpu" class="icon-sm"></i></div>
+    <div class="nav-dot" data-slide="9" data-tooltip="Benchmark CIMA"><i data-lucide="bar-chart" class="icon-sm"></i></div>
+    <div class="nav-dot" data-slide="10" data-tooltip="Actions Prioritaires"><i data-lucide="target" class="icon-sm"></i></div>
+    <div class="nav-dot" data-slide="11" data-tooltip="Offre LOLLY"><i data-lucide="briefcase" class="icon-sm"></i></div>
+</div>
+
+<div class="container">
+<div class="slides-container" id="slidesContainer">
+
+<!-- ═══ SLIDE 0 — COUVERTURE ═══ -->
+<div class="slide slide-cover active" data-slide="0">
+    <div style="position:absolute;top:30px;left:40px;font-size:11px;color:rgba(248,248,248,0.35);letter-spacing:3px;text-transform:uppercase;font-weight:800;">LOLLY Communication — Audit Report</div>
+    <div class="cover-content">
+        <div style="font-size:13px;color:rgba(248,248,248,0.35);letter-spacing:3px;text-transform:uppercase;margin-bottom:12px;">Fédération des Sociétés d'Assurances de Droit National Africaines</div>
+        <h1>FANAF</h1>
+        <h2>Audit Communication 2026</h2>
+        <div class="cover-meta">
+            <p><strong>Secteur :</strong> Assurance / Fédération professionnelle africaine</p>
+            <p><strong>Site :</strong> www.fanaf.org</p>
+            <p><strong>Benchmark :</strong> CIMA</p>
+            <p><strong>Contexte :</strong> Prospection commerciale</p>
+            <p><strong>Date :</strong> 19 mars 2026</p>
+        </div>
+        <div class="cover-score">5,7<span style="font-size:36px;color:rgba(255,107,53,0.5)">/10</span></div>
+        <div style="font-size:13px;color:rgba(248,248,248,0.3);letter-spacing:1px;">Score global de communication</div>
+    </div>
+    <div class="cover-tagline">LOLLY Communication — "Des mots qui touchent, des images qui marquent."</div>
+    <div class="keyboard-hint">← → ou ↑ ↓ pour naviguer</div>
+</div>
+
+<!-- ═══ SLIDE 1 — SOMMAIRE ═══ -->
+<div class="slide slide-content" data-slide="1">
+    <div class="slide-header">
+        <i data-lucide="list" class="icon-lg" style="stroke:#FED700"></i>
+        <h2>Sommaire</h2>
+    </div>
+    <div class="cards-grid">
+        <div class="card" onclick="goToSlide(2)">
+            <div class="card-icon-wrap"><i data-lucide="bar-chart-2"></i></div>
+            <h3>Score Global</h3>
+            <p>Vue d'ensemble des 6 domaines analysés</p>
+            <span class="score-tag orange">5,7 / 10</span>
+        </div>
+        <div class="card" onclick="goToSlide(3)">
+            <div class="card-icon-wrap"><i data-lucide="palette"></i></div>
+            <h3>Identité Visuelle & Branding</h3>
+            <p>Logo, charte graphique, cohérence visuelle</p>
+            <span class="score-tag orange">5,5 / 10</span>
+        </div>
+        <div class="card" onclick="goToSlide(4)">
+            <div class="card-icon-wrap"><i data-lucide="globe"></i></div>
+            <h3>Présence Digitale & Site Web</h3>
+            <p>SEO, UX, contenu, performance</p>
+            <span class="score-tag orange">6,5 / 10</span>
+        </div>
+        <div class="card" onclick="goToSlide(5)">
+            <div class="card-icon-wrap"><i data-lucide="share-2"></i></div>
+            <h3>Réseaux Sociaux & Contenu</h3>
+            <p>Facebook, Instagram, LinkedIn, YouTube</p>
+            <span class="score-tag red">4,5 / 10</span>
+        </div>
+        <div class="card" onclick="goToSlide(6)">
+            <div class="card-icon-wrap"><i data-lucide="star"></i></div>
+            <h3>Réputation & Avis en Ligne</h3>
+            <p>Google My Business, avis, mentions presse</p>
+            <span class="score-tag orange">5,5 / 10</span>
+        </div>
+        <div class="card" onclick="goToSlide(7)">
+            <div class="card-icon-wrap"><i data-lucide="pen-line"></i></div>
+            <h3>Stratégie Éditoriale</h3>
+            <p>Message, ligne éditoriale, storytelling</p>
+            <span class="score-tag orange">6,5 / 10</span>
+        </div>
+        <div class="card" onclick="goToSlide(8)">
+            <div class="card-icon-wrap"><i data-lucide="cpu"></i></div>
+            <h3>Maturité Digitale Interne</h3>
+            <p>CRM, outils, automatisations</p>
+            <span class="score-tag orange">5,5 / 10</span>
+        </div>
+        <div class="card" onclick="goToSlide(9)">
+            <div class="card-icon-wrap"><i data-lucide="bar-chart"></i></div>
+            <h3>Benchmark CIMA</h3>
+            <p>Comparaison côte à côte par domaine</p>
+            <span class="score-tag orange">FANAF +0,3</span>
+        </div>
+        <div class="card" onclick="goToSlide(10)">
+            <div class="card-icon-wrap"><i data-lucide="target"></i></div>
+            <h3>Top 5 Actions Prioritaires</h3>
+            <p>Plan d'action classé par impact / timeline</p>
+            <span class="score-tag green">Plan d'action</span>
+        </div>
+    </div>
+</div>
+
+<!-- ═══ SLIDE 2 — SCORE GLOBAL ═══ -->
+<div class="slide slide-content" data-slide="2">
+    <div class="slide-header">
+        <i data-lucide="bar-chart-2" class="icon-lg" style="stroke:#FED700"></i>
+        <h2>Score Global</h2>
+    </div>
+    <div class="global-score-box">
+        <h3>Score de communication FANAF</h3>
+        <div class="global-score-value">5,7<span style="font-size:36px;color:rgba(255,107,53,0.5)">/10</span></div>
+        <div class="score-gauge"><div class="score-gauge-fill" style="width:57%"></div></div>
+    </div>
+    <div class="score-items">
+        <div class="score-item" onclick="goToSlide(3)">
+            <div class="score-item-label"><span>🎨 Identité Visuelle & Branding</span><span style="color:#F39C12;font-weight:700">5,5</span></div>
+            <div class="score-item-bar"><div class="score-item-bar-fill bar-orange" style="width:55%"></div></div>
+        </div>
+        <div class="score-item" onclick="goToSlide(4)">
+            <div class="score-item-label"><span>🌐 Présence Digitale & Site Web</span><span style="color:#F39C12;font-weight:700">6,5</span></div>
+            <div class="score-item-bar"><div class="score-item-bar-fill bar-orange" style="width:65%"></div></div>
+        </div>
+        <div class="score-item" onclick="goToSlide(5)">
+            <div class="score-item-label"><span>📱 Réseaux Sociaux & Contenu</span><span style="color:#E74C3C;font-weight:700">4,5</span></div>
+            <div class="score-item-bar"><div class="score-item-bar-fill bar-red" style="width:45%"></div></div>
+        </div>
+        <div class="score-item" onclick="goToSlide(6)">
+            <div class="score-item-label"><span>⭐ Réputation & Avis en Ligne</span><span style="color:#F39C12;font-weight:700">5,5</span></div>
+            <div class="score-item-bar"><div class="score-item-bar-fill bar-orange" style="width:55%"></div></div>
+        </div>
+        <div class="score-item" onclick="goToSlide(7)">
+            <div class="score-item-label"><span>✍️ Communication & Stratégie Éditoriale</span><span style="color:#F39C12;font-weight:700">6,5</span></div>
+            <div class="score-item-bar"><div class="score-item-bar-fill bar-orange" style="width:65%"></div></div>
+        </div>
+        <div class="score-item" onclick="goToSlide(8)">
+            <div class="score-item-label"><span>⚙️ Maturité Digitale Interne</span><span style="color:#F39C12;font-weight:700">5,5</span></div>
+            <div class="score-item-bar"><div class="score-item-bar-fill bar-orange" style="width:55%"></div></div>
+        </div>
+    </div>
+    <div class="summary-box">
+        <h4>Diagnostic synthétique</h4>
+        <div class="keywords">
+            <span class="keyword-tag">Institutionnel</span>
+            <span class="keyword-tag">Sous-exploité</span>
+            <span class="keyword-tag">Potentiel fort</span>
+        </div>
+        <p class="analysis-note">FANAF dispose d'une assise institutionnelle solide (203 membres, 50 ans d'existence, publications régulières) mais souffre d'un retard digital manifeste par rapport aux standards des organisations continentales africaines. L'enjeu central est la modernisation de la communication pour refléter le leadership réel de la fédération. La fenêtre d'opportunité est ouverte — CIMA est en retard sur plusieurs dimensions clés.</p>
+    </div>
+</div>
+
+<!-- ═══ SLIDE 3 — IDENTITÉ VISUELLE ═══ -->
+<div class="slide slide-content" data-slide="3">
+    <div class="slide-header">
+        <i data-lucide="palette" class="icon-lg" style="stroke:#FED700"></i>
+        <h2>Identité Visuelle & Branding</h2>
+        <span class="score-badge orange">5,5 / 10 — À améliorer</span>
+    </div>
+    <div class="legend-bar">
+        <span style="color:#2ecc71">↗ Forces</span>&nbsp;&nbsp;
+        <span style="color:#E74C3C">↘ Faiblesses</span>&nbsp;&nbsp;
+        <span style="color:#3498db">→ Opportunités</span>
+    </div>
+    <div class="three-columns">
+        <div class="column-box forces">
+            <h3>Forces</h3>
+            <ul>
+                <li>Logo bleu-orange épuré et mémorable</li>
+                <li>Cohérence chromatique sur le site</li>
+                <li>Navigation hiérarchisée (7 rubriques)</li>
+                <li>Support multilingue (FR/EN/ES)</li>
+                <li>Présence institutionnelle identifiable</li>
+                <li>Production éditoriale régulière (L'Assureur Africain)</li>
+            </ul>
+        </div>
+        <div class="column-box faiblesses">
+            <h3>Faiblesses</h3>
+            <ul>
+                <li>Palette chromatique limitée, manque de profondeur</li>
+                <li>Typographie générique sans caractère de marque</li>
+                <li>Design web daté, non-conforme standards 2026</li>
+                <li>Absence de brand book / guide de marque publié</li>
+                <li>Positionnement flou en page d'accueil</li>
+                <li>Photos d'événements peu professionnelles</li>
+                <li>Aucune symbolique africaine contemporaine</li>
+            </ul>
+        </div>
+        <div class="column-box opportunites">
+            <h3>Opportunités</h3>
+            <ul>
+                <li>Création d'un Design System complet (brand guide)</li>
+                <li>Identité visuelle africaine renforcée (motifs géo.)</li>
+                <li>Social media content kit (templates unifiés)</li>
+                <li>Packaging documentaire de L'Assureur Africain</li>
+                <li>Identités événementielles spécifiques (Forum, AG)</li>
+                <li>Production photo/vidéo professionnelle régulière</li>
+            </ul>
+        </div>
+    </div>
+    <div class="recommendations">
+        <h4>Recommandations prioritaires</h4>
+        <div class="recommendation-item">
+            <strong>01 — Brand Book FANAF 2026</strong>
+            <p>Création d'un guide de marque complet (80 pages : couleurs, typographie, iconographie, usages sur tous supports). Socle de toutes les actions communication.</p>
+        </div>
+        <div class="recommendation-item">
+            <strong>02 — Refonte graphique du site fanaf.org</strong>
+            <p>Palette étendue, composants UI modernisés, identité visuelle cohérente avec le brand book. Repositionnement visuel fort face à CIMA.</p>
+        </div>
+        <div class="recommendation-item">
+            <strong>03 — Social Media Kit visuel</strong>
+            <p>Templates Instagram/LinkedIn/Facebook + 52 infographies thématiques annuelles pour une présence visuelle unifiée et mémorable sur tous les canaux.</p>
+        </div>
+    </div>
+    <div style="margin-top:16px;background:rgba(255,107,53,0.06);border:1px solid rgba(255,107,53,0.15);border-radius:12px;padding:16px 20px;font-size:13px;color:rgba(248,248,248,0.55);">
+        <span style="color:#FF6B35;font-weight:700">Benchmark CIMA :</span> FANAF est légèrement plus dynamique visuellement. CIMA affiche une rigueur institutionnelle supérieure (4 langues, palette vert-or). <strong style="color:#F8F8F8">Opportunité :</strong> FANAF peut se positionner comme la fédération la plus moderne du continent.
+    </div>
+</div>
+
+<!-- ═══ SLIDE 4 — SITE WEB ═══ -->
+<div class="slide slide-content" data-slide="4">
+    <div class="slide-header">
+        <i data-lucide="globe" class="icon-lg" style="stroke:#FED700"></i>
+        <h2>Présence Digitale & Site Web</h2>
+        <span class="score-badge orange">6,5 / 10 — À améliorer</span>
+    </div>
+    <div class="legend-bar">
+        <span style="color:#2ecc71">↗ Forces</span>&nbsp;&nbsp;
+        <span style="color:#E74C3C">↘ Faiblesses</span>&nbsp;&nbsp;
+        <span style="color:#3498db">→ Opportunités</span>
+    </div>
+    <div class="three-columns">
+        <div class="column-box forces">
+            <h3>Forces</h3>
+            <ul>
+                <li>HTTPS activé — sécurité conforme</li>
+                <li>WordPress + Google Analytics intégrés</li>
+                <li>Design responsive (adapté mobile)</li>
+                <li>Présence multi-canal établie</li>
+                <li>Sections institutionnelles claires</li>
+                <li>Fonctionnalités interactives (auth, formulaires)</li>
+                <li>203 membres sur 29 pays — crédibilité forte</li>
+            </ul>
+        </div>
+        <div class="column-box faiblesses">
+            <h3>Faiblesses</h3>
+            <ul>
+                <li>SEO basique — title/meta peu optimisés</li>
+                <li>Contenu potentiellement obsolète (2020)</li>
+                <li>Absence de CTAs forts (Newsletter, Adhésion)</li>
+                <li>Architecture peu orientée conversion</li>
+                <li>Blog/actualités peu structurés</li>
+                <li>Pas de différenciation claire vs CIMA</li>
+                <li>Pas de dashboard statistiques interactif</li>
+            </ul>
+        </div>
+        <div class="column-box opportunites">
+            <h3>Opportunités</h3>
+            <ul>
+                <li>Stratégie SEO complète (assurance africaine)</li>
+                <li>Dashboard statistiques interactif public</li>
+                <li>Hub de ressources téléchargeables centralisé</li>
+                <li>Blog mensuel avec études sectorielles</li>
+                <li>Formulaire adhésion simplifié (Lead generation)</li>
+                <li>Schema.org + Open Graph pour SEO avancé</li>
+                <li>Intégration LinkedIn Feed sur le site</li>
+            </ul>
+        </div>
+    </div>
+    <div class="recommendations">
+        <h4>Recommandations prioritaires</h4>
+        <div class="recommendation-item">
+            <strong>01 — Audit & Optimisation SEO technique</strong>
+            <p>Balises title/meta, structure URLs, schema.org, Open Graph sur 50+ pages. Ciblage des mots-clés : "assurance africaine", "insurance Africa", "marché assurance Afrique".</p>
+        </div>
+        <div class="recommendation-item">
+            <strong>02 — Refonte UX/Design & Conversion</strong>
+            <p>Nouvelle homepage, 3 CTAs forts, dashboard statistiques interactif, multilingue FR/EN. Modernisation avant que CIMA finalise son propre projet de refonte.</p>
+        </div>
+        <div class="recommendation-item">
+            <strong>03 — Stratégie éditoriale web</strong>
+            <p>Plan de 52 articles/an, 5 pages ressources thématiques, calendrier éditorial structuré. Blog actif positionné comme référence sur l'assurance africaine.</p>
+        </div>
+    </div>
+    <div style="margin-top:16px;background:rgba(255,107,53,0.06);border:1px solid rgba(255,107,53,0.15);border-radius:12px;padding:16px 20px;font-size:13px;color:rgba(248,248,248,0.55);">
+        <span style="color:#FF6B35;font-weight:700">Benchmark CIMA :</span> CIMA supérieur sur la fraîcheur (actif fév. 2026), l'architecture (mega-menu 4 langues) et les CTAs. <strong style="color:#F8F8F8">Score CIMA 7,5/10 vs FANAF 6,5/10.</strong> FANAF doit moderniser son contenu et sa stratégie de conversion en priorité.
+    </div>
+</div>
+
+<!-- ═══ SLIDE 5 — RÉSEAUX SOCIAUX ═══ -->
+<div class="slide slide-content" data-slide="5">
+    <div class="slide-header">
+        <i data-lucide="share-2" class="icon-lg" style="stroke:#FED700"></i>
+        <h2>Réseaux Sociaux & Contenu</h2>
+        <span class="score-badge red">4,5 / 10 — Critique ⚠️</span>
+    </div>
+    <table class="social-table">
+        <thead>
+            <tr><th>Plateforme</th><th>Statut</th><th>Note</th><th>Observations clés</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>📘 Facebook</strong></td>
+                <td><span style="background:rgba(39,174,96,0.15);color:#27AE60;padding:3px 10px;border-radius:100px;font-size:11px;font-weight:700">Actif</span></td>
+                <td><span class="score-tag orange">6/10</span></td>
+                <td>26 358 abonnés — Base solide, contenu événementiel régulier</td>
+            </tr>
+            <tr>
+                <td><strong>📸 Instagram</strong></td>
+                <td><span style="background:rgba(231,76,60,0.15);color:#E74C3C;padding:3px 10px;border-radius:100px;font-size:11px;font-weight:700">Absent</span></td>
+                <td><span class="score-tag red">2/10</span></td>
+                <td>Aucun profil distinct — Opportunité majeure inexploitée</td>
+            </tr>
+            <tr>
+                <td><strong>💼 LinkedIn</strong></td>
+                <td><span style="background:rgba(243,156,18,0.15);color:#F39C12;padding:3px 10px;border-radius:100px;font-size:11px;font-weight:700">Fragmenté</span></td>
+                <td><span class="score-tag orange">5/10</span></td>
+                <td>2 profils distincts (4 085 + 562 abonnés) — Audience diluée</td>
+            </tr>
+            <tr>
+                <td><strong>🐦 Twitter / X</strong></td>
+                <td><span style="background:rgba(243,156,18,0.15);color:#F39C12;padding:3px 10px;border-radius:100px;font-size:11px;font-weight:700">Peu actif</span></td>
+                <td><span class="score-tag red">3/10</span></td>
+                <td>@fanafoff — engagement non documenté, présence irrégulière</td>
+            </tr>
+            <tr>
+                <td><strong>▶️ YouTube</strong></td>
+                <td><span style="background:rgba(231,76,60,0.15);color:#E74C3C;padding:3px 10px;border-radius:100px;font-size:11px;font-weight:700">Inexploité</span></td>
+                <td><span class="score-tag red">1/10</span></td>
+                <td>Canal mentionné sur site — Aucune vidéo ni statistique documentée</td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="recommendations">
+        <h4>Recommandations prioritaires</h4>
+        <div class="recommendation-item">
+            <strong>01 — Stratégie Instagram complète</strong>
+            <p>Création du profil, charte visuelle dédiée, calendrier éditorial mensuel, templates stories/reels, community management. Canal prioritaire pour la jeunesse africaine du secteur.</p>
+        </div>
+        <div class="recommendation-item">
+            <strong>02 — Série YouTube trimestrielle</strong>
+            <p>4 vidéos minimum par an : webinaires sectoriels, interviews leaders, couvertures des grandes AG. Production professionnelle avec montage, sous-titres FR/EN.</p>
+        </div>
+        <div class="recommendation-item">
+            <strong>03 — Consolidation LinkedIn + charte réseaux</strong>
+            <p>Fusion des 2 profils LinkedIn en un compte officiel unique. Création d'un kit visuel unifié pour tous les réseaux. Calendrier de publication hebdomadaire structuré.</p>
+        </div>
+    </div>
+    <div style="margin-top:16px;background:rgba(255,107,53,0.06);border:1px solid rgba(255,107,53,0.15);border-radius:12px;padding:16px 20px;font-size:13px;color:rgba(248,248,248,0.55);">
+        <span style="color:#FF6B35;font-weight:700">Benchmark CIMA :</span> Présence comparable et tout aussi fragmentée. <strong style="color:#F8F8F8">Avantage FANAF :</strong> base Facebook documentée + LinkedIn plus structuré. Les deux organisations abandonnent les canaux vidéo. FANAF dispose d'une base légèrement supérieure à activer en priorité.
+    </div>
+</div>
+
+<!-- ═══ SLIDE 6 — RÉPUTATION ═══ -->
+<div class="slide slide-content" data-slide="6">
+    <div class="slide-header">
+        <i data-lucide="star" class="icon-lg" style="stroke:#FED700"></i>
+        <h2>Réputation & Avis en Ligne</h2>
+        <span class="score-badge orange">5,5 / 10 — À améliorer</span>
+    </div>
+    <div class="legend-bar">
+        <span style="color:#2ecc71">↗ Forces</span>&nbsp;&nbsp;
+        <span style="color:#E74C3C">↘ Faiblesses</span>&nbsp;&nbsp;
+        <span style="color:#3498db">→ Opportunités</span>
+    </div>
+    <div class="three-columns">
+        <div class="column-box forces">
+            <h3>Forces</h3>
+            <ul>
+                <li>Présence web régulièrement mise à jour</li>
+                <li>L'Assureur Africain N°124 (déc. 2025)</li>
+                <li>Facebook 26k likes — audience fidèle</li>
+                <li>50e AG février 2026 — haute visibilité</li>
+                <li>Mentions positives presse (Jeune Afrique)</li>
+                <li>203 membres / 29 pays — autorité forte</li>
+                <li>Prix Jean Julien Codjovi reconnu</li>
+            </ul>
+        </div>
+        <div class="column-box faiblesses">
+            <h3>Faiblesses</h3>
+            <ul>
+                <li>Aucune fiche Google My Business identifiée</li>
+                <li>Zéro avis clients sur Google ou Trustpilot</li>
+                <li>Pas de gestion active des commentaires</li>
+                <li>Absent des annuaires professionnels africains</li>
+                <li>Pas de section "Témoignages membres" sur site</li>
+                <li>Mentions presse dispersées, non centralisées</li>
+                <li>Données NAP non vérifiées cross-canaux</li>
+            </ul>
+        </div>
+        <div class="column-box opportunites">
+            <h3>Opportunités</h3>
+            <ul>
+                <li>Créer & optimiser la fiche Google My Business</li>
+                <li>Programme d'avis vérifiés (203 membres)</li>
+                <li>Section témoignages membres sur le site</li>
+                <li>Inscription dans annuaires africains</li>
+                <li>Monitoring réputation (Google Alerts)</li>
+                <li>Se positionner en transparence face à CIMA</li>
+            </ul>
+        </div>
+    </div>
+    <div class="recommendations">
+        <h4>Recommandations prioritaires</h4>
+        <div class="recommendation-item">
+            <strong>01 — Créer & Optimiser la fiche Google My Business</strong>
+            <p>Photos, horaires, FAQ, description optimisée. Quick win immédiat avec impact direct sur la visibilité locale et la crédibilité institutionnelle.</p>
+        </div>
+        <div class="recommendation-item">
+            <strong>02 — Programme "Avis vérifiés FANAF"</strong>
+            <p>Mobiliser les 203 membres pour des évaluations Google et Trustpilot. Gestion proactive des avis et des réponses. Construire une réputation en ligne solide.</p>
+        </div>
+        <div class="recommendation-item">
+            <strong>03 — Section "Témoignages & Membres en action"</strong>
+            <p>10 à 15 vidéos de membres (2-3 min) intégrées sur le site et LinkedIn. Preuve sociale institutionnelle forte pour les prospects et les partenaires.</p>
+        </div>
+    </div>
+    <div style="margin-top:16px;background:rgba(39,174,96,0.05);border:1px solid rgba(39,174,96,0.2);border-radius:12px;padding:16px 20px;font-size:13px;color:rgba(248,248,248,0.55);">
+        <span style="color:#2ecc71;font-weight:700">🎯 Avantage compétitif majeur :</span> CIMA souffre d'une réputation <strong style="color:#F8F8F8">fortement endommagée sur Trustpilot</strong> (12+ avis négatifs non traités). FANAF reste silencieuse mais non endommagée. <strong style="color:#F8F8F8">FANAF peut se positionner comme le leader africain de la transparence.</strong>
+    </div>
+</div>
+
+<!-- ═══ SLIDE 7 — STRATÉGIE ÉDITORIALE ═══ -->
+<div class="slide slide-content" data-slide="7">
+    <div class="slide-header">
+        <i data-lucide="pen-line" class="icon-lg" style="stroke:#FED700"></i>
+        <h2>Communication & Stratégie Éditoriale</h2>
+        <span class="score-badge orange">6,5 / 10 — À améliorer</span>
+    </div>
+    <div class="legend-bar">
+        <span style="color:#2ecc71">↗ Forces</span>&nbsp;&nbsp;
+        <span style="color:#E74C3C">↘ Faiblesses</span>&nbsp;&nbsp;
+        <span style="color:#3498db">→ Opportunités</span>
+    </div>
+    <div class="three-columns">
+        <div class="column-box forces">
+            <h3>Forces</h3>
+            <ul>
+                <li>Message clair : "Promouvoir l'assurance africaine"</li>
+                <li>L'Assureur Africain #124 (déc. 2025)</li>
+                <li>Storytelling 50e anniversaire fort (2026)</li>
+                <li>LinkedIn : 42-188 réactions par publication</li>
+                <li>Ton institutionnel adapté au secteur</li>
+                <li>Positionnement inclusion + leadership féminin</li>
+            </ul>
+        </div>
+        <div class="column-box faiblesses">
+            <h3>Faiblesses</h3>
+            <ul>
+                <li>Discontinuité offline/online marquée</li>
+                <li>L'Assureur Africain peu relayé sur les RS</li>
+                <li>Stratégie digitale fragmentée</li>
+                <li>Contenu de fond limité (surtout événementiel)</li>
+                <li>Adaptation culturelle insuffisante (29 pays)</li>
+                <li>Pas de newsletter digitale dédiée</li>
+                <li>Communication réactive vs proactive</li>
+            </ul>
+        </div>
+        <div class="column-box opportunites">
+            <h3>Opportunités</h3>
+            <ul>
+                <li>L'Assureur Africain en format vidéo/podcast</li>
+                <li>Stratégie contenu localisée par pays/région</li>
+                <li>Newsletter mensuelle "FANAF Insights"</li>
+                <li>Academy en ligne (5 webinaires gratuits/an)</li>
+                <li>Syndication (Jeune Afrique, Financial Afrik)</li>
+                <li>Hub de données publiques sur l'assurance africaine</li>
+            </ul>
+        </div>
+    </div>
+    <div class="recommendations">
+        <h4>Recommandations prioritaires</h4>
+        <div class="recommendation-item">
+            <strong>01 — Stratégie de contenu intégrée offline/online</strong>
+            <p>Calendrier éditorial annuel synchronisant site, réseaux sociaux, newsletter et publications imprimées. Kit media pour chaque publication. Cross-promotion systématique.</p>
+        </div>
+        <div class="recommendation-item">
+            <strong>02 — Newsletter mensuelle "FANAF Insights"</strong>
+            <p>3 articles + statistiques marché + agenda des événements. Landing page dédiée avec abonnement ouvert au public (membres + prospects). Automation email marketing.</p>
+        </div>
+        <div class="recommendation-item">
+            <strong>03 — Enrichissement de L'Assureur Africain</strong>
+            <p>Format hybride article + vidéo courte (90 secondes) pour chaque numéro. 2 épisodes podcast trimestriels. Distribution amplifiée sur YouTube, LinkedIn et partenaires médias.</p>
+        </div>
+    </div>
+    <div style="margin-top:16px;background:rgba(255,107,53,0.06);border:1px solid rgba(255,107,53,0.15);border-radius:12px;padding:16px 20px;font-size:13px;color:rgba(248,248,248,0.55);">
+        <span style="color:#FF6B35;font-weight:700">Benchmark CIMA :</span> FANAF présente une narration plus vivante et audience-first (engagement LinkedIn supérieur). CIMA bénéficie d'une transparence réglementaire totale. <strong style="color:#F8F8F8">Score CIMA 5,5/10 vs FANAF 6,5/10.</strong>
+    </div>
+</div>
+
+<!-- ═══ SLIDE 8 — MATURITÉ DIGITALE ═══ -->
+<div class="slide slide-content" data-slide="8">
+    <div class="slide-header">
+        <i data-lucide="cpu" class="icon-lg" style="stroke:#FED700"></i>
+        <h2>Maturité Digitale Interne</h2>
+        <span class="score-badge orange">5,5 / 10 — À améliorer</span>
+    </div>
+    <div class="legend-bar">
+        <span style="color:#2ecc71">↗ Forces</span>&nbsp;&nbsp;
+        <span style="color:#E74C3C">↘ Faiblesses</span>&nbsp;&nbsp;
+        <span style="color:#3498db">→ Opportunités</span>
+    </div>
+    <div class="three-columns">
+        <div class="column-box forces">
+            <h3>Forces</h3>
+            <ul>
+                <li>Domaine email @fanaf.org professionnel</li>
+                <li>Portail de connexion membres fonctionnel</li>
+                <li>Ressources téléchargeables (stats, rapports)</li>
+                <li>Newsletter active envoyée aux membres</li>
+                <li>Gestion événementielle en ligne (inscriptions)</li>
+                <li>Google Analytics intégré sur le site</li>
+            </ul>
+        </div>
+        <div class="column-box faiblesses">
+            <h3>Faiblesses</h3>
+            <ul>
+                <li>Aucun CRM identifié (Salesforce, HubSpot…)</li>
+                <li>Pas d'intranet membre avancé</li>
+                <li>Aucune automatisation visible (chatbot, workflows)</li>
+                <li>Pas de WhatsApp Business documenté</li>
+                <li>Absence de solution BI / dashboard analytique</li>
+                <li>Infrastructure IT interne opaque</li>
+                <li>Pas d'outils collaboratifs cloud mentionnés</li>
+            </ul>
+        </div>
+        <div class="column-box opportunites">
+            <h3>Opportunités</h3>
+            <ul>
+                <li>Implémenter un CRM (Zoho CRM, Pipedrive)</li>
+                <li>Intranet membre enrichi (forum, docs partagés)</li>
+                <li>Automatiser les workflows (inscriptions, alertes)</li>
+                <li>WhatsApp Business pour notifications urgentes</li>
+                <li>Dashboard BI sur le marché africain des assurances</li>
+                <li>API partenaire pour accès temps réel aux stats</li>
+            </ul>
+        </div>
+    </div>
+    <div class="recommendations">
+        <h4>Recommandations prioritaires</h4>
+        <div class="recommendation-item">
+            <strong>01 — Déployer un CRM dédié</strong>
+            <p>Suivi des 203 membres, contacts, partenariats et pipeline événements. Zoho CRM ou Pipedrive recommandés pour leur facilité d'adoption et leur rapport fonctionnalités/coût.</p>
+        </div>
+        <div class="recommendation-item">
+            <strong>02 — Intranet/Portail membre avancé</strong>
+            <p>Espace sécurisé, forum inter-membres, bibliothèque de documents partagés, calendrier collaboratif. Renforcer la valeur perçue de l'adhésion à la fédération.</p>
+        </div>
+        <div class="recommendation-item">
+            <strong>03 — Plateforme BI & Reporting</strong>
+            <p>Dashboards publics (statistiques assurance africaine) et privés (reporting membres). Collecte harmonisée des données des 203 membres. Metabase ou Superset recommandés.</p>
+        </div>
+    </div>
+    <div style="margin-top:16px;background:rgba(255,107,53,0.06);border:1px solid rgba(255,107,53,0.15);border-radius:12px;padding:16px 20px;font-size:13px;color:rgba(248,248,248,0.55);">
+        <span style="color:#FF6B35;font-weight:700">Benchmark CIMA (6,5/10) :</span> CIMA bénéficie d'un financement AFD structuré et d'un projet BI en cours. <strong style="color:#F8F8F8">FANAF peut rattraper ce retard rapidement</strong> avec un investissement ciblé CRM + BI, lui donnant un avantage compétitif clair comme fédération opérationnelle.
+    </div>
+</div>
+
+<!-- ═══ SLIDE 9 — BENCHMARK CIMA ═══ -->
+<div class="slide slide-content" data-slide="9">
+    <div class="slide-header">
+        <i data-lucide="bar-chart" class="icon-lg" style="stroke:#FED700"></i>
+        <h2>Benchmark — FANAF vs CIMA</h2>
+        <span class="score-badge orange">FANAF +0,3 pt</span>
+    </div>
+    <table class="benchmark-table">
+        <thead>
+            <tr>
+                <th>Domaine</th>
+                <th class="fanaf-col">FANAF</th>
+                <th>Note</th>
+                <th class="cima-col">CIMA</th>
+                <th>Note</th>
+                <th>Avantage</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="win-fanaf">
+                <td>🎨 Identité Visuelle</td>
+                <td>Logo moderne, couleurs vives</td>
+                <td><span class="score-tag orange">5,5/10</span></td>
+                <td>Palette vert-or, rigueur institutionnelle</td>
+                <td><span class="score-tag orange">5/10</span></td>
+                <td><span style="color:#FF6B35;font-weight:700">FANAF ↑</span></td>
+            </tr>
+            <tr class="win-cima">
+                <td>🌐 Site Web</td>
+                <td>WordPress, responsive, contenu vieillissant</td>
+                <td><span class="score-tag orange">6,5/10</span></td>
+                <td>4 langues, mega-menu, contenu frais (fév. 2026)</td>
+                <td><span class="score-tag green">7,5/10</span></td>
+                <td><span style="color:#3498db;font-weight:700">CIMA ↑</span></td>
+            </tr>
+            <tr class="win-fanaf">
+                <td>📱 Réseaux Sociaux</td>
+                <td>FB 26k, LinkedIn structuré</td>
+                <td><span class="score-tag red">4,5/10</span></td>
+                <td>FB + LinkedIn minimal, Twitter @CIMA_News</td>
+                <td><span class="score-tag red">4/10</span></td>
+                <td><span style="color:#FF6B35;font-weight:700">FANAF ↑</span></td>
+            </tr>
+            <tr class="win-fanaf">
+                <td>⭐ Réputation</td>
+                <td>Presse positive, non endommagée</td>
+                <td><span class="score-tag orange">5,5/10</span></td>
+                <td>Trustpilot dégradé — 12+ avis négatifs non traités</td>
+                <td><span class="score-tag red">4/10</span></td>
+                <td><span style="color:#FF6B35;font-weight:700">FANAF ↑↑</span></td>
+            </tr>
+            <tr class="win-fanaf">
+                <td>✍️ Éditorial</td>
+                <td>L'Assureur Africain, storytelling fort</td>
+                <td><span class="score-tag orange">6,5/10</span></td>
+                <td>Documentation réglementaire, peu narratif</td>
+                <td><span class="score-tag orange">5,5/10</span></td>
+                <td><span style="color:#FF6B35;font-weight:700">FANAF ↑</span></td>
+            </tr>
+            <tr class="win-cima">
+                <td>⚙️ Maturité Digitale</td>
+                <td>Portail basique, pas de CRM ni BI</td>
+                <td><span class="score-tag orange">5,5/10</span></td>
+                <td>Financement AFD, projet BI en cours</td>
+                <td><span class="score-tag orange">6,5/10</span></td>
+                <td><span style="color:#3498db;font-weight:700">CIMA ↑</span></td>
+            </tr>
+            <tr style="background:rgba(254,215,0,0.04);border-top:1px solid rgba(254,215,0,0.15)">
+                <td style="color:#FED700;font-weight:700">🏆 Score Global</td>
+                <td style="color:#FED700;font-weight:700">Communication accessible, audience forte</td>
+                <td><span class="score-tag orange" style="border-color:rgba(254,215,0,0.3);color:#FED700">5,7/10</span></td>
+                <td style="color:#3498db;font-weight:700">Autorité réglementaire, infra en dév.</td>
+                <td><span class="score-tag orange">5,4/10</span></td>
+                <td><span style="color:#FED700;font-weight:700">FANAF +0,3</span></td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="bench-cols">
+        <div class="bench-box fanaf">
+            <h4>✅ Avances de FANAF sur CIMA</h4>
+            <ul>
+                <li>🏆 Audience Facebook bien supérieure (26k documentés)</li>
+                <li>🏆 Réputation en ligne intacte vs Trustpilot CIMA dégradé</li>
+                <li>🏆 Storytelling et engagement LinkedIn supérieur</li>
+                <li>🏆 Message commercial plus accessible et fédérateur</li>
+                <li>🏆 Couverture plus large (29 pays vs 16 États CIMA)</li>
+            </ul>
+        </div>
+        <div class="bench-box cima">
+            <h4>⚠️ Retards à combler</h4>
+            <ul>
+                <li>📉 Site web moins récent et moins orienté conversion</li>
+                <li>📉 Maturité digitale interne inférieure (CRM, BI)</li>
+                <li>📉 Moins de langues supportées (3 vs 4 pour CIMA)</li>
+                <li>📉 Pas de projet digital structuré avec financement</li>
+                <li>📉 Transparence réglementaire moins documentée</li>
+            </ul>
+        </div>
+    </div>
+    <div style="background:rgba(254,215,0,0.05);border:1px solid rgba(254,215,0,0.15);border-radius:12px;padding:16px 20px;font-size:13px;color:rgba(248,248,248,0.55);">
+        <span style="color:#FED700;font-weight:700">🎯 Conclusion :</span> FANAF est légèrement en avance sur CIMA (+0,3 point). L'enjeu est de capitaliser sur ses forces pour prendre une <strong style="color:#F8F8F8">avance décisive</strong> — CIMA modernise son infrastructure avec des financements externes. <strong style="color:#F8F8F8">La fenêtre d'opportunité est maintenant.</strong>
+    </div>
+</div>
+
+<!-- ═══ SLIDE 10 — TOP 5 ACTIONS ═══ -->
+<div class="slide slide-content" data-slide="10">
+    <div class="slide-header">
+        <i data-lucide="target" class="icon-lg" style="stroke:#FED700"></i>
+        <h2>Top 5 Actions Prioritaires</h2>
+    </div>
+    <div class="actions-grid">
+        <div class="action-card immediate">
+            <h3>🔥 01 — Stratégie Réseaux Sociaux Complète</h3>
+            <p>Lancer Instagram, consolider LinkedIn (fusion des 2 profils), activer YouTube, créer un social media kit visuel unifié. Impact immédiat sur la visibilité auprès des membres et prospects.</p>
+            <span class="timeline-tag tl-red">Immédiat — 0 à 4 semaines</span>
+        </div>
+        <div class="action-card immediate">
+            <h3>🔥 02 — Google My Business + Programme Avis</h3>
+            <p>Créer et optimiser la fiche GMB, lancer un programme d'avis membres. Quick win à impact fort — se positionner en transparence face à CIMA dont la réputation Trustpilot est dégradée.</p>
+            <span class="timeline-tag tl-red">Immédiat — 2 à 3 semaines</span>
+        </div>
+        <div class="action-card short">
+            <h3>⚡ 03 — Newsletter Mensuelle "FANAF Insights"</h3>
+            <p>Lancer une newsletter digitale ouverte au public (membres + prospects) avec actualités sectorielles, statistiques marché africain et agenda événements. Amplifier le reach de L'Assureur Africain.</p>
+            <span class="timeline-tag tl-orange">1 à 3 mois</span>
+        </div>
+        <div class="action-card short">
+            <h3>⚡ 04 — Refonte & Optimisation SEO de fanaf.org</h3>
+            <p>Audit SEO technique, mise à jour contenu, nouveaux CTAs (Newsletter, Adhésion, Ressources), dashboard statistiques interactif. Agir avant que CIMA finalise son projet BI.</p>
+            <span class="timeline-tag tl-orange">1 à 3 mois</span>
+        </div>
+        <div class="action-card medium">
+            <h3>🎯 05 — Brand Book FANAF 2026 + Identité Modernisée</h3>
+            <p>Guide de marque complet (couleurs, typographie, iconographie africaine contemporaine, templates tous supports), refonte de L'Assureur Africain, kit événementiel. Socle stratégique 2026-2027.</p>
+            <span class="timeline-tag tl-blue">3 à 6 mois</span>
+        </div>
+    </div>
+</div>
+
+<!-- ═══ SLIDE 11 — OFFRE LOLLY ═══ -->
+<div class="slide slide-content" data-slide="11">
+    <div class="slide-header">
+        <i data-lucide="briefcase" class="icon-lg" style="stroke:#FED700"></i>
+        <h2>Comment LOLLY peut vous accompagner</h2>
+    </div>
+    <div class="offre-intro">
+        L'audit révèle un potentiel de transformation significatif pour FANAF.<br>
+        LOLLY Communication propose 3 niveaux d'accompagnement adaptés à vos priorités et à votre rythme.
+    </div>
+    <div class="packages-grid">
+        <div class="package-card">
+            <div style="font-size:36px;margin-bottom:12px;">🥉</div>
+            <h3>Starter</h3>
+            <div class="pkg-badge">Essentiels & Quick Wins</div>
+            <ul>
+                <li>Création & optimisation Google My Business</li>
+                <li>Audit et optimisation SEO (10 pages)</li>
+                <li>Lancement profil Instagram professionnel</li>
+                <li>Consolidation des profils LinkedIn</li>
+                <li>Social Media Kit visuel (templates)</li>
+                <li>1 mois de community management</li>
+                <li>Rapport mensuel de performance</li>
+            </ul>
+            <a href="mailto:oudama@lolly.sn?subject=Package Starter - Audit FANAF" class="pkg-cta pkg-cta-std">Discuter de ce package →</a>
+        </div>
+        <div class="package-card recommended">
+            <div style="font-size:36px;margin-bottom:12px;">🥈</div>
+            <h3>Performance</h3>
+            <div class="pkg-badge rec-badge">⭐ Recommandé</div>
+            <ul>
+                <li>Tout le pack Starter inclus</li>
+                <li>Brand Book FANAF 2026 complet</li>
+                <li>Refonte UX/Design de fanaf.org</li>
+                <li>Stratégie éditoriale 6 mois (tous canaux)</li>
+                <li>Newsletter mensuelle "FANAF Insights" 6 mois</li>
+                <li>Programme avis membres (Google)</li>
+                <li>3 mois de community management Pro</li>
+                <li>Rapport bimensuel + recommandations</li>
+            </ul>
+            <a href="mailto:oudama@lolly.sn?subject=Package Performance - Audit FANAF" class="pkg-cta pkg-cta-feat">Discuter de ce package →</a>
+        </div>
+        <div class="package-card">
+            <div style="font-size:36px;margin-bottom:12px;">🥇</div>
+            <h3>Premium</h3>
+            <div class="pkg-badge">Transformation Globale</div>
+            <ul>
+                <li>Tout le pack Performance inclus</li>
+                <li>Production vidéo corporate (4 vidéos/an)</li>
+                <li>Série YouTube trimestrielle</li>
+                <li>Stratégie réseaux 12 mois (tous canaux)</li>
+                <li>Implémentation CRM (Zoho/Pipedrive)</li>
+                <li>Dashboard BI assurance africaine</li>
+                <li>Portail membre enrichi</li>
+                <li>Relations presse & syndication éditoriale</li>
+                <li>Accompagnement mensuel sur site à Dakar</li>
+            </ul>
+            <a href="mailto:oudama@lolly.sn?subject=Package Premium - Audit FANAF" class="pkg-cta pkg-cta-std">Discuter de ce package →</a>
+        </div>
+    </div>
+    <div class="contact-info">
+        <p>Prêt à transformer la communication de FANAF ?</p>
+        <p style="font-size:20px;margin-top:8px;"><a href="mailto:oudama@lolly.sn">✉️ oudama@lolly.sn</a></p>
+        <p style="font-size:11px;color:rgba(248,248,248,0.2);margin-top:16px;">LOLLY Communication — "Des mots qui touchent, des images qui marquent." — Dakar, Sénégal<br>Document confidentiel © LOLLY Communication 2026</p>
+    </div>
+</div>
+
+</div><!-- /slides-container -->
+</div><!-- /container -->
+
+<!-- NAVIGATION -->
+<div class="controls">
+    <button class="nav-button" id="prevBtn" onclick="navigate(-1)">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <div class="slide-counter" id="slideCounter">1 / 12</div>
+    <button class="nav-button" id="nextBtn" onclick="navigate(1)">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
+</div>
+
+<script>
+    // Access gate
+    function checkAccess() {
+        const val = document.getElementById('access-input').value.trim();
+        if (val === 'FANAF2026' || val === 'fanaf2026' || val === 'lolly') {
+            document.getElementById('access-gate').style.opacity = '0';
+            document.getElementById('access-gate').style.transition = 'opacity 0.5s';
+            setTimeout(() => { document.getElementById('access-gate').style.display = 'none'; }, 500);
+        } else {
+            document.getElementById('access-error').style.opacity = '1';
+            document.getElementById('access-input').style.borderColor = '#E74C3C';
+            setTimeout(() => { document.getElementById('access-input').style.borderColor = 'rgba(255,255,255,0.1)'; }, 1500);
+        }
+    }
+
+    // Slides
+    let current = 0;
+    const total = 12;
+
+    function goToSlide(n) {
+        document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.nav-dot').forEach(d => d.classList.remove('active'));
+        const slides = document.querySelectorAll('.slide');
+        const dots = document.querySelectorAll('.nav-dot');
+        if (slides[n]) { slides[n].classList.add('active'); slides[n].scrollTop = 0; }
+        if (dots[n]) dots[n].classList.add('active');
+        current = n;
+        document.getElementById('slideCounter').textContent = (n + 1) + ' / ' + total;
+        document.getElementById('progress-bar').style.width = ((n + 1) / total * 100) + '%';
+        document.getElementById('prevBtn').style.opacity = n === 0 ? '0.3' : '1';
+        document.getElementById('nextBtn').style.opacity = n === total - 1 ? '0.3' : '1';
+    }
+
+    function navigate(dir) {
+        const next = current + dir;
+        if (next >= 0 && next < total) goToSlide(next);
+    }
+
+    document.querySelectorAll('.nav-dot').forEach(dot => {
+        dot.addEventListener('click', () => goToSlide(parseInt(dot.dataset.slide)));
+    });
+
+    document.addEventListener('keydown', e => {
+        if (document.getElementById('access-gate').style.display !== 'none' &&
+            document.getElementById('access-gate').style.opacity !== '0') return;
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') navigate(1);
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') navigate(-1);
+    });
+
+    // Init
+    goToSlide(0);
+    lucide.createIcons();
+</script>
+</body>
+</html>
